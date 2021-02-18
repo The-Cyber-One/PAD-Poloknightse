@@ -4,15 +4,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace BaseProject
 {
-    public class Game1 : Game
+    class Game1 : GameEnvironment
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
@@ -25,7 +20,7 @@ namespace BaseProject
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
         }
