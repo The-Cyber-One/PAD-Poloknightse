@@ -46,27 +46,29 @@ namespace BaseProject
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(
-                wallTile,           //Texture
-                position,           //Positie
-                null,               //Rectangle size
-                Color.White,        //Kleur
-                0f,                 //Rotatie
-                Vector2.Zero,       //Origin 
-                0.2f,               //Scale in %
-                SpriteEffects.None, //Texture effecten
-                0f);                //Layer
+            spriteBatch.Draw(texture, new Rectangle(50, 50, 45, 45), Color.White);
 
-            spriteBatch.Draw(
-                groundTile,           
-                new Vector2(placeX+wallTile.Width,placeY),           
-                null,              
-                Color.White,        
-                0f,                 
-                Vector2.Zero,       
-                0.2f,              
-                SpriteEffects.None, 
-                0f);                
+            //spriteBatch.Draw(
+            //    wallTile,           //Texture
+            //    position,           //Positie
+            //    null,               //Rectangle size
+            //    Color.White,        //Kleur
+            //    0f,                 //Rotatie
+            //    Vector2.Zero,       //Origin 
+            //    0.2f,               //Scale in %
+            //    SpriteEffects.None, //Texture effecten
+            //    0f);                //Layer
+
+            //spriteBatch.Draw(
+            //    groundTile,           
+            //    new Vector2(placeX+wallTile.Width,placeY),           
+            //    null,              
+            //    Color.White,        
+            //    0f,                 
+            //    Vector2.Zero,       
+            //    0.2f,              
+            //    SpriteEffects.None, 
+            //    0f);                
         }
     }
 }
