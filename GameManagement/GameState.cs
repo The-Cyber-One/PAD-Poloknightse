@@ -8,6 +8,7 @@ namespace BaseProject
 {
     class GameState
     {
+        public List<GameObject> gameObjectList = new List<GameObject>();
         public void Init()
         {
 
@@ -20,7 +21,8 @@ namespace BaseProject
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            foreach (GameObject gameObject in gameObjectList)
+                gameObject.Draw(spriteBatch);
         }
     }
 }

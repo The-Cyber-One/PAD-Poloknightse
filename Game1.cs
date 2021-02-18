@@ -22,6 +22,12 @@ namespace BaseProject
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            gameStateDict.Add(GameStates.START_STATE, new StartState());
+            //gameStateDict.Add(GameStates.PLAYING_STATE, new PlayingState());
+            //gameStateDict.Add(GameStates.WIN_STATE, new WinState());
+            //gameStateDict.Add(GameStates.GAME_OVER_STATE, new GameOverState());
+            SwitchTo(GameStates.START_STATE);
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -35,13 +41,5 @@ namespace BaseProject
             base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
-            base.Draw(gameTime);
-        }
     }
 }
