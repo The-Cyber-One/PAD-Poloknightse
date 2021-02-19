@@ -15,6 +15,7 @@ namespace BaseProject
         static protected ContentManager content;
         protected static Point screen;
         protected static Random random;
+        public const int gridSize = 16;
 
         static protected Dictionary<GameStates, GameState> gameStateDict;
         public enum GameStates
@@ -63,6 +64,8 @@ namespace BaseProject
             gameStateDict = new Dictionary<GameStates, GameState>();
             random = new Random();
             ApplyResolutionSettings();
+
+            LevelLoader.Initialize();
         }
 
         public void ApplyResolutionSettings()

@@ -14,8 +14,8 @@ namespace BaseProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            LevelLoader.LoadLevel("test");
             base.Initialize();
+            LevelLoader.LoadLevel("test");
         }
 
         protected override void LoadContent()

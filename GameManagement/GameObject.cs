@@ -7,7 +7,6 @@ namespace BaseProject
 {
 	public class GameObject
 	{
-		protected const int gridSize = 8;
 		protected Texture2D texture;
 		protected Vector2 position;
 		protected Vector2 velocity;
