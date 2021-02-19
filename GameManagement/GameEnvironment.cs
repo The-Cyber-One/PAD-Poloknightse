@@ -62,12 +62,20 @@ namespace BaseProject
             content = Content;
             gameStateDict = new Dictionary<GameStates, GameState>();
             random = new Random();
+            ApplyResolutionSettings();
         }
 
         public void ApplyResolutionSettings()
         {
-            graphics.PreferredBackBufferWidth = screen.X;
-            graphics.PreferredBackBufferHeight = screen.Y;
+            if (GraphicsDevice == null)
+            {
+                graphics.ApplyChanges();
+            }
+            graphics.PreferredBackBufferWidth = 1600;
+            graphics.PreferredBackBufferHeight = 900;
+            
+            //graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+            //graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Height;
             graphics.ApplyChanges();
         }
 

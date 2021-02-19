@@ -11,8 +11,19 @@ namespace BaseProject
 	{
         static Texture2D wallTile;
         static Texture2D groundTile;
-        int placeX = 0;
-        int placeY = 0;
+        static Tile[,] tiles;
+        
+        class Tile
+        {
+            public Texture2D tileTexture;
+            public Rectangle rectangle;
+
+            public Tile(Texture2D tileTexture, Rectangle rectangle)
+            {
+                this.tileTexture = tileTexture;
+                this.rectangle = rectangle;
+            }
+        }
 
         public LevelLoader() : base("LevelTiles/Cell03")
         {
@@ -26,49 +37,38 @@ namespace BaseProject
             level.GetData<Color>(colors);
 
             Color wall = new Color(0, 0, 0, 255);
-            Color ground = new Color(255, 255, 255, 0);
+            Color ground = new Color(255, 255, 255, 255);
 
             wallTile = GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell20");
             groundTile = GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell03");
 
-            foreach (Color pixel in colors)
+            tiles = new Tile[level.Width, level.Height];
+
+            for (int i = 0; i < colors.Length; i++)
             {
+                Color pixel = colors[i];
+                int x = i % level.Width;
+                int y = i / level.Height;
+                Rectangle rectangle = new Rectangle(x * gridSize, y * gridSize, gridSize, gridSize);
+
+                Debug.WriteLine(x + ", " + y);
                 if (pixel == wall)
                 {
-
+                    tiles[x,y] = new Tile(wallTile, rectangle);
                 }
                 else if (pixel == ground)
                 {
-                    
+                    tiles[x,y] = new Tile(groundTile, rectangle);
                 }
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle(50, 50, 45, 45), Color.White);
-
-            //spriteBatch.Draw(
-            //    wallTile,           //Texture
-            //    position,           //Positie
-            //    null,               //Rectangle size
-            //    Color.White,        //Kleur
-            //    0f,                 //Rotatie
-            //    Vector2.Zero,       //Origin 
-            //    0.2f,               //Scale in %
-            //    SpriteEffects.None, //Texture effecten
-            //    0f);                //Layer
-
-            //spriteBatch.Draw(
-            //    groundTile,           
-            //    new Vector2(placeX+wallTile.Width,placeY),           
-            //    null,              
-            //    Color.White,        
-            //    0f,                 
-            //    Vector2.Zero,       
-            //    0.2f,              
-            //    SpriteEffects.None, 
-            //    0f);                
+            foreach (Tile tile in tiles)
+            {
+                spriteBatch.Draw(tile.tileTexture, tile.rectangle, Color.White);
+            }
         }
     }
 }
