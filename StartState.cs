@@ -8,12 +8,17 @@ namespace BaseProject
 	{
 		public StartState()
 		{
-			
+			gameObjectList.Add(new Player());
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
         {
 			LevelLoader.Draw(spriteBatch);
+			base.Draw(spriteBatch);
 		}
+		public override void Update(GameTime gameTime)
+        {
+			base.Update(gameTime);
+        }
 	}
 }

@@ -9,7 +9,7 @@ namespace BaseProject
 {
     class LevelLoader
     {
-        private const int gridSize = GameEnvironment.gridSize;
+        private const int gridSize = GameEnvironment.gridTileSize;
         private static Dictionary<Color, Texture2D> colorTexturePairs = new Dictionary<Color, Texture2D>();
 
         private static Tile[,] tiles;

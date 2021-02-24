@@ -14,9 +14,10 @@ namespace BaseProject
 
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
-
+            foreach (GameObject gameObject in gameObjectList)
+                gameObject.Update(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

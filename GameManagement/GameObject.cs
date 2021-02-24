@@ -10,15 +10,22 @@ namespace BaseProject
 		protected Texture2D texture;
 		protected Vector2 position;
 		protected Vector2 velocity;
+		private Rectangle positionSize;
 
 		public GameObject(String assetName)
 		{
 			texture = GameEnvironment.ContentManager.Load<Texture2D>(assetName);
+			positionSize = new Rectangle(0, 0, GameEnvironment.gridTileSize, GameEnvironment.gridTileSize);
 		}
 
 		public virtual void Draw(SpriteBatch spriteBatch)
 		{
-			spriteBatch.Draw(texture, position, Color.White);
+			spriteBatch.Draw(texture, positionSize, Color.White);
 		}
+
+		public virtual void Update(GameTime gameTime)
+        {
+			positionSize = new Rectangle((int)position.X * GameEnvironment.gridTileSize, (int)position.Y * GameEnvironment.gridTileSize, GameEnvironment.gridTileSize, GameEnvironment.gridTileSize);
+        }
 	}
 }
