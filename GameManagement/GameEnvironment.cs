@@ -15,7 +15,7 @@ namespace BaseProject
         static protected ContentManager content;
         protected static Point screen;
         protected static Random random;
-        public const int gridSize = 16;
+        public const int gridTileSize = 16;
 
         static protected Dictionary<GameStates, GameState> gameStateDict;
         public enum GameStates
@@ -63,22 +63,29 @@ namespace BaseProject
             content = Content;
             gameStateDict = new Dictionary<GameStates, GameState>();
             random = new Random();
-            ApplyResolutionSettings();
-
-            LevelLoader.Initialize();
         }
 
-        public void ApplyResolutionSettings()
+        /// <summary>
+        /// Apply all new settings from graphics
+        /// </summary>
+        /// <param name="fullScreen">Boolean to set the game to fullscreen.</param>
+        public void ApplyResolutionSettings(bool fullScreen = false)
         {
             if (GraphicsDevice == null)
             {
                 graphics.ApplyChanges();
             }
-            graphics.PreferredBackBufferWidth = 1600;
-            graphics.PreferredBackBufferHeight = 900;
-            
-            //graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
-            //graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+
+            if (fullScreen)
+            {
+                graphics.IsFullScreen = true;
+                screen.X = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+                screen.Y = GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            }
+
+            graphics.PreferredBackBufferWidth = screen.X;
+            graphics.PreferredBackBufferHeight = screen.Y;
+
             graphics.ApplyChanges();
         }
 

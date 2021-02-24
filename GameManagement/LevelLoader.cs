@@ -9,7 +9,7 @@ namespace BaseProject
 {
     class LevelLoader
     {
-        private const int gridSize = GameEnvironment.gridSize;
+        private static int gridTileSize = GameEnvironment.gridTileSize;
         private static Dictionary<Color, Texture2D> colorTexturePairs = new Dictionary<Color, Texture2D>();
 
         private static Tile[,] tiles;
@@ -24,7 +24,6 @@ namespace BaseProject
                 this.rectangle = rectangle;
             }
         }
-
 
         public static void Initialize()
         {
@@ -46,6 +45,11 @@ namespace BaseProject
             Color[] colors = new Color[level.Width * level.Height];
             level.GetData(colors);
 
+            //Change the tile size and calculate the center
+            gridTileSize = GameEnvironment.Screen.Y / level.Height;
+            int xOffset = GameEnvironment.Screen.X / 2 - (level.Width / 2) * gridTileSize;
+            int yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
+
             //Here we check the colors of the image and assign the correct tileTexture to them.
             tiles = new Tile[level.Width, level.Height];
 
@@ -54,7 +58,7 @@ namespace BaseProject
                 Color pixel = colors[i];
                 int x = i % level.Width;
                 int y = i / level.Height;
-                Rectangle rectangle = new Rectangle(x * gridSize, y * gridSize, gridSize, gridSize);
+                Rectangle rectangle = new Rectangle(x * gridTileSize + xOffset, y * gridTileSize + yOffset, gridTileSize, gridTileSize);
 
                 tiles[x, y] = new Tile(colorTexturePairs[pixel], rectangle);
             }
