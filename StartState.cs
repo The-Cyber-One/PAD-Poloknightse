@@ -9,6 +9,7 @@ namespace BaseProject
 		public StartState()
 		{
 			gameObjectList.Add(new Player());
+			gameObjectList.Add(new Coin());
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
