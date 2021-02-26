@@ -11,11 +11,21 @@ namespace BaseProject
     {
         private static int gridTileSize = GameEnvironment.gridTileSize;
         private static Tile[,] tiles;
-        
+
         private static Dictionary<Color, Tuple<Texture2D, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Texture2D, Tile.TileType>>()
         {
-            { Color.Black, new Tuple<Texture2D, Tile.TileType>(GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell20"), Tile.TileType.WALL) },
-            { Color.White, new Tuple<Texture2D, Tile.TileType>(GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell03"), Tile.TileType.GROUND) }
+            {
+                Color.Black,
+                new Tuple<Texture2D, Tile.TileType>(
+                    GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell20"),
+                    Tile.TileType.WALL)
+            },
+            { 
+                Color.White, 
+                new Tuple<Texture2D, Tile.TileType>(
+                    GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell03"), 
+                    Tile.TileType.GROUND) 
+            }
         };
 
         /// <summary>
