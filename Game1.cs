@@ -16,7 +16,7 @@ namespace BaseProject
             // TODO: Add your initialization logic here
             base.Initialize();
             screen = new Point(1600, 900);
-            ApplyResolutionSettings();
+            ApplyResolutionSettings(true);
             LevelLoader.LoadLevel("test");
         }
 
@@ -27,7 +27,6 @@ namespace BaseProject
             //gameStateDict.Add(GameStates.PLAYING_STATE, new PlayingState());
             //gameStateDict.Add(GameStates.WIN_STATE, new WinState());
             //gameStateDict.Add(GameStates.GAME_OVER_STATE, new GameOverState());
-            LevelLoader.Initialize();
 
             SwitchTo(GameStates.START_STATE);
         }

@@ -10,29 +10,13 @@ namespace BaseProject
     class LevelLoader
     {
         private static int gridTileSize = GameEnvironment.gridTileSize;
-        private static Dictionary<Color, Texture2D> colorTexturePairs = new Dictionary<Color, Texture2D>();
-
         private static Tile[,] tiles;
-        class Tile
+        
+        private static Dictionary<Color, Tuple<Texture2D, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Texture2D, Tile.TileType>>()
         {
-            public Texture2D tileTexture;
-            public Rectangle rectangle;
-
-            public Tile(Texture2D tileTexture, Rectangle rectangle)
-            {
-                this.tileTexture = tileTexture;
-                this.rectangle = rectangle;
-            }
-        }
-
-        public static void Initialize()
-        {
-            Texture2D wallTile = GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell20");
-            Texture2D groundTile = GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell03");
-
-            colorTexturePairs.Add(Color.Black, wallTile);
-            colorTexturePairs.Add(Color.White, groundTile);
-        }
+            { Color.Black, new Tuple<Texture2D, Tile.TileType>(GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell20"), Tile.TileType.WALL) },
+            { Color.White, new Tuple<Texture2D, Tile.TileType>(GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell03"), Tile.TileType.GROUND) }
+        };
 
         /// <summary>
         /// Load the level from a bmp file.
@@ -60,7 +44,7 @@ namespace BaseProject
                 int y = i / level.Height;
                 Rectangle rectangle = new Rectangle(x * gridTileSize + xOffset, y * gridTileSize + yOffset, gridTileSize, gridTileSize);
 
-                tiles[x, y] = new Tile(colorTexturePairs[pixel], rectangle);
+                tiles[x, y] = new Tile(colorTilePairs[pixel], rectangle);
             }
         }
 
@@ -68,7 +52,7 @@ namespace BaseProject
         {
             foreach (Tile tile in tiles)
             {
-                spriteBatch.Draw(tile.tileTexture, tile.rectangle, Color.White);
+                tile.Draw(spriteBatch);
             }
         }
     }
