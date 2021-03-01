@@ -8,8 +8,8 @@ namespace BaseProject
 	public class GameObject
 	{
 		protected Texture2D texture;
-		protected Vector2 position;
-		protected Vector2 velocity;
+		public  Vector2 position;
+		public  Vector2 velocity;
 		private Rectangle positionSize;
 
 		public GameObject(String assetName = null)

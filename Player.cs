@@ -9,7 +9,7 @@ namespace BaseProject
 {
     class Player : GameObject
     {
-        int movementDirection;
+        public int movementDirection;
         public Player() : base("Player/Onderbroek_Ridder")
         {
             velocity.X = 0.1f;
