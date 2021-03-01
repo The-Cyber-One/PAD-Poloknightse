@@ -5,13 +5,15 @@ namespace BaseProject
 {
     class PlayingState : GameState
     {
+        Player player = new Player();
+
         public PlayingState()
         {
         }
 
         public override void Init()
         {
-            gameObjectList.Add(new Player());
+            gameObjectList.Add(player);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

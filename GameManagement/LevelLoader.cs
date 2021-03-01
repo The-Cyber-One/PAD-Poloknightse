@@ -10,7 +10,7 @@ namespace BaseProject
     class LevelLoader
     {
         private static int gridTileSize = GameEnvironment.gridTileSize;
-        private static Tile[,] tiles;
+        public static Tile[,] tiles;
 
         private static Dictionary<Color, Tuple<Texture2D, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Texture2D, Tile.TileType>>()
         {

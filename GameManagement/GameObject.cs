@@ -8,15 +8,9 @@ namespace BaseProject
 	public class GameObject
 	{
 		protected Texture2D texture;
-		protected Vector2 position;
-		protected Vector2 velocity;
+		public Vector2 gridPosition;
+		public Vector2 velocity;
 		protected Rectangle positionSize;
-
-		public Vector2 Position
-        {
-			get { return position; }
-			set { position = value; }
-        }
 
 		public GameObject(String assetName = null)
 		{
@@ -35,8 +29,8 @@ namespace BaseProject
 		public virtual void Update(GameTime gameTime)
         {
 			positionSize = new Rectangle(
-				(int)position.X * GameEnvironment.gridTileSize + GameEnvironment.startGridPoint.X, 
-				(int)position.Y * GameEnvironment.gridTileSize + GameEnvironment.startGridPoint.Y, 
+				(int)gridPosition.X * GameEnvironment.gridTileSize + GameEnvironment.startGridPoint.X, 
+				(int)gridPosition.Y * GameEnvironment.gridTileSize + GameEnvironment.startGridPoint.Y, 
 				GameEnvironment.gridTileSize, 
 				GameEnvironment.gridTileSize);
         }
