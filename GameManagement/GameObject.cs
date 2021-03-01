@@ -28,9 +28,8 @@ namespace BaseProject
 			positionSize = new Rectangle((int)position.X * GameEnvironment.gridTileSize, (int)position.Y * GameEnvironment.gridTileSize, 
 				GameEnvironment.gridTileSize, GameEnvironment.gridTileSize);
         }
-		public virtual void fixedUpdate(GameTime gameTime)
+		public virtual void FixedUpdate(GameTime gameTime)
         {
-
-        }
+		}
 	}
 }
