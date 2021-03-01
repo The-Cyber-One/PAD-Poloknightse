@@ -40,7 +40,7 @@ namespace BaseProject
             level.GetData(colors);
 
             //Change the tile size and calculate the center
-            gridTileSize = GameEnvironment.Screen.Y / level.Height;
+            GameEnvironment.gridTileSize = GameEnvironment.Screen.Y / level.Height;
             int xOffset = GameEnvironment.Screen.X / 2 - (level.Width / 2) * gridTileSize;
             int yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
 

@@ -15,7 +15,7 @@ namespace BaseProject
         static protected ContentManager content;
         protected static Point screen;
         protected static Random random;
-        public const int gridTileSize = 16;
+        public static int gridTileSize = 16;
 
         static protected Dictionary<GameStates, GameState> gameStateDict;
         public enum GameStates
