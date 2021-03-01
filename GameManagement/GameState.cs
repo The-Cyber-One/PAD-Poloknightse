@@ -9,7 +9,7 @@ namespace BaseProject
     class GameState
     {
         public List<GameObject> gameObjectList = new List<GameObject>();
-        public void Init()
+        public virtual void Init()
         {
 
         }

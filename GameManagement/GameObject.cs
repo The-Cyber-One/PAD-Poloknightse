@@ -10,7 +10,7 @@ namespace BaseProject
 		protected Texture2D texture;
 		protected Vector2 position;
 		protected Vector2 velocity;
-		private Rectangle positionSize;
+		protected Rectangle positionSize;
 
 		public GameObject(String assetName)
 		{
@@ -25,7 +25,12 @@ namespace BaseProject
 
 		public virtual void Update(GameTime gameTime)
         {
-			positionSize = new Rectangle((int)position.X * GameEnvironment.gridTileSize, (int)position.Y * GameEnvironment.gridTileSize, GameEnvironment.gridTileSize, GameEnvironment.gridTileSize);
+			positionSize = new Rectangle((int)position.X * GameEnvironment.gridTileSize, (int)position.Y * GameEnvironment.gridTileSize, 
+				GameEnvironment.gridTileSize, GameEnvironment.gridTileSize);
+        }
+		public virtual void fixedUpdate(GameTime gameTime)
+        {
+
         }
 	}
 }
