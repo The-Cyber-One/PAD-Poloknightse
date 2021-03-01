@@ -22,8 +22,17 @@ namespace BaseProject
 		}
 
 		/// <summary>
+		/// HandleInput will be called every frame before <see cref="Update(GameTime)"/>
+		/// </summary>
+		/// <param name="inputHelper">Will help with getting input data</param>
+		public virtual void HandleInput(InputHelper inputHelper)
+        {
+        }
+
+		/// <summary>
 		/// Update will be called every frame
 		/// </summary>
+		/// <param name="gameTime">Stores game time data</param>
 		public virtual void Update(GameTime gameTime)
         {
 			positionSize = new Rectangle(
@@ -36,6 +45,7 @@ namespace BaseProject
 		/// <summary>
 		/// FixedUpdate will be called on a set time frame
 		/// </summary>
+		/// <param name="gameTime">Stores game time data</param>
 		public virtual void FixedUpdate(GameTime gameTime)
         {
 		}

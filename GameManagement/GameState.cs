@@ -17,6 +17,14 @@ namespace BaseProject
 
         }
 
+        public virtual void HandleInput(InputHelper inputHelper)
+        {
+            foreach (GameObject gameObject in gameObjectList)
+            {
+                gameObject.HandleInput(inputHelper);
+            }
+        }
+
         public virtual void Update(GameTime gameTime)
         {
             foreach (GameObject gameObject in gameObjectList)

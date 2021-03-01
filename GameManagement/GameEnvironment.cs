@@ -13,6 +13,7 @@ namespace BaseProject
         protected GraphicsDeviceManager graphics;
         protected SpriteBatch spriteBatch;
         static protected ContentManager content;
+        protected InputHelper inputHelper;
         protected static Point screen;
         protected static Random random;
         public static int gridTileSize = 16;
@@ -48,6 +49,15 @@ namespace BaseProject
             get { return content; }
         }
 
+        public bool FullScreen
+        {
+            get { return graphics.IsFullScreen; }
+            set
+            {
+                ApplyResolutionSettings(value);
+            }
+        }
+
         static public void SwitchTo(GameStates gameStateName)
         {
             if (gameStateDict.ContainsKey(gameStateName))
@@ -64,6 +74,7 @@ namespace BaseProject
             content = Content;
             gameStateDict = new Dictionary<GameStates, GameState>();
             random = new Random();
+            inputHelper = new InputHelper();
         }
 
         /// <summary>
@@ -95,6 +106,20 @@ namespace BaseProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
+        protected void HandleInput()
+        {
+            inputHelper.Update();
+            if (inputHelper.KeyPressed(Keys.Escape))
+            {
+                Exit();
+            }
+            if (inputHelper.KeyPressed(Keys.F5))
+            {
+                FullScreen = !FullScreen;
+            }
+            currentGameState.HandleInput(inputHelper);
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             graphics.GraphicsDevice.Clear(Color.Black);
@@ -110,6 +135,7 @@ namespace BaseProject
 
         protected override void Update(GameTime gameTime)
         {
+            HandleInput();
             if (currentGameState != null)
             {
                 currentGameState.Update(gameTime);

@@ -13,14 +13,11 @@ namespace BaseProject
     {
         public int movementDirection;
         private List<GameObject> followers = new List<GameObject>();
-        private MouseState lastMouseState;
-        private MouseState currentMouseState;
-        private bool clickOccurred;
+        private bool addFollower;
 
         public Player() : base("Player/Onderbroek_ridder")
         {
-            velocity.X = 1;
-            velocity.Y = 1;
+            velocity = Vector2.Zero;
             movementDirection = 0;
             gridPosition = Vector2.One;
         }
@@ -29,40 +26,23 @@ namespace BaseProject
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            KeyHandling();
 
             foreach (GameObject follower in followers)
             {
                 follower.Update(gameTime);
             }
-
-            // The active state from the last frame is now old
-            lastMouseState = currentMouseState;
-
-            // Get the mouse state relevant for this frame
-            currentMouseState = Mouse.GetState();
-
-            // Recognize a single click of the left mouse button
-            if (lastMouseState.LeftButton == ButtonState.Released && currentMouseState.LeftButton == ButtonState.Pressed)
-            {
-                // React to the click
-                // ...
-                clickOccurred = true;
-
-            }
         }
         public override void FixedUpdate(GameTime gameTime)
         {
             //Add follower
-            if (clickOccurred)
+            if (addFollower)
             {
                 GameObject newFollower = new GameObject("Player/Helm_ridder");
                 followers.Add(newFollower);
                 newFollower.gridPosition = gridPosition;
                 newFollower.Update(gameTime);
 
-                Debug.WriteLine(followers.Count);
-                clickOccurred = false;
+                addFollower = false;
             }
 
             //Shift all the elements of the followers array 1 spot
@@ -86,34 +66,36 @@ namespace BaseProject
             }
         }
 
-        /// <summary>
-        /// Decide where the player is going to move according to the keys pressed
-        /// </summary>
-        public void KeyHandling()
+        public override void HandleInput(InputHelper inputHelper)
         {
             //Change the movement direction
-            if (GameEnvironment.KeyboardState.IsKeyDown(Keys.D))
+            if (inputHelper.KeyPressed(Keys.D))
             {
                 velocity = Vector2.Zero;
                 velocity.X = 1;
             }
-            else if (GameEnvironment.KeyboardState.IsKeyDown(Keys.A))
+            else if (inputHelper.KeyPressed(Keys.A))
             {
                 velocity = Vector2.Zero;
                 velocity.X = -1;
             }
-            else if (GameEnvironment.KeyboardState.IsKeyDown(Keys.W))
+            else if (inputHelper.KeyPressed(Keys.W))
             {
                 velocity = Vector2.Zero;
                 velocity.Y = -1;
             }
-            else if (GameEnvironment.KeyboardState.IsKeyDown(Keys.S))
+            else if (inputHelper.KeyPressed(Keys.S))
             {
                 velocity = Vector2.Zero;
                 velocity.Y = 1;
             }
 
             CollisionDetection.CheckWallCollision(this);
+
+            if (inputHelper.MouseLeftButtonPressed())
+            {
+                addFollower = true;
+            }
         }
     }
 }
