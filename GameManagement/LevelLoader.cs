@@ -9,31 +9,14 @@ namespace BaseProject
 {
     class LevelLoader
     {
-        private const int gridSize = GameEnvironment.gridTileSize;
-        private static Dictionary<Color, Texture2D> colorTexturePairs = new Dictionary<Color, Texture2D>();
-
+        private static int gridTileSize = GameEnvironment.gridTileSize;
         private static Tile[,] tiles;
-        class Tile
+        
+        private static Dictionary<Color, Tuple<Texture2D, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Texture2D, Tile.TileType>>()
         {
-            public Texture2D tileTexture;
-            public Rectangle rectangle;
-
-            public Tile(Texture2D tileTexture, Rectangle rectangle)
-            {
-                this.tileTexture = tileTexture;
-                this.rectangle = rectangle;
-            }
-        }
-
-
-        public static void Initialize()
-        {
-            Texture2D wallTile = GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell20");
-            Texture2D groundTile = GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell03");
-
-            colorTexturePairs.Add(Color.Black, wallTile);
-            colorTexturePairs.Add(Color.White, groundTile);
-        }
+            { Color.Black, new Tuple<Texture2D, Tile.TileType>(GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell20"), Tile.TileType.WALL) },
+            { Color.White, new Tuple<Texture2D, Tile.TileType>(GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell03"), Tile.TileType.GROUND) }
+        };
 
         /// <summary>
         /// Load the level from a bmp file.
@@ -46,6 +29,11 @@ namespace BaseProject
             Color[] colors = new Color[level.Width * level.Height];
             level.GetData(colors);
 
+            //Change the tile size and calculate the center
+            gridTileSize = GameEnvironment.Screen.Y / level.Height;
+            int xOffset = GameEnvironment.Screen.X / 2 - (level.Width / 2) * gridTileSize;
+            int yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
+
             //Here we check the colors of the image and assign the correct tileTexture to them.
             tiles = new Tile[level.Width, level.Height];
 
@@ -54,9 +42,9 @@ namespace BaseProject
                 Color pixel = colors[i];
                 int x = i % level.Width;
                 int y = i / level.Height;
-                Rectangle rectangle = new Rectangle(x * gridSize, y * gridSize, gridSize, gridSize);
+                Rectangle rectangle = new Rectangle(x * gridTileSize + xOffset, y * gridTileSize + yOffset, gridTileSize, gridTileSize);
 
-                tiles[x, y] = new Tile(colorTexturePairs[pixel], rectangle);
+                tiles[x, y] = new Tile(colorTilePairs[pixel], rectangle);
             }
         }
 
@@ -64,7 +52,7 @@ namespace BaseProject
         {
             foreach (Tile tile in tiles)
             {
-                spriteBatch.Draw(tile.tileTexture, tile.rectangle, Color.White);
+                tile.Draw(spriteBatch);
             }
         }
     }
