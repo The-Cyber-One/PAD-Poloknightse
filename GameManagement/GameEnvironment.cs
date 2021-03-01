@@ -16,6 +16,7 @@ namespace BaseProject
         protected static Point screen;
         protected static Random random;
         public static int gridTileSize = 16;
+        public static Point startGridPoint = new Point();
 
         static protected Dictionary<GameStates, GameState> gameStateDict;
         public enum GameStates
@@ -96,6 +97,7 @@ namespace BaseProject
 
         protected override void Draw(GameTime gameTime)
         {
+            graphics.GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
 
             if (currentGameState != null)

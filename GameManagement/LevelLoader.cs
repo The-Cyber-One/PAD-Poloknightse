@@ -43,6 +43,7 @@ namespace BaseProject
             GameEnvironment.gridTileSize = GameEnvironment.Screen.Y / level.Height;
             int xOffset = GameEnvironment.Screen.X / 2 - (level.Width / 2) * gridTileSize;
             int yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
+            GameEnvironment.startGridPoint = new Point(xOffset, yOffset);
 
             //Here we check the colors of the image and assign the correct tileTexture to them.
             tiles = new Tile[level.Width, level.Height];

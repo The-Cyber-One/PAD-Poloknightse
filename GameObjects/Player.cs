@@ -11,12 +11,15 @@ namespace BaseProject
 {
     class Player : GameObject
     {
-        int movementDirection;
-        
+        private int movementDirection;
         public int totalFollowers;
-        List<Rectangle> followers = new List<Rectangle>();
-        bool addFollower;
-        public Player() : base("Player/Onderbroek_Ridder")
+        private List<GameObject> followers = new List<GameObject>();
+        private bool addFollower;
+        private MouseState lastMouseState;
+        private MouseState currentMouseState;
+        private bool clickOccurred;
+
+        public Player() : base("Player/Onderbroek_ridder")
         {
             velocity.X = 1;
             velocity.Y = 1;
@@ -24,15 +27,12 @@ namespace BaseProject
             totalFollowers = 0;
             addFollower = false;
         }
-        int test = 0;
 
-        MouseState lastMouseState;
-        MouseState currentMouseState;
-        bool clickOccurred;
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            keyHandling();
+            KeyHandling();
             // The active state from the last frame is now old
             lastMouseState = currentMouseState;
 
@@ -51,26 +51,24 @@ namespace BaseProject
         public override void FixedUpdate(GameTime gameTime)
         {
             Move();
+
             //Shift all the elements of the followers array 1 spot
-            if (totalFollowers == followers.Count)
+            for (int i = 0; i < followers.Count - 1; i++)
             {
-                for (int i = 0; i < followers.Count - 1; i++)
-                {
-                    followers[i] = followers[i + 1];
-                }
+                followers[i] = followers[i + 1];
             }
             if (totalFollowers > 0)
             {
-                followers[totalFollowers - 1] = new Rectangle((int)position.X * GameEnvironment.gridTileSize,
-                (int)position.Y * GameEnvironment.gridTileSize, GameEnvironment.gridTileSize, GameEnvironment.gridTileSize);
+                followers[totalFollowers - 1].Position = position;
             }
             if (clickOccurred && !addFollower)
             {
                 totalFollowers++;
-                followers.Add(new Rectangle((int)position.X * GameEnvironment.gridTileSize,
-                (int)position.Y * GameEnvironment.gridTileSize, GameEnvironment.gridTileSize, GameEnvironment.gridTileSize));
+                GameObject newFollower = new GameObject("Player/Helm_ridder");
 
-                Debug.WriteLine(test++);
+                followers.Add(newFollower);
+
+                Debug.WriteLine(followers.Count);
                 clickOccurred = false;
                 addFollower = true;
             }
@@ -80,9 +78,9 @@ namespace BaseProject
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            for (int i = 0; i < followers.Count; i++)
+            foreach (GameObject follower in followers)
             {
-                spriteBatch.Draw(texture, followers[i], Color.White);
+                follower.Draw(spriteBatch);
             }
         }
 
@@ -114,7 +112,7 @@ namespace BaseProject
                 addFollower = false;
             }
         }
-        public void keyHandling()
+        public void KeyHandling()
         {
             //Change the movement direction
             if (GameEnvironment.KeyboardState.IsKeyDown(Keys.D))

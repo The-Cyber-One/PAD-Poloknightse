@@ -16,7 +16,7 @@ namespace BaseProject
             // TODO: Add your initialization logic here
             base.Initialize();
             screen = new Point(1600, 900);
-            ApplyResolutionSettings(true);
+            ApplyResolutionSettings();
             LevelLoader.LoadLevel("test");
         }
 
