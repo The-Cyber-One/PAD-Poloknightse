@@ -16,7 +16,7 @@ namespace BaseProject
             // TODO: Add your initialization logic here
             base.Initialize();
             screen = new Point(1600, 900);
-            ApplyResolutionSettings(true);
+            ApplyResolutionSettings();
             LevelLoader.LoadLevel("test");
         }
 
@@ -24,7 +24,7 @@ namespace BaseProject
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);        
             gameStateDict.Add(GameStates.START_STATE, new StartState());
-            //gameStateDict.Add(GameStates.PLAYING_STATE, new PlayingState());
+            gameStateDict.Add(GameStates.PLAYING_STATE, new PlayingState());
             //gameStateDict.Add(GameStates.WIN_STATE, new WinState());
             //gameStateDict.Add(GameStates.GAME_OVER_STATE, new GameOverState());
 
@@ -35,7 +35,7 @@ namespace BaseProject
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+        
             // TODO: Add your update logic here
 
             base.Update(gameTime);

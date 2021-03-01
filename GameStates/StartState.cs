@@ -8,7 +8,7 @@ namespace BaseProject
 	{
 		public StartState()
 		{
-			gameObjectList.Add(new Player());
+		
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
@@ -19,6 +19,10 @@ namespace BaseProject
 		public override void Update(GameTime gameTime)
         {
 			base.Update(gameTime);
-        }
+			if (GameEnvironment.KeyboardState.GetPressedKeyCount() >= 1)
+			{
+				GameEnvironment.SwitchTo(GameEnvironment.GameStates.PLAYING_STATE);
+			}
+		}
 	}
 }
