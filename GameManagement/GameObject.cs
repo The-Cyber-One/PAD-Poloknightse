@@ -12,7 +12,7 @@ namespace BaseProject
 		public Vector2 velocity;
 		protected Rectangle positionSize;
 
-		public GameObject(String assetName = null)
+		public GameObject(string assetName = null)
 		{
 			if (assetName != null)
 			{
@@ -21,11 +21,9 @@ namespace BaseProject
 			}
 		}
 
-		public virtual void Draw(SpriteBatch spriteBatch)
-		{
-			spriteBatch.Draw(texture, positionSize, Color.White);
-		}
-
+		/// <summary>
+		/// Update will be called every frame
+		/// </summary>
 		public virtual void Update(GameTime gameTime)
         {
 			positionSize = new Rectangle(
@@ -34,8 +32,17 @@ namespace BaseProject
 				GameEnvironment.gridTileSize, 
 				GameEnvironment.gridTileSize);
         }
+
+		/// <summary>
+		/// FixedUpdate will be called on a set time frame
+		/// </summary>
 		public virtual void FixedUpdate(GameTime gameTime)
         {
+		}
+
+		public virtual void Draw(SpriteBatch spriteBatch)
+		{
+			spriteBatch.Draw(texture, positionSize, Color.White);
 		}
 	}
 }

@@ -12,9 +12,7 @@ namespace BaseProject
     class Player : GameObject
     {
         public int movementDirection;
-        public int totalFollowers;
         private List<GameObject> followers = new List<GameObject>();
-        private bool addFollower;
         private MouseState lastMouseState;
         private MouseState currentMouseState;
         private bool clickOccurred;
@@ -24,8 +22,6 @@ namespace BaseProject
             velocity.X = 1;
             velocity.Y = 1;
             movementDirection = 0;
-            totalFollowers = 0;
-            addFollower = false;
             gridPosition = Vector2.One;
         }
 
@@ -34,6 +30,12 @@ namespace BaseProject
         {
             base.Update(gameTime);
             KeyHandling();
+
+            foreach (GameObject follower in followers)
+            {
+                follower.Update(gameTime);
+            }
+
             // The active state from the last frame is now old
             lastMouseState = currentMouseState;
 
@@ -51,29 +53,28 @@ namespace BaseProject
         }
         public override void FixedUpdate(GameTime gameTime)
         {
-            Move();
-
-            //Shift all the elements of the followers array 1 spot
-            for (int i = 0; i < followers.Count - 1; i++)
+            //Add follower
+            if (clickOccurred)
             {
-                followers[i].gridPosition = followers[i + 1].gridPosition;
-            }
-            if (followers.Count > 0)
-            {
-                followers[totalFollowers - 1].gridPosition = gridPosition;
-            }
-            if (clickOccurred && !addFollower)
-            {
-                totalFollowers++;
                 GameObject newFollower = new GameObject("Player/Helm_ridder");
                 followers.Add(newFollower);
                 newFollower.gridPosition = gridPosition;
+                newFollower.Update(gameTime);
 
                 Debug.WriteLine(followers.Count);
                 clickOccurred = false;
-                addFollower = true;
             }
 
+            //Shift all the elements of the followers array 1 spot
+            for (int i = followers.Count - 1; i > 0; i--)
+            {
+                followers[i].gridPosition = followers[i - 1].gridPosition;
+            }
+            if (followers.Count > 0)
+                followers[0].gridPosition = gridPosition;
+
+            //Move player
+            gridPosition += velocity;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -88,12 +89,6 @@ namespace BaseProject
         /// <summary>
         /// Decide where the player is going to move according to the keys pressed
         /// </summary>
-        public void Move()
-        {
-            /* Depending on the movement direction, let the player move a certain direction. 
-                These two are seperate if statements in order te create movement where the player keeps moving, even when he releases the button */
-            gridPosition += velocity;
-        }
         public void KeyHandling()
         {
             //Change the movement direction

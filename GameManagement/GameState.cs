@@ -34,6 +34,11 @@ namespace BaseProject
             updateTimer += gameTime.ElapsedGameTime.TotalSeconds;
         }
 
+        public virtual void FixedUpdate(GameTime gameTime)
+        {
+
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             foreach (GameObject gameObject in gameObjectList)

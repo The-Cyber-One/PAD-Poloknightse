@@ -111,7 +111,10 @@ namespace BaseProject
         protected override void Update(GameTime gameTime)
         {
             if (currentGameState != null)
+            {
                 currentGameState.Update(gameTime);
+                currentGameState.FixedUpdate(gameTime);
+            }
 
             base.Update(gameTime);
         }
