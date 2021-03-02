@@ -11,14 +11,12 @@ namespace BaseProject
 {
     class Player : GameObject
     {
-        public int movementDirection;
         private List<GameObject> followers = new List<GameObject>();
         private bool addFollower;
 
         public Player() : base("Player/Onderbroek_ridder")
         {
             velocity = Vector2.Zero;
-            movementDirection = 0;
             gridPosition = Vector2.One;
         }
 
@@ -34,24 +32,27 @@ namespace BaseProject
         }
         public override void FixedUpdate(GameTime gameTime)
         {
-            //Add follower
-            if (addFollower)
+            if (velocity != Vector2.Zero)
             {
-                GameObject newFollower = new GameObject("Player/Helm_ridder");
-                followers.Add(newFollower);
-                newFollower.gridPosition = gridPosition;
-                newFollower.Update(gameTime);
+                //Add follower
+                if (addFollower)
+                {
+                    GameObject newFollower = new GameObject("Player/Helm_ridder");
+                    followers.Add(newFollower);
+                    newFollower.gridPosition = gridPosition;
+                    newFollower.Update(gameTime);
 
-                addFollower = false;
-            }
+                    addFollower = false;
+                }
 
-            //Shift all the elements of the followers array 1 spot
-            for (int i = followers.Count - 1; i > 0; i--)
-            {
-                followers[i].gridPosition = followers[i - 1].gridPosition;
+                //Shift all the elements of the followers array 1 spot
+                for (int i = followers.Count - 1; i > 0; i--)
+                {
+                    followers[i].gridPosition = followers[i - 1].gridPosition;
+                }
+                if (followers.Count > 0)
+                    followers[0].gridPosition = gridPosition;
             }
-            if (followers.Count > 0)
-                followers[0].gridPosition = gridPosition;
 
             //Move player
             gridPosition += velocity;
