@@ -14,6 +14,7 @@ namespace BaseProject
         public override void Init()
         {
             gameObjectList.Add(player);
+            gameObjectList.Add(new Coin());
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
