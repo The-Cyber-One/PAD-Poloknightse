@@ -10,6 +10,7 @@ namespace BaseProject
     class GameState
     {
         public List<GameObject> gameObjectList = new List<GameObject>();
+        public List<GameObject> gameObjectRemovedList = new List<GameObject>();
         public double updateTimer;
         public const int tickTimeLength = 1;
         public virtual void Init()

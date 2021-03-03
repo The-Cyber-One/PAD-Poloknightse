@@ -26,33 +26,49 @@ namespace BaseProject
 		/// </summary>
 		/// <param name="inputHelper">Will help with getting input data</param>
 		public virtual void HandleInput(InputHelper inputHelper)
-        {
-        }
+		{
+		}
 
 		/// <summary>
 		/// Update will be called every frame
 		/// </summary>
 		/// <param name="gameTime">Stores game time data</param>
 		public virtual void Update(GameTime gameTime)
-        {
+		{
 			positionSize = new Rectangle(
-				(int)gridPosition.X * GameEnvironment.gridTileSize + GameEnvironment.startGridPoint.X, 
-				(int)gridPosition.Y * GameEnvironment.gridTileSize + GameEnvironment.startGridPoint.Y, 
-				GameEnvironment.gridTileSize, 
+				(int)gridPosition.X * GameEnvironment.gridTileSize + GameEnvironment.startGridPoint.X,
+				(int)gridPosition.Y * GameEnvironment.gridTileSize + GameEnvironment.startGridPoint.Y,
+				GameEnvironment.gridTileSize,
 				GameEnvironment.gridTileSize);
-        }
+		}
 
 		/// <summary>
 		/// FixedUpdate will be called on a set time frame
 		/// </summary>
 		/// <param name="gameTime">Stores game time data</param>
 		public virtual void FixedUpdate(GameTime gameTime)
-        {
+		{
 		}
 
 		public virtual void Draw(SpriteBatch spriteBatch)
 		{
 			spriteBatch.Draw(texture, positionSize, Color.White);
+		}
+		// boolean to check if to objects collide
+		public bool CheckCollision(GameObject gameObject)
+		{
+			float x0 = this.gridPosition.X,
+				  y0 = this.gridPosition.Y,
+				  x1 = gameObject.gridPosition.X,
+				  y1 = gameObject.gridPosition.Y;
+			if (x0 == x1 && y0 == y1)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 }

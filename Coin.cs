@@ -9,23 +9,16 @@ namespace BaseProject
 {
     class Coin: GameObject
     {
-        public int score;
-        public Coin() : base("Coin/bronze_coin")
+        public Coin(Vector2 position) : base("Coin/bronze_coin")
         {
-
+            gridPosition = position;
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (GameEnvironment.KeyboardState.IsKeyDown(Keys.Space))
-            {
-                score++;
-                Debug.WriteLine(score);
-            }
         }
         public void Reset()
         {
-            score = 0;
         }
     }
 }
