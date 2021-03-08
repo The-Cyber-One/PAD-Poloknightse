@@ -15,6 +15,7 @@ namespace BaseProject
         {
             gameObjectList.Add(player);
             gameObjectList.Add(new Coin(new Vector2(5,5)));
+            gameObjectList.Add(new Coin(new Vector2(7, 5)));
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -26,19 +27,15 @@ namespace BaseProject
         {
             base.Update(gameTime);
             //removes coin when player is in contact
-            foreach(GameObject gameobject in gameObjectList)
+            for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
-                if(gameobject is Coin)
+                if (gameObjectList[i] is Coin)
                 {
-                    if (player.CheckCollision(gameobject))
+                    if (player.CheckCollision(gameObjectList[i]))
                     {
-                        gameObjectRemovedList.Add(gameobject);
+                        gameObjectList.Remove(gameObjectList[i]);
                     }
                 }
-            }
-            foreach(GameObject gameObject in gameObjectRemovedList)
-            {
-                gameObjectList.Remove(gameObject);
             }
         }
     }
