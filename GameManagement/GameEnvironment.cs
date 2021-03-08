@@ -18,6 +18,7 @@ namespace BaseProject
         protected static Random random;
         public static int gridTileSize = 16;
         public static Point startGridPoint = new Point();
+        static protected GameState currentGameState;
 
         static protected Dictionary<GameStates, GameState> gameStateDict;
         public enum GameStates
@@ -27,7 +28,11 @@ namespace BaseProject
             WIN_STATE,
             GAME_OVER_STATE
         }
-        static protected GameState currentGameState;
+
+        public static GameState CurrentGameState
+        {
+            get { return currentGameState; }
+        }
 
         public static KeyboardState KeyboardState
         {
@@ -99,11 +104,6 @@ namespace BaseProject
             graphics.PreferredBackBufferHeight = screen.Y;
 
             graphics.ApplyChanges();
-        }
-
-        protected override void LoadContent()
-        {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected void HandleInput()

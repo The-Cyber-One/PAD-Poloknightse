@@ -11,10 +11,10 @@ namespace BaseProject
     {
         public List<GameObject> gameObjectList = new List<GameObject>();
         public double updateTimer;
-        public const int tickTimeLength = 1;
+        public const float tickTimeLength = 0.5f;
         public virtual void Init()
         {
-
+            LevelLoader.LoadLevel("test");
         }
 
         public virtual void HandleInput(InputHelper inputHelper)

@@ -12,8 +12,9 @@ namespace BaseProject
 		public Vector2 velocity;
 		protected Rectangle positionSize;
 
-		public GameObject(string assetName = null)
+		public GameObject(Vector2 gridPosition, string assetName = null)
 		{
+			this.gridPosition = gridPosition;
 			if (assetName != null)
 			{
 				texture = GameEnvironment.ContentManager.Load<Texture2D>(assetName);

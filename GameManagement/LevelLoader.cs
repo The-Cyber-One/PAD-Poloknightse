@@ -12,24 +12,33 @@ namespace BaseProject
         private static int gridTileSize = GameEnvironment.gridTileSize;
         public static Tile[,] tiles;
 
-        private static Dictionary<Color, Tuple<Texture2D, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Texture2D, Tile.TileType>>()
+        private static Dictionary<Color, Tuple<Type, string, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Type, string, Tile.TileType>>()
         {
             {
-                Color.Black,
-                new Tuple<Texture2D, Tile.TileType>(
-                    GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell20"),
-                    Tile.TileType.WALL)
+                Color.Black,                                //Color in png
+                new Tuple<Type, string, Tile.TileType>(     //
+                    typeof(Tile),                           //Class to instantiate
+                    "LevelTiles/Wall",                      //Tile texture path
+                    Tile.TileType.WALL)                     //Associated TileType
             },
             { 
                 Color.White, 
-                new Tuple<Texture2D, Tile.TileType>(
-                    GameEnvironment.ContentManager.Load<Texture2D>("LevelTiles/Cell03"), 
+                new Tuple<Type, string, Tile.TileType>(
+                    typeof(Tile),
+                    "LevelTiles/Ground",
                     Tile.TileType.GROUND) 
+            },
+            {
+                Color.Brown,
+                new Tuple<Type, string, Tile.TileType>(
+                    typeof(Coin),
+                    "LevelTiles/Ground",
+                    Tile.TileType.GROUND)
             }
         };
 
         /// <summary>
-        /// Load the level from a bmp file.
+        /// Load the level from a png file.
         /// </summary>
         /// <param name="levelName">Filename from the levels folder.</param>
         public static void LoadLevel(string levelName)
@@ -45,17 +54,29 @@ namespace BaseProject
             int yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
             GameEnvironment.startGridPoint = new Point(xOffset, yOffset);
 
-            //Here we check the colors of the image and assign the correct tileTexture to them.
+            //Here we check the colors of the image and load the correct tiles.
             tiles = new Tile[level.Width, level.Height];
 
             for (int i = 0; i < colors.Length; i++)
             {
-                Color pixel = colors[i];
+                Tuple<Type, string, Tile.TileType> tilePairs = colorTilePairs[colors[i]];
                 int x = i % level.Width;
                 int y = i / level.Height;
                 Rectangle rectangle = new Rectangle(x * gridTileSize + xOffset, y * gridTileSize + yOffset, gridTileSize, gridTileSize);
 
-                tiles[x, y] = new Tile(colorTilePairs[pixel], rectangle);
+                //Set tile
+                tiles[x, y] = new Tile(tilePairs.Item2, tilePairs.Item3, rectangle);
+                //Debug.WriteLine(tiles[x, y].tileType);
+
+                //Add extra GameObject
+                if (tilePairs.Item1 != typeof(Tile))
+                {
+                    Debug.WriteLine("Coin");
+                    Vector2 gridPosition = new Vector2(x, y);
+                    GameObject gameObject = Activator.CreateInstance(tilePairs.Item1, gridPosition) as GameObject;
+                    GameEnvironment.CurrentGameState.gameObjectList.Add(gameObject);
+                }
+                
             }
         }
 

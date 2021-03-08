@@ -21,10 +21,10 @@ namespace BaseProject
             GROUND
         }
 
-        public Tile(Tuple<Texture2D, TileType> tuple, Rectangle rectangle)
+        public Tile(string assetPath, TileType tileType, Rectangle rectangle) : base(Vector2.Zero)
         {
-            texture = tuple.Item1;
-            tileType = tuple.Item2;
+            texture = GameEnvironment.ContentManager.Load<Texture2D>(assetPath);
+            this.tileType = tileType;
             this.rectangle = rectangle;
         }
 

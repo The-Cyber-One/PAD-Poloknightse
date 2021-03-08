@@ -10,10 +10,11 @@ namespace BaseProject
     class Coin: GameObject
     {
         public int score;
-        public Coin() : base("Coin/bronze_coin")
+        public Coin(Vector2 gridPosition) : base(gridPosition, "Coin/bronze_coin")
         {
 
         }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);

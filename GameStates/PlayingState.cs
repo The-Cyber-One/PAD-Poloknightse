@@ -5,7 +5,7 @@ namespace BaseProject
 {
     class PlayingState : GameState
     {
-        Player player = new Player();
+        Player player = new Player(Vector2.One);
 
         public PlayingState()
         {
@@ -13,12 +13,12 @@ namespace BaseProject
 
         public override void Init()
         {
+            base.Init();
             gameObjectList.Add(player);
-            gameObjectList.Add(new Coin());
+            gameObjectList.Add(new Coin(Vector2.One));
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-
             LevelLoader.Draw(spriteBatch);
             base.Draw(spriteBatch);
         }

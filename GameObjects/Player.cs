@@ -14,10 +14,9 @@ namespace BaseProject
         private List<GameObject> followers = new List<GameObject>();
         private bool addFollower;
 
-        public Player() : base("Player/Onderbroek_ridder")
+        public Player(Vector2 gridPosition) : base(gridPosition, "Player/Onderbroek_ridder")
         {
             velocity = Vector2.Zero;
-            gridPosition = Vector2.One;
         }
 
 
@@ -37,9 +36,8 @@ namespace BaseProject
                 //Add follower
                 if (addFollower)
                 {
-                    GameObject newFollower = new GameObject("Player/Helm_ridder");
+                    GameObject newFollower = new GameObject(gridPosition, "Player/Helm_ridder");
                     followers.Add(newFollower);
-                    newFollower.gridPosition = gridPosition;
                     newFollower.Update(gameTime);
 
                     addFollower = false;
