@@ -21,12 +21,12 @@ namespace BaseProject
                     "LevelTiles/Wall",                      //Tile texture path
                     Tile.TileType.WALL)                     //Associated TileType
             },
-            { 
-                Color.White, 
+            {
+                Color.White,
                 new Tuple<Type, string, Tile.TileType>(
                     typeof(Tile),
                     "LevelTiles/Ground",
-                    Tile.TileType.GROUND) 
+                    Tile.TileType.GROUND)
             },
             {
                 Color.Brown,
@@ -59,6 +59,14 @@ namespace BaseProject
 
             for (int i = 0; i < colors.Length; i++)
             {
+                if (!colorTilePairs.ContainsKey(colors[i]))
+                {
+                    Debug.WriteLine("The color" + colors[i] + " is not a valid color");
+                    Debug.Indent();
+                    Debug.WriteLine("THIS WILL CAUSE ERRORS");
+                    Debug.Unindent();
+                    continue;
+                }
                 Tuple<Type, string, Tile.TileType> tilePairs = colorTilePairs[colors[i]];
                 int x = i % level.Width;
                 int y = i / level.Height;
@@ -66,17 +74,15 @@ namespace BaseProject
 
                 //Set tile
                 tiles[x, y] = new Tile(tilePairs.Item2, tilePairs.Item3, rectangle);
-                //Debug.WriteLine(tiles[x, y].tileType);
 
                 //Add extra GameObject
                 if (tilePairs.Item1 != typeof(Tile))
                 {
-                    Debug.WriteLine("Coin");
                     Vector2 gridPosition = new Vector2(x, y);
                     GameObject gameObject = Activator.CreateInstance(tilePairs.Item1, gridPosition) as GameObject;
                     GameEnvironment.CurrentGameState.gameObjectList.Add(gameObject);
                 }
-                
+
             }
         }
 
@@ -84,7 +90,8 @@ namespace BaseProject
         {
             foreach (Tile tile in tiles)
             {
-                tile.Draw(spriteBatch);
+                if (tile != null)
+                    tile.Draw(spriteBatch);
             }
         }
     }

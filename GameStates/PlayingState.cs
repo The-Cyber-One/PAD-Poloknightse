@@ -13,7 +13,7 @@ namespace BaseProject
 
         public override void Init()
         {
-            base.Init();
+            LevelLoader.LoadLevel("test");
             gameObjectList.Add(player);
             gameObjectList.Add(new Coin(Vector2.One));
         }

@@ -13,7 +13,6 @@ namespace BaseProject
 
 		public override void Draw(SpriteBatch spriteBatch)
         {
-			LevelLoader.Draw(spriteBatch);
 			base.Draw(spriteBatch);
 		}
 		public override void Update(GameTime gameTime)

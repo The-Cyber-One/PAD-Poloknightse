@@ -14,7 +14,6 @@ namespace BaseProject
         public const float tickTimeLength = 0.5f;
         public virtual void Init()
         {
-            LevelLoader.LoadLevel("test");
         }
 
         public virtual void HandleInput(InputHelper inputHelper)

@@ -7,15 +7,15 @@ namespace BaseProject
 {
     class CollisionDetection
     {
-      public static void CheckWallCollision(GameObject gameObject)
-      {
+        public static void CheckWallCollision(GameObject gameObject)
+        {
             //Check above player
-           if(gameObject.velocity.Y == -1 && LevelLoader.tiles[(int)gameObject.gridPosition.X, (int)gameObject.gridPosition.Y - 1].tileType == Tile.TileType.WALL)
+            if (gameObject.velocity.Y == -1 && LevelLoader.tiles[(int)gameObject.gridPosition.X, (int)gameObject.gridPosition.Y - 1].tileType == Tile.TileType.WALL)
             {
                 gameObject.velocity = Vector2.Zero;
             }
 
-           //check below player
+            //check below player
             if (gameObject.velocity.Y == 1 && LevelLoader.tiles[(int)gameObject.gridPosition.X, (int)gameObject.gridPosition.Y + 1].tileType == Tile.TileType.WALL)
             {
                 gameObject.velocity = Vector2.Zero;
