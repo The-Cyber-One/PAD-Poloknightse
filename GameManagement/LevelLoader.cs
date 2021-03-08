@@ -14,10 +14,11 @@ namespace BaseProject
 
         private static Dictionary<Color, Tuple<Type, string, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Type, string, Tile.TileType>>()
         {
+            //Tiles
             {
                 Color.Black,                                //Color in png
                 new Tuple<Type, string, Tile.TileType>(     //
-                    typeof(Tile),                           //Class to instantiate
+                    typeof(Tile),                           //Extra GameObject to instantiate (if it is Tile then no extra GameObject will be instantiated)
                     "LevelTiles/Wall",                      //Tile texture path
                     Tile.TileType.WALL)                     //Associated TileType
             },
@@ -28,10 +29,48 @@ namespace BaseProject
                     "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             },
+            //Pickups
             {
                 Color.Brown,
                 new Tuple<Type, string, Tile.TileType>(
                     typeof(Coin),
+                    "LevelTiles/Ground",
+                    Tile.TileType.GROUND)
+            },
+            {
+                Color.MediumPurple,
+                new Tuple<Type, string, Tile.TileType>(
+                    typeof(/*Change Tile for health pickup*/ Tile),
+                    "LevelTiles/Ground",
+                    Tile.TileType.GROUND)
+            },
+            //Player
+            {
+                Color.Blue,
+                new Tuple<Type, string, Tile.TileType>(
+                    typeof(Player),
+                    "LevelTiles/Ground",
+                    Tile.TileType.GROUND)
+            },
+            {
+                Color.CornflowerBlue,
+                new Tuple<Type, string, Tile.TileType>(
+                    typeof(/*Change Player for player body*/ Player),
+                    "LevelTiles/Ground",
+                    Tile.TileType.GROUND)
+            },
+            //Enemies
+            {
+                Color.Red,
+                new Tuple<Type, string, Tile.TileType>(
+                    typeof(/*Change Tile for shooter enemy*/ Tile),
+                    "LevelTiles/Ground",
+                    Tile.TileType.GROUND)
+            },
+            {
+                Color.OrangeRed,
+                new Tuple<Type, string, Tile.TileType>(
+                    typeof(/*change Tile for walking enemy*/ Tile),
                     "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             }
