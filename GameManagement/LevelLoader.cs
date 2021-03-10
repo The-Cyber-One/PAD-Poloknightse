@@ -10,7 +10,7 @@ namespace BaseProject
     class LevelLoader
     {
         private static int gridTileSize = GameEnvironment.gridTileSize;
-        public static Tile[,] tiles;
+        public static Tile[,] grid;
 
         private static Dictionary<Color, Tuple<Type, string, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Type, string, Tile.TileType>>()
         {
@@ -55,7 +55,7 @@ namespace BaseProject
             {
                 Color.CornflowerBlue,
                 new Tuple<Type, string, Tile.TileType>(
-                    typeof(/*Change Player for player body*/ Player),
+                    typeof(PlayerFollower),
                     "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             },
@@ -94,10 +94,13 @@ namespace BaseProject
             GameEnvironment.startGridPoint = new Point(xOffset, yOffset);
 
             //Here we check the colors of the image and load the correct tiles.
-            tiles = new Tile[level.Width, level.Height];
+            grid = new Tile[level.Width, level.Height];
+            Player player = new Player(new Vector2());
+            Dictionary<Point, PlayerFollower> positionFollowerPairs = new Dictionary<Point, PlayerFollower>();
 
             for (int i = 0; i < colors.Length; i++)
             {
+                //Safety check
                 if (!colorTilePairs.ContainsKey(colors[i]))
                 {
                     Debug.WriteLine("The color" + colors[i] + " is not a valid color");
@@ -106,13 +109,17 @@ namespace BaseProject
                     Debug.Unindent();
                     continue;
                 }
+
+                //Get associated data from color
                 Tuple<Type, string, Tile.TileType> tilePairs = colorTilePairs[colors[i]];
+
+                //Get position
                 int x = i % level.Width;
                 int y = i / level.Height;
                 Rectangle rectangle = new Rectangle(x * gridTileSize + xOffset, y * gridTileSize + yOffset, gridTileSize, gridTileSize);
 
                 //Set tile
-                tiles[x, y] = new Tile(tilePairs.Item2, tilePairs.Item3, rectangle);
+                grid[x, y] = new Tile(tilePairs.Item2, tilePairs.Item3, rectangle);
 
                 //Add extra GameObject
                 if (tilePairs.Item1 != typeof(Tile))
@@ -120,14 +127,27 @@ namespace BaseProject
                     Vector2 gridPosition = new Vector2(x, y);
                     GameObject gameObject = Activator.CreateInstance(tilePairs.Item1, gridPosition) as GameObject;
                     GameEnvironment.CurrentGameState.gameObjectList.Add(gameObject);
-                }
 
+                    if (gameObject is Player)
+                    {
+                        player = gameObject as Player;
+                    }
+                    else if (gameObject is PlayerFollower)
+                    {
+                        positionFollowerPairs.Add(new Point(x, y), gameObject as PlayerFollower);
+                    }
+                }
             }
+
+            player.LoadFollowers(positionFollowerPairs);
         }
 
+        /// <summary>
+        /// Draw entire level
+        /// </summary>
         public static void Draw(SpriteBatch spriteBatch)
         {
-            foreach (Tile tile in tiles)
+            foreach (Tile tile in grid)
             {
                 if (tile != null)
                     tile.Draw(spriteBatch);
