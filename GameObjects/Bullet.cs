@@ -7,9 +7,12 @@ namespace BaseProject
 {
     class Bullet : GameObject
     {
-        public Bullet(Vector2 gridPosition) : base(gridPosition, "GameObjects/bomb")
-        {
+        const float SPEED = 1;
 
+        public Bullet(Vector2 gridPosition, Vector2 direction) : base(gridPosition, "GameObjects/bomb")
+        {
+            direction.Normalize();
+            velocity = direction * SPEED;
         }
     }
 }
