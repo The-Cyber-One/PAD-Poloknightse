@@ -12,21 +12,15 @@ namespace BaseProject
         public int score;
         public Coin(Vector2 gridPosition) : base(gridPosition, "Coin/bronze_coin")
         {
-
+            gridPosition = position;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (GameEnvironment.KeyboardState.IsKeyDown(Keys.Space))
-            {
-                score++;
-                Debug.WriteLine(score);
-            }
         }
         public void Reset()
         {
-            score = 0;
         }
     }
 }

@@ -22,6 +22,17 @@ namespace BaseProject
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            //removes coin when player is in contact
+            for (int i = gameObjectList.Count - 1; i >= 0; i--)
+            {
+                if (gameObjectList[i] is Coin)
+                {
+                    if (player.CheckCollision(gameObjectList[i]))
+                    {
+                        gameObjectList.Remove(gameObjectList[i]);
+                    }
+                }
+            }
         }
     }
 }
