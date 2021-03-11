@@ -71,7 +71,7 @@ namespace BaseProject
                 Color.OrangeRed,
                 new Tuple<Type, string, Tile.TileType>(
                     typeof(/*change Tile for walking enemy*/ Tile),
-                    "LevelTiles/Ground",
+                    "GameObjects/LevelTiles/Ground",
                     Tile.TileType.GROUND)
             }
         };

@@ -14,7 +14,7 @@ namespace BaseProject
         private List<PlayerFollower> followers = new List<PlayerFollower>();
         private bool addFollower;
 
-        public Player(Vector2 gridPosition) : base(gridPosition, "Player/Onderbroek_ridder")
+        public Player(Vector2 gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
             velocity = Vector2.Zero;
         }

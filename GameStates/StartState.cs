@@ -14,7 +14,6 @@ namespace BaseProject
         public override void Init()
         {
             base.Init();
-			gameObjectList.Add(new Bullet(Vector2.One));
         }
 
         public override void Draw(SpriteBatch spriteBatch)

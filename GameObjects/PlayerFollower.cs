@@ -7,7 +7,7 @@ namespace BaseProject
 {
     class PlayerFollower : GameObject
     {
-        public PlayerFollower(Vector2 gridPosition) : base(gridPosition, "Player/Helm_ridder")
+        public PlayerFollower(Vector2 gridPosition) : base(gridPosition, "GameObjects/Player/Helm_ridder")
         {
 
         }
