@@ -11,17 +11,24 @@ namespace BaseProject
 
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
+        public override void Init()
+        {
+            base.Init();
+			gameObjectList.Add(new Bullet(Vector2.One));
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
         {
 			base.Draw(spriteBatch);
 		}
-		public override void Update(GameTime gameTime)
-        {
-			base.Update(gameTime);
-			if (GameEnvironment.KeyboardState.GetPressedKeyCount() >= 1)
+
+        public override void HandleInput(InputHelper inputHelper)
+        {	
+			if (inputHelper.AnyKeyPressed)
 			{
 				GameEnvironment.SwitchTo(GameEnvironment.GameStates.PLAYING_STATE);
 			}
+			base.HandleInput(inputHelper);
 		}
 	}
 }
