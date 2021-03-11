@@ -5,6 +5,8 @@ namespace BaseProject
 {
     class PlayingState : GameState
     {
+        public Player player;
+
         public PlayingState()
         {
         }
@@ -22,14 +24,26 @@ namespace BaseProject
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            //removes coin when player is in contact
+            
+            //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
+                //Coin -> Player collision
                 if (gameObjectList[i] is Coin)
                 {
                     if (player.CheckCollision(gameObjectList[i]))
                     {
                         gameObjectList.Remove(gameObjectList[i]);
+                    }
+                }
+
+                //Bullet -> Player collsion
+                if (gameObjectList[i] is Bullet)
+                {
+                    if (player.CheckCollision(gameObjectList[i]))
+                    {
+                        gameObjectList.Remove(gameObjectList[i]);
+                        player.TakeDamage(gameObjectList[i].gridPosition);
                     }
                 }
             }

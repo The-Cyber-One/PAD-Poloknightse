@@ -94,6 +94,15 @@ namespace BaseProject
         }
 
         /// <summary>
+        /// Split player at <paramref name="gridPosition"/>
+        /// </summary>
+        /// <param name="gridPosition">Position to take damage at</param>
+        public void TakeDamage(Vector2 gridPosition)
+        {
+            //Code to split player in half
+        }
+
+        /// <summary>
         /// Add follower to player
         /// </summary>
         public void AddFollower(GameTime gameTime)

@@ -139,7 +139,14 @@ namespace BaseProject
                 }
             }
 
-            player.LoadFollowers(positionFollowerPairs);
+            if (player != null)
+            {
+                player.LoadFollowers(positionFollowerPairs);
+                if (GameEnvironment.CurrentGameState is PlayingState)
+                {
+                    (GameEnvironment.CurrentGameState as PlayingState).player = player;
+                }
+            }
         }
 
         /// <summary>
