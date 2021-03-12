@@ -33,5 +33,10 @@ namespace BaseProject
                 gameObject.velocity = Vector2.Zero;
             }
         }
+
+        public static bool ObjectWillHitOther(GameObject gameObjectA, GameObject gameObjectB)
+        {
+            return gameObjectA.gridPosition + gameObjectA.velocity == gameObjectB.gridPosition + gameObjectB.velocity;
+        }
     }
 }
