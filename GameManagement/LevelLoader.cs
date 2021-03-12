@@ -40,7 +40,7 @@ namespace BaseProject
             {
                 Color.MediumPurple,
                 new Tuple<Type, string, Tile.TileType>(
-                    typeof(/*Change Tile for health pickup*/ Tile),
+                    typeof(HealthPickup),
                     "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             },
