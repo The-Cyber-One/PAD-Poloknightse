@@ -13,10 +13,12 @@ namespace BaseProject
     {
         private List<PlayerFollower> followers = new List<PlayerFollower>();
         private bool addFollower;
+        private Vector2 newFollowerPosition;
 
         public Player(Vector2 gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
             velocity = Vector2.Zero;
+            newFollowerPosition = gridPosition;
         }
 
         public override void Update(GameTime gameTime)
@@ -38,6 +40,17 @@ namespace BaseProject
                 {
                     AddFollower(gameTime);
                     addFollower = false;
+                }
+
+                //Update position of posible new follower
+                if (followers.Count > 0)
+                {
+
+                    newFollowerPosition = followers[followers.Count - 1].gridPosition;
+                }
+                else
+                {
+                    newFollowerPosition = gridPosition;
                 }
 
                 //Shift all the elements of the followers array 1 spot
@@ -125,7 +138,7 @@ namespace BaseProject
         /// </summary>
         public void AddFollower(GameTime gameTime)
         {
-            PlayerFollower newFollower = new PlayerFollower(gridPosition);
+            PlayerFollower newFollower = new PlayerFollower(newFollowerPosition);
             followers.Add(newFollower);
             newFollower.Update(gameTime);
         }

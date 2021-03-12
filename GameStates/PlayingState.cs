@@ -45,6 +45,7 @@ namespace BaseProject
                     if (player.CheckCollision(gameObjectList[i]))
                     {
                         gameObjectList.Remove(gameObjectList[i]);
+                        player.AddFollower(gameTime);
                         continue;
                     }
                 }
