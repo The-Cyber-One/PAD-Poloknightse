@@ -86,12 +86,30 @@ namespace BaseProject
             }
 
             CollisionDetection.CheckWallCollision(this);
+            CheckPlayerCollsion();
 
             if (inputHelper.MouseLeftButtonPressed())
             {
                 addFollower = true;
             }
         }
+
+        /// <summary>
+        /// Checks if player will hit it self and if so stop moving
+        /// </summary>
+        public void CheckPlayerCollsion()
+        {
+            bool playerHitsPlayer = false;
+            foreach (PlayerFollower playerFollower in followers)
+            {
+                if (playerFollower.gridPosition == gridPosition + velocity)
+                {
+                    playerHitsPlayer = true;
+                }
+            }
+            if (playerHitsPlayer) velocity = Vector2.Zero;
+        }
+
 
         /// <summary>
         /// Split player at <paramref name="gridPosition"/>
