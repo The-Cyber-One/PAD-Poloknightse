@@ -15,6 +15,7 @@ namespace BaseProject
         {
             LevelLoader.LoadLevel("test");
             gameObjectList.Add(new Coin(Vector2.One));
+            gameObjectList.Add(new HealthPickup(Vector2.One*2));
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -34,6 +35,17 @@ namespace BaseProject
                     if (player.CheckCollision(gameObjectList[i]))
                     {
                         gameObjectList.Remove(gameObjectList[i]);
+                        continue;
+                    }
+                }
+
+                //HealthPickup -> Player collision
+                if (gameObjectList[i] is HealthPickup)
+                {
+                    if (player.CheckCollision(gameObjectList[i]))
+                    {
+                        gameObjectList.Remove(gameObjectList[i]);
+                        continue;
                     }
                 }
 
@@ -44,8 +56,10 @@ namespace BaseProject
                     {
                         gameObjectList.Remove(gameObjectList[i]);
                         player.TakeDamage(gameObjectList[i].gridPosition);
+                        continue;
                     }
                 }
+
             }
         }
     }
