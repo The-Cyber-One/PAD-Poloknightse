@@ -63,7 +63,7 @@ namespace BaseProject
             {
                 Color.Red,
                 new Tuple<Type, string, Tile.TileType>(
-                    typeof(/*Change Tile for shooter enemy*/ Tile),
+                    typeof(EnemyShooter),
                     "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             },
