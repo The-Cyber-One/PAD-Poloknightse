@@ -37,6 +37,13 @@
 /processorParam:TextureFormat=Color
 /build:GameObjects/bronze_coin.png
 
+#begin GameObjects/GameFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:GameObjects/GameFont.spritefont
+
 #begin GameObjects/healthPickup.png
 /importer:TextureImporter
 /processor:TextureProcessor

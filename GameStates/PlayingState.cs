@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BaseProject.GameObjects;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace BaseProject
@@ -6,6 +7,7 @@ namespace BaseProject
     class PlayingState : GameState
     {
         public Player player;
+        Score score = new Score();
 
         public PlayingState()
         {
@@ -19,11 +21,13 @@ namespace BaseProject
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            score.Draw(spriteBatch);
             LevelLoader.Draw(spriteBatch);
             base.Draw(spriteBatch);
         }
         public override void Update(GameTime gameTime)
         {
+            score.text = "score: " + score.score;
             base.Update(gameTime);
             
             //Collision detection
@@ -35,6 +39,7 @@ namespace BaseProject
                     if (player.CheckCollision(gameObjectList[i]))
                     {
                         gameObjectList.Remove(gameObjectList[i]);
+                        score.score++;
                         continue;
                     }
                 }
