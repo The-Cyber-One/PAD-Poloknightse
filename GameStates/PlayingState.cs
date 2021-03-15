@@ -15,7 +15,7 @@ namespace BaseProject
 
         public override void Init()
         {
-            LevelLoader.LoadLevel("test");
+            LevelLoader.LoadLevel("Level-1");
             gameObjectList.Add(new Coin(Vector2.One));
             gameObjectList.Add(new HealthPickup(Vector2.One*2));
         }
