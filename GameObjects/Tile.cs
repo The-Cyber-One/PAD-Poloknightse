@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using System.Text;
 
-namespace BaseProject
+namespace Poloknightse
 {
     class Tile : GameObject
     {

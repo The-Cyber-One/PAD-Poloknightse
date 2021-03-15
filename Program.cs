@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BaseProject
+namespace Poloknightse
 {
     public static class Program
     {

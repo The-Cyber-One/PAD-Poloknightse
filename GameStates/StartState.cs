@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace BaseProject
+namespace Poloknightse
 {
 	class StartState : GameState
 	{
@@ -14,6 +14,7 @@ namespace BaseProject
         public override void Init()
         {
             base.Init();
+			High
         }
 
         public override void Draw(SpriteBatch spriteBatch)
