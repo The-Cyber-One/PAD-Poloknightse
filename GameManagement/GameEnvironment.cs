@@ -113,7 +113,7 @@ namespace BaseProject
             {
                 Exit();
             }
-            if (inputHelper.KeyPressed(Keys.F5))
+            if (inputHelper.KeyPressed(Keys.F11))
             {
                 FullScreen = !FullScreen;
             }
