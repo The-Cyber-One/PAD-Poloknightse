@@ -16,7 +16,6 @@ namespace BaseProject
 
         public PlayerFollower(Vector2 gridPosition) : base(gridPosition, sprites[GameEnvironment.Random.Next(sprites.Length)])
         {
-
         }
     }
 }
