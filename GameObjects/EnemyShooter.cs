@@ -11,7 +11,7 @@ namespace BaseProject
         private float countDuration = 5f; //Every  5s.
         private float currentTime = 0f;
 
-        public EnemyShooter(Vector2 gridPosition) : base(gridPosition, "GameObjects/Player/Nar")
+        public EnemyShooter(Vector2 gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
             velocity.Y = 1;
         }

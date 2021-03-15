@@ -55,8 +55,8 @@ namespace BaseProject
                 {
                     if (player.CheckCollision(gameObjectList[i]))
                     {
-                        player.TakeDamage(gameObjectList[i].gridPosition);
                         gameObjectList.Remove(gameObjectList[i]);
+                        player.TakeDamage(gameObjectList[i].gridPosition);
                         continue;
                     }
                 }
