@@ -27,9 +27,8 @@ namespace BaseProject
 
         public virtual void Update(GameTime gameTime)
         {
-			for (int i = 0; i < gameObjectList.Count; i++)
+            foreach (GameObject gameObject in gameObjectList)
             {
-                GameObject gameObject = gameObjectList[i];
                 gameObject.Update(gameTime);
                 if (updateTimer >= tickTimeLength)
                 {

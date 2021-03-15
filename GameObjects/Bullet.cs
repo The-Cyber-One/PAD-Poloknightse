@@ -14,12 +14,5 @@ namespace BaseProject
             direction.Normalize();
             velocity = direction * SPEED;
         }
-
-		public override void FixedUpdate(GameTime gameTime)
-		{
-			base.FixedUpdate(gameTime);
-
-            gridPosition += velocity;
-        }
-	}
+    }
 }
