@@ -14,7 +14,6 @@ namespace Poloknightse
         public override void Init()
         {
             base.Init();
-			High
         }
 
         public override void Draw(SpriteBatch spriteBatch)
