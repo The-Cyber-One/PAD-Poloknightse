@@ -14,7 +14,7 @@ namespace Poloknightse
         public override void Init()
         {
             base.Init();
-			HighscoreManager.SaveName(GameEnvironment.PlayerName);
+			HighscoreManager.LoadScore();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
