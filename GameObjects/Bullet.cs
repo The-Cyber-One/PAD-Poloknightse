@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace BaseProject
 {
@@ -15,11 +16,40 @@ namespace BaseProject
             velocity = direction * SPEED;
         }
 
-		public override void FixedUpdate(GameTime gameTime)
+        public bool CheckBulletOutOfBounds()
 		{
-			base.FixedUpdate(gameTime);
+            if (this.gridPosition.X >= LevelLoader.grid.GetLength(0) ||
+                this.gridPosition.X < 0 ||
+                this.gridPosition.Y >= LevelLoader.grid.GetLength(1) ||
+                this.gridPosition.Y < 0)
+			{
+                return true;
+			}
+			else
+			{
+                return false;
+			}
+		}
+
+        public override void FixedUpdate(GameTime gameTime)
+        {
+            base.FixedUpdate(gameTime);
 
             gridPosition += velocity;
+                Debug.WriteLine("balls");
+                //Delete bullet
+                for (int i = GameEnvironment.CurrentGameState.gameObjectList.Count - 1; i >= 0; i--)
+                {
+                    if (GameEnvironment.CurrentGameState.gameObjectList[i] is Bullet)
+                    {
+                    //check bounds right & left & up & down
+                    if(CheckBulletOutOfBounds())
+                    {
+                        GameEnvironment.CurrentGameState.gameObjectList.Remove(GameEnvironment.CurrentGameState.gameObjectList[i]);
+                        continue;
+                    }
+                }
+            }
         }
 	}
 }
