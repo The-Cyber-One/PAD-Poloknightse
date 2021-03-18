@@ -3,13 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BaseProject
+namespace Poloknightse
 {
     class PlayerFollower : GameObject
     {
-        public PlayerFollower(Vector2 gridPosition) : base(gridPosition, "GameObjects/Player/Helm_ridder")
+        private static string[] sprites = new string[]
         {
+            "GameObjects/Player/Helm_ridder",
+            "GameObjects/Player/Cape_ridder",
+            "GameObjects/Player/Harnas_ridder"
+        };
 
+        public PlayerFollower(Vector2 gridPosition) : base(gridPosition, sprites[GameEnvironment.Random.Next(sprites.Length)])
+        {
         }
     }
 }

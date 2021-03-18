@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BaseProject
+namespace Poloknightse
 {
     class LevelLoader
     {

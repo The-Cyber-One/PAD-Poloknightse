@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace BaseProject
+namespace Poloknightse
 {
 	class StartState : GameState
 	{

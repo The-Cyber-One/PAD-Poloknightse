@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace BaseProject
+namespace Poloknightse
 {
     class GameEnvironment : Game
     {
@@ -113,7 +113,7 @@ namespace BaseProject
             {
                 Exit();
             }
-            if (inputHelper.KeyPressed(Keys.F5))
+            if (inputHelper.KeyPressed(Keys.F11))
             {
                 FullScreen = !FullScreen;
             }
