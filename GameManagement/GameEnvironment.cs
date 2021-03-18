@@ -19,6 +19,7 @@ namespace Poloknightse
         public static int gridTileSize = 16;
         public static Point startGridPoint = new Point();
         static protected GameState currentGameState;
+        protected static string playerName = "spelernaam hiero";
 
         static protected Dictionary<GameStates, GameState> gameStateDict;
         public enum GameStates
@@ -27,6 +28,11 @@ namespace Poloknightse
             PLAYING_STATE,
             WIN_STATE,
             GAME_OVER_STATE
+        }
+
+        public static string PlayerName
+        {
+            get { return playerName; }
         }
 
         public static GameState CurrentGameState
