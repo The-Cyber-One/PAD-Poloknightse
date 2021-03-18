@@ -4,6 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using Microsoft.Xna;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Poloknightse
 {
@@ -24,22 +25,11 @@ namespace Poloknightse
         /// <summary>
         /// Gets the whole highscore table
         /// </summary>
-        public static async void LoadScore()
+        public static async Task<Table> LoadScore()
         {
             AppDb db = new AppDb();
             Table highscores = await db.GetTable("SELECT * FROM Highscore;");
-
-            Debug.WriteLine(highscores.ToString());
-            //foreach (DataRow row in highscores.Rows)
-            //{
-            //    foreach(object item in row.ItemArray)
-            //    {
-            //        Debug.Write(item.ToString() + " ");
-            //    }
-            //    Debug.WriteLine("");
-            //}
-            //string test = highscores.Rows[0].ItemArray[1].ToString();
-            //Debug.WriteLine(test);
+            return highscores;
         }
     }
 }

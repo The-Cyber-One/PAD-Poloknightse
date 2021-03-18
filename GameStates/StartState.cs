@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Diagnostics;
 
 namespace Poloknightse
 {
@@ -11,11 +12,11 @@ namespace Poloknightse
 
 		}
 
-        public override void Init()
+        public override async void Init()
         {
             base.Init();
-			//HighscoreManager.SaveScore(100, 14);
-			HighscoreManager.LoadScore();
+			
+			Debug.WriteLine((await HighscoreManager.LoadScore()).ToString());
         }
 
         public override void Draw(SpriteBatch spriteBatch)

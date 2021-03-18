@@ -63,6 +63,7 @@ public class Table
         string theString = "";
         for (int i = 0; i < RowCount; i++)
         {
+            theString += i + 1 + "] ";
             for (int j = 0; j < ColumnCount; j++)
             {
                 theString += table[i][j].ToString() + " | ";
@@ -82,13 +83,6 @@ public class AppDb : IDisposable
         Connection = new MySqlConnection("host=oege.ie.hva.nl; port=3306; user id=dekkerm51; password=nC8uQl1Muz#Oa7K#; database=zdekkerm51;");
     }
 
-
-    /**
-     * Async functions are a bit tricky. They work in conjunction with the await statement, which basically waits for an operation to finish 
-     * before continueing to the next statement. In this case, we have to wait for the connection to be establised, for the query to run and 
-     * for all the different records to be run. Once this is completed, we can return from the function, with the List of achievements. 
-     * Be careful that an sync function can only return either a Task (System.Threading.Tasks) or be a void.
-     */
     /// <summary>
     /// Get a table from the database with a SELECT statement
     /// </summary>
@@ -100,10 +94,11 @@ public class AppDb : IDisposable
         await Connection.OpenAsync();
 
         using MySqlCommand command = new MySqlCommand(SQLCode, Connection);
+        
         //Wait for the query to run...
         using MySqlDataReader reader = await command.ExecuteReaderAsync();
 
-        //Create an empty table that will hold our achievements.
+        //Create an empty table that will hold our data.
         Table table = new Table(reader.GetColumnSchema().Count);
 
         while (await reader.ReadAsync())
@@ -161,6 +156,8 @@ public class AppDb : IDisposable
 
         //Check if player name exists
         using MySqlCommand command = new MySqlCommand($"SELECT playerName FROM Player WHERE playerName = '{playerName}';", Connection);
+        
+        //Wait for teh query...
         MySqlDataReader reader = await command.ExecuteReaderAsync();
 
         bool succes = reader.HasRows;
