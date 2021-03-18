@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using System.Data;
+using System.Diagnostics;
 
 public class Highscore
 {
@@ -25,6 +26,53 @@ public class Highscore
     }
 }
 
+public class Table
+{
+    List<List<object>> table;
+    int columnCount;
+
+    /// <summary>
+    /// Constructor for a Table
+    /// </summary>
+    /// <param name="columnsCount">Amount of columns in the table</param>
+    public Table(int columnsCount)
+    {
+        this.columnCount = columnsCount;
+        table = new List<List<object>>();
+    }
+
+    public int ColumnCount { get { return columnCount; } }
+    public int RowCount { get { return table.Count; } }
+
+    public List<object> GetRow(int index)
+    {
+        return table[index];
+    }
+
+    public void AddRow(List<object> newRow)
+    {
+        table.Add(new List<object>(ColumnCount));
+        for (int i = 0; i < newRow.Count; i++)
+        {
+            table[RowCount - 1].Add(newRow[i]);
+        }
+    }
+
+    public override string ToString()
+    {
+        string theString = "";
+        for (int i = 0; i < RowCount; i++)
+        {
+            for (int j = 0; j < ColumnCount; j++)
+            {
+                theString += table[i][j].ToString() + " | ";
+            }
+            theString += "\n";
+        }
+        return theString;
+    }
+}
+
 public class AppDb : IDisposable
 {
     private readonly MySqlConnection Connection;
@@ -34,40 +82,47 @@ public class AppDb : IDisposable
         Connection = new MySqlConnection("host=oege.ie.hva.nl; port=3306; user id=dekkerm51; password=nC8uQl1Muz#Oa7K#; database=zdekkerm51;");
     }
 
+
     /**
      * Async functions are a bit tricky. They work in conjunction with the await statement, which basically waits for an operation to finish 
      * before continueing to the next statement. In this case, we have to wait for the connection to be establised, for the query to run and 
      * for all the different records to be run. Once this is completed, we can return from the function, with the List of achievements. 
      * Be careful that an sync function can only return either a Task (System.Threading.Tasks) or be a void.
      */
-    public async Task<List<Highscore>> GetHighscore()
+    /// <summary>
+    /// Get a table from the database with a SELECT statement
+    /// </summary>
+    /// <param name="SQLCode">SQL SELECT statement</param>
+    /// <returns>SQL statement result</returns>
+    public async Task<Table> GetTable(string SQLCode)
     {
         //Wait for the connection to open...
         await Connection.OpenAsync();
 
-        using MySqlCommand command = new MySqlCommand("SELECT * FROM Highscore;", Connection);
+        using MySqlCommand command = new MySqlCommand(SQLCode, Connection);
         //Wait for the query to run...
         using MySqlDataReader reader = await command.ExecuteReaderAsync();
 
-        //Create an empty achievements list that will hold our achievements.
-        List<Highscore> achievements = new List<Highscore>();
+        //Create an empty table that will hold our achievements.
+        Table table = new Table(reader.GetColumnSchema().Count);
+
         while (await reader.ReadAsync())
         {
-            //get the fields based on the columnnames.
-            string playerName = reader.GetString("playerName");
-            int score = reader.GetInt32("score");
-            int level = reader.GetInt32("level");
-            DateTime dateTime = reader.GetDateTime("dateTime");
+            //get the fields based on the column index
+            List<object> row = new List<object>();
+            for (int i = 0; i < reader.GetColumnSchema().Count; i++)
+            {
+                row.Add(reader.GetFieldValue<object>(i));
+            }
 
-            //Add achievement to the list.
-            achievements.Add(new Highscore { PlayerName = playerName, Score = score, Level = level, DateTime = dateTime });
+            table.AddRow(row);
         }
 
         //Close the connection.
         Dispose();
 
-        //Return the now full list.
-        return achievements;
+        //Return the table
+        return table;
     }
 
     /// <summary>
@@ -86,7 +141,7 @@ public class AppDb : IDisposable
 
         //Insert highscore
         using MySqlCommand command = new MySqlCommand($"INSERT INTO Highscore (playerName, dateTime, score, level) value ('{highscore.PlayerName}', '{highscore.DateTime.ToString("yyyy-MM-dd HH:mm:ss")}', {highscore.Score}, {highscore.Level});", Connection);
-        
+
         //Wait for query...
         await command.ExecuteReaderAsync();
 
@@ -126,7 +181,7 @@ public class AppDb : IDisposable
     {
         //Wait for the connection to open...
         await Connection.OpenAsync();
-        
+
         //Insert new player
         using MySqlCommand command = new MySqlCommand($"INSERT INTO Player (playerName) VALUE ('{playerName}');", Connection);
 

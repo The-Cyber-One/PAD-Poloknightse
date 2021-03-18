@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using Microsoft.Xna;
+using System.Data;
 
 namespace Poloknightse
 {
@@ -26,11 +27,19 @@ namespace Poloknightse
         public static async void LoadScore()
         {
             AppDb db = new AppDb();
-            List<Highscore> highscores = await db.GetHighscore();
-            foreach (Highscore highscore in highscores)
-            {
-                Debug.WriteLine(highscore);
-            }
+            Table highscores = await db.GetTable("SELECT * FROM Highscore;");
+
+            Debug.WriteLine(highscores.ToString());
+            //foreach (DataRow row in highscores.Rows)
+            //{
+            //    foreach(object item in row.ItemArray)
+            //    {
+            //        Debug.Write(item.ToString() + " ");
+            //    }
+            //    Debug.WriteLine("");
+            //}
+            //string test = highscores.Rows[0].ItemArray[1].ToString();
+            //Debug.WriteLine(test);
         }
     }
 }
