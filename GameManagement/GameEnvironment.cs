@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace BaseProject
+namespace Poloknightse
 {
     class GameEnvironment : Game
     {
@@ -19,6 +19,7 @@ namespace BaseProject
         public static int gridTileSize = 16;
         public static Point startGridPoint = new Point();
         static protected GameState currentGameState;
+        protected static string playerName = "spelernaam hiero";
 
         static protected Dictionary<GameStates, GameState> gameStateDict;
         public enum GameStates
@@ -27,6 +28,11 @@ namespace BaseProject
             PLAYING_STATE,
             WIN_STATE,
             GAME_OVER_STATE
+        }
+
+        public static string PlayerName
+        {
+            get { return playerName; }
         }
 
         public static GameState CurrentGameState
@@ -113,7 +119,7 @@ namespace BaseProject
             {
                 Exit();
             }
-            if (inputHelper.KeyPressed(Keys.F5))
+            if (inputHelper.KeyPressed(Keys.F11))
             {
                 FullScreen = !FullScreen;
             }

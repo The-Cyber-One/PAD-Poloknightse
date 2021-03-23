@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Diagnostics;
 
-namespace BaseProject
+namespace Poloknightse
 {
 	class StartState : GameState
 	{
@@ -11,17 +12,25 @@ namespace BaseProject
 
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
+        public override async void Init()
+        {
+            base.Init();
+			
+			Debug.WriteLine((await HighscoreManager.LoadScore()).ToString());
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
         {
 			base.Draw(spriteBatch);
 		}
-		public override void Update(GameTime gameTime)
-        {
-			base.Update(gameTime);
-			if (GameEnvironment.KeyboardState.GetPressedKeyCount() >= 1)
+
+        public override void HandleInput(InputHelper inputHelper)
+        {	
+			if (inputHelper.AnyKeyPressed)
 			{
 				GameEnvironment.SwitchTo(GameEnvironment.GameStates.PLAYING_STATE);
 			}
+			base.HandleInput(inputHelper);
 		}
 	}
 }

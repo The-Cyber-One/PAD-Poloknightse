@@ -7,16 +7,18 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace BaseProject
+namespace Poloknightse
 {
     class Player : GameObject
     {
         private List<PlayerFollower> followers = new List<PlayerFollower>();
         private bool addFollower;
+        private Vector2 newFollowerPosition;
 
-        public Player(Vector2 gridPosition) : base(gridPosition, "Player/Onderbroek_ridder")
+        public Player(Vector2 gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
             velocity = Vector2.Zero;
+            newFollowerPosition = gridPosition;
         }
 
         public override void Update(GameTime gameTime)
@@ -38,6 +40,17 @@ namespace BaseProject
                 {
                     AddFollower(gameTime);
                     addFollower = false;
+                }
+
+                //Update position of posible new follower
+                if (followers.Count > 0)
+                {
+
+                    newFollowerPosition = followers[followers.Count - 1].gridPosition;
+                }
+                else
+                {
+                    newFollowerPosition = gridPosition;
                 }
 
                 //Shift all the elements of the followers array 1 spot
@@ -86,6 +99,7 @@ namespace BaseProject
             }
 
             CollisionDetection.CheckWallCollision(this);
+            CheckPlayerCollsion();
 
             if (inputHelper.MouseLeftButtonPressed())
             {
@@ -94,11 +108,37 @@ namespace BaseProject
         }
 
         /// <summary>
+        /// Checks if player will hit it self and if so stop moving
+        /// </summary>
+        public void CheckPlayerCollsion()
+        {
+            bool playerHitsPlayer = false;
+            foreach (PlayerFollower playerFollower in followers)
+            {
+                if (playerFollower.gridPosition == gridPosition + velocity)
+                {
+                    playerHitsPlayer = true;
+                }
+            }
+            if (playerHitsPlayer) velocity = Vector2.Zero;
+        }
+
+
+        /// <summary>
+        /// Split player at <paramref name="gridPosition"/>
+        /// </summary>
+        /// <param name="gridPosition">Position to take damage at</param>
+        public void TakeDamage(Vector2 gridPosition)
+        {
+            //Code to split player in half
+        }
+
+        /// <summary>
         /// Add follower to player
         /// </summary>
         public void AddFollower(GameTime gameTime)
         {
-            PlayerFollower newFollower = new PlayerFollower(gridPosition);
+            PlayerFollower newFollower = new PlayerFollower(newFollowerPosition);
             followers.Add(newFollower);
             newFollower.Update(gameTime);
         }

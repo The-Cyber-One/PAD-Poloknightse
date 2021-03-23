@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 
-namespace BaseProject
+namespace Poloknightse
 {
     class GameState
     {
         public List<GameObject> gameObjectList = new List<GameObject>();
+        public List<GameObject> gameObjectRemovedList = new List<GameObject>();
         public double updateTimer;
         public const float tickTimeLength = 0.5f;
         public virtual void Init()
@@ -26,8 +27,9 @@ namespace BaseProject
 
         public virtual void Update(GameTime gameTime)
         {
-            foreach (GameObject gameObject in gameObjectList)
+			for (int i = 0; i < gameObjectList.Count; i++)
             {
+                GameObject gameObject = gameObjectList[i];
                 gameObject.Update(gameTime);
                 if (updateTimer >= tickTimeLength)
                 {

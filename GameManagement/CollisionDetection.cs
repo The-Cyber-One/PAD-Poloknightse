@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace BaseProject
+namespace Poloknightse
 {
     class CollisionDetection
     {
@@ -32,6 +32,11 @@ namespace BaseProject
             {
                 gameObject.velocity = Vector2.Zero;
             }
+        }
+
+        public static bool ObjectWillHitOther(GameObject gameObjectA, GameObject gameObjectB)
+        {
+            return gameObjectA.gridPosition + gameObjectA.velocity == gameObjectB.gridPosition + gameObjectB.velocity;
         }
     }
 }

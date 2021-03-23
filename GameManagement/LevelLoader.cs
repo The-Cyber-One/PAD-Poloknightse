@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BaseProject
+namespace Poloknightse
 {
     class LevelLoader
     {
@@ -40,7 +40,7 @@ namespace BaseProject
             {
                 Color.MediumPurple,
                 new Tuple<Type, string, Tile.TileType>(
-                    typeof(/*Change Tile for health pickup*/ Tile),
+                    typeof(HealthPickup),
                     "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             },
@@ -63,7 +63,7 @@ namespace BaseProject
             {
                 Color.Red,
                 new Tuple<Type, string, Tile.TileType>(
-                    typeof(/*Change Tile for shooter enemy*/ Tile),
+                    typeof(EnemyShooter),
                     "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             },
@@ -71,7 +71,7 @@ namespace BaseProject
                 Color.OrangeRed,
                 new Tuple<Type, string, Tile.TileType>(
                     typeof(/*change Tile for walking enemy*/ Tile),
-                    "LevelTiles/Ground",
+                    "GameObjects/LevelTiles/Ground",
                     Tile.TileType.GROUND)
             }
         };
@@ -139,7 +139,14 @@ namespace BaseProject
                 }
             }
 
-            player.LoadFollowers(positionFollowerPairs);
+            if (player != null)
+            {
+                player.LoadFollowers(positionFollowerPairs);
+                if (GameEnvironment.CurrentGameState is PlayingState)
+                {
+                    (GameEnvironment.CurrentGameState as PlayingState).player = player;
+                }
+            }
         }
 
         /// <summary>
