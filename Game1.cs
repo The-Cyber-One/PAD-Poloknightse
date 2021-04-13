@@ -13,7 +13,6 @@ namespace Poloknightse
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             screen = new Point(1600, 900);
             ApplyResolutionSettings();
             base.Initialize();
