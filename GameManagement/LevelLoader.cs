@@ -70,8 +70,8 @@ namespace Poloknightse
             {
                 Color.OrangeRed,
                 new Tuple<Type, string, Tile.TileType>(
-                    typeof(/*change Tile for walking enemy*/ Tile),
-                    "GameObjects/LevelTiles/Ground",
+                    typeof(EnemyWalking),
+                    "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             }
         };
@@ -95,7 +95,7 @@ namespace Poloknightse
 
             //Here we check the colors of the image and load the correct tiles.
             grid = new Tile[level.Width, level.Height];
-            Player player = new Player(new Vector2());
+            Player player = new Player(new Point());
             Dictionary<Point, PlayerFollower> positionFollowerPairs = new Dictionary<Point, PlayerFollower>();
 
             for (int i = 0; i < colors.Length; i++)
@@ -124,7 +124,7 @@ namespace Poloknightse
                 //Add extra GameObject
                 if (tilePairs.Item1 != typeof(Tile))
                 {
-                    Vector2 gridPosition = new Vector2(x, y);
+                    Point gridPosition = new Point(x, y);
                     GameObject gameObject = Activator.CreateInstance(tilePairs.Item1, gridPosition) as GameObject;
                     GameEnvironment.CurrentGameState.gameObjectList.Add(gameObject);
 

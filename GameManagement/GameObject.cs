@@ -8,11 +8,11 @@ namespace Poloknightse
 	public class GameObject
 	{
 		protected Texture2D texture;
-		public Vector2 gridPosition;
+		public Point gridPosition;
 		public Vector2 velocity;
 		protected Rectangle positionSize;
 
-		public GameObject(Vector2 gridPosition, string assetName = null)
+		public GameObject(Point gridPosition, string assetName = null)
 		{
 			this.gridPosition = gridPosition;
 			if (assetName != null)

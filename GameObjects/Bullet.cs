@@ -9,7 +9,7 @@ namespace Poloknightse
     {
         const float SPEED = 1;
 
-        public Bullet(Vector2 gridPosition, Vector2 direction) : base(gridPosition, "GameObjects/bomb")
+        public Bullet(Point gridPosition, Vector2 direction) : base(gridPosition, "GameObjects/bomb")
         {
             direction.Normalize();
             velocity = direction * SPEED;
@@ -19,7 +19,7 @@ namespace Poloknightse
 		{
 			base.FixedUpdate(gameTime);
 
-            gridPosition += velocity;
+            gridPosition += velocity.ToPoint(); ;
         }
 	}
 }

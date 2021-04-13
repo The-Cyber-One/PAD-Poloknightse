@@ -21,7 +21,7 @@ namespace Poloknightse
             GROUND
         }
 
-        public Tile(string assetPath, TileType tileType, Rectangle rectangle) : base(Vector2.Zero)
+        public Tile(string assetPath, TileType tileType, Rectangle rectangle) : base(Vector2.Zero.ToPoint())
         {
             texture = GameEnvironment.ContentManager.Load<Texture2D>(assetPath);
             this.tileType = tileType;
