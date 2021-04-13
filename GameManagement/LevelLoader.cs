@@ -70,8 +70,8 @@ namespace Poloknightse
             {
                 Color.OrangeRed,
                 new Tuple<Type, string, Tile.TileType>(
-                    typeof(/*change Tile for walking enemy*/ Tile),
-                    "GameObjects/LevelTiles/Ground",
+                    typeof(EnemyWalking),
+                    "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             }
         };
