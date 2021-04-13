@@ -13,7 +13,7 @@ namespace Poloknightse
 
         public override void Init()
         {
-            LevelLoader.LoadLevel("test");
+            LevelLoader.LoadLevel("StarterLevel");
             gameObjectList.Add(new Coin(Vector2.One.ToPoint()));
             gameObjectList.Add(new HealthPickup((Vector2.One * 2).ToPoint()));
         }
