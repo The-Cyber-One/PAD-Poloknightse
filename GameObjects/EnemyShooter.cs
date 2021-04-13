@@ -8,7 +8,7 @@ namespace Poloknightse
 {
     class EnemyShooter : GameObject
     {
-        private float countDuration = 5f; //Every  5s.
+        private float countDuration = 5f; //Every 5s.
         private float currentTime = 0f;
 
         public EnemyShooter(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
