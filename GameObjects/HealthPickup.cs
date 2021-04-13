@@ -9,7 +9,7 @@ namespace Poloknightse
 {
     class HealthPickup : GameObject
     {
-        public HealthPickup(Vector2 gridPosition) : base(gridPosition, "GameObjects/HealthPickup")
+        public HealthPickup(Point gridPosition) : base(gridPosition, "GameObjects/HealthPickup")
         {
 
         }
