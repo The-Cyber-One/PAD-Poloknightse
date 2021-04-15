@@ -18,10 +18,9 @@ namespace Poloknightse
 
         public bool CheckBulletOutOfBounds()
 		{
-            if (this.gridPosition.X >= LevelLoader.grid.GetLength(0) ||
-                this.gridPosition.X < 0 ||
-                this.gridPosition.Y >= LevelLoader.grid.GetLength(1) ||
-                this.gridPosition.Y < 0)
+            //check if the ball is out of bounds on either the x or y axis.
+            if (this.gridPosition.X >= LevelLoader.grid.GetLength(0) || this.gridPosition.X < 0 ||
+                this.gridPosition.Y >= LevelLoader.grid.GetLength(1) || this.gridPosition.Y < 0)
 			{
                 return true;
 			}
@@ -36,20 +35,14 @@ namespace Poloknightse
             base.FixedUpdate(gameTime);
 
             gridPosition += velocity;
-                Debug.WriteLine("balls");
-                //Delete bullet
-                for (int i = GameEnvironment.CurrentGameState.gameObjectList.Count - 1; i >= 0; i--)
-                {
-                    if (GameEnvironment.CurrentGameState.gameObjectList[i] is Bullet)
-                    {
-                    //check bounds right & left & up & down
-                    if(CheckBulletOutOfBounds())
-                    {
-                        GameEnvironment.CurrentGameState.gameObjectList.Remove(GameEnvironment.CurrentGameState.gameObjectList[i]);
-                        continue;
-                    }
-                }
+            
+            //remove from the gameObjectList is out of bounds.
+            if(CheckBulletOutOfBounds())
+            {
+                GameEnvironment.CurrentGameState.gameObjectList.Remove(this);
             }
         }
+            
+        
 	}
 }
