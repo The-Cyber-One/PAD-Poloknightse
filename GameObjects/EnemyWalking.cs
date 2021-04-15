@@ -142,7 +142,7 @@ namespace Poloknightse
             stateMachine.AddConnection("Patrol", "Return", StaminaCheck, ref (stateMachine.GetState("Patrol") as PatrolState).stamina);
             stateMachine.AddConnection("Chase", "Return", StaminaCheck, ref (stateMachine.GetState("Chase") as ChaseState).stamina);
             stateMachine.AddConnection("Return", "Patrol", StaminaCheck, ref (stateMachine.GetState("Return") as ReturnState).stamina);
-            stateMachine.AddConnectionToAll("Crying", CanMove);
+            stateMachine.AddConnectionToAll("Crying", () => !CanMove());
 
             //Set state to Patrol
             stateMachine.SetState("Patrol");
