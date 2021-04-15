@@ -17,24 +17,13 @@ namespace Poloknightse
             connections = new Dictionary<string, Tuple<Func<object, bool>, object>>();
         }
 
-        public virtual void Start()
-        {
-            throw new NotImplementedException();
-        }
+        public virtual void Start() { }
 
-        public virtual void FixedUpdate(GameTime gameTime)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual void FixedUpdate(GameTime gameTime) { }
 
-        public virtual void Update(GameTime gameTime)
-        {
-            throw new NotImplementedException();
-        }
-        public virtual void End()
-        {
-            throw new NotImplementedException();
-        }
+        public virtual void Update(GameTime gameTime) { }
+
+        public virtual void End() { }
     }
 
 

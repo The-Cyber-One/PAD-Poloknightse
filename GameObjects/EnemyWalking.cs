@@ -33,6 +33,9 @@ namespace Poloknightse
             gameObject.gridPosition += direction;
         }
 
+        /// <summary>
+        /// Gets a random orthogonal direction
+        /// </summary>
         private Point GetRandomDirection()
         {
             if (GameEnvironment.Random.Next(2) == 0)
@@ -154,6 +157,9 @@ namespace Poloknightse
             stateMachine.FixedUpdate(gameTime);
         }
 
+        /// <summary>
+        /// Checks if enemy can walk orthogonaly to any place
+        /// </summary>
         private bool CanMove()
         {
             return LevelLoader.grid[gridPosition.X + 1, gridPosition.Y].tileType == Tile.TileType.GROUND ||
