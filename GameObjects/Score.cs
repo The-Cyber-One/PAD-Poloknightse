@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BaseProject
+namespace Poloknightse
 {
     class Score 
     {
