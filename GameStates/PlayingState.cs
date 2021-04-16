@@ -6,6 +6,7 @@ namespace Poloknightse
     class PlayingState : GameState
     {
         public Player player;
+        Score score;
 
         public PlayingState()
         {
@@ -14,11 +15,13 @@ namespace Poloknightse
         public override void Init()
         {
             LevelLoader.LoadLevel("test");
+            score = new Score();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             LevelLoader.Draw(spriteBatch);
+            score.Draw(spriteBatch);
             base.Draw(spriteBatch);
         }
 
@@ -35,6 +38,7 @@ namespace Poloknightse
                     if (player.CheckCollision(gameObjectList[i]))
                     {
                         gameObjectList.Remove(gameObjectList[i]);
+                        score.score++;
                         continue;
                     }
                 }
