@@ -73,6 +73,13 @@ namespace Poloknightse
                     typeof(EnemyWalking),
                     "LevelTiles/Ground",
                     Tile.TileType.GROUND)
+            },
+            {
+                Color.Gainsboro,
+                new Tuple<Type, string, Tile.TileType>(
+                    typeof(EnemyGhost),
+                    "LevelTiles/Wall",
+                    Tile.TileType.WALL)
             }
         };
 
