@@ -73,9 +73,11 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
+            int old = path.Length;
             path = AStar.FindPath(gameObject.gridPosition, player.GetCenter());
-            while (stamina >= path.Length) stamina--;
-
+            System.Diagnostics.Debug.WriteLine("1: " + stamina);
+            stamina += path.Length - old;
+            System.Diagnostics.Debug.WriteLine("2: " + stamina);
             stamina--;
 
             gameObject.gridPosition = path[stamina];
