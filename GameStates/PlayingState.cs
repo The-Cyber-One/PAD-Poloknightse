@@ -13,15 +13,15 @@ namespace Poloknightse
 
         public override void Init()
         {
-            LevelLoader.LoadLevel("Test");
-            gameObjectList.Add(new Coin(Vector2.One.ToPoint()));
-            gameObjectList.Add(new HealthPickup((Vector2.One * 2).ToPoint()));
+            LevelLoader.LoadLevel("test");
         }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             LevelLoader.Draw(spriteBatch);
             base.Draw(spriteBatch);
         }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);

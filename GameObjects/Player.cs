@@ -168,6 +168,11 @@ namespace Poloknightse
             followers = SortByNeighbour(gridPosition, positionFollowerPairs, checkedNeighbours);
         }
 
+        public Point GetCenter()
+        {
+            return followers[(int)followers.Count / 2].gridPosition;
+        }
+
         /// <summary>
         /// Sort given Dictionary <paramref name="positionFollowerPairs"/>
         /// </summary>
