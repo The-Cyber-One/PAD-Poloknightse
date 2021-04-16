@@ -11,7 +11,7 @@ namespace Poloknightse
         private float countDuration = 5f; //Every  s.
         private float currentTime = 0f;
 
-        public EnemyShooter(Vector2 gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
+        public EnemyShooter(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
             velocity.Y = 1;
         }
@@ -29,7 +29,7 @@ namespace Poloknightse
 		{
 			base.Update(gameTime);
 
-            gridPosition += velocity;
+            gridPosition += velocity.ToPoint();
 
             //Check where the wall ends and inverse the velocity so it goes the opposite direction.
             if(LevelLoader.grid[(int)gridPosition.X + 1, (int)gridPosition.Y + 2].tileType != Tile.TileType.WALL||
