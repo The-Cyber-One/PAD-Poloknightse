@@ -53,10 +53,11 @@ namespace Poloknightse
     {
         public int stamina;
         private const int MAX_STAMINA = 100;
-        GameObject gameObject, player;
+        GameObject gameObject;
+        Player player;
         Point[] path;
 
-        public ChaseState(GameObject gameObject, GameObject player) : base("Chase")
+        public ChaseState(GameObject gameObject, Player player) : base("Chase")
         {
             this.gameObject = gameObject;
             this.player = player;
@@ -64,7 +65,7 @@ namespace Poloknightse
 
         public override void Start()
         {
-            path = AStar.FindPath(gameObject.gridPosition, player.gridPosition);
+            path = AStar.FindPath(gameObject.gridPosition, player.GetCenter());
 
             if (MAX_STAMINA >= path.Length) stamina = path.Length - 1;
             else stamina = MAX_STAMINA;
@@ -72,9 +73,16 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
+            path = AStar.FindPath(gameObject.gridPosition, player.GetCenter());
+            while (stamina >= path.Length) stamina--;
+
             stamina--;
 
             gameObject.gridPosition = path[stamina];
+            if (player.CheckCollision(gameObject))
+            {
+                player.TakeDamage(gameObject.gridPosition);
+            }
         }
     }
 
