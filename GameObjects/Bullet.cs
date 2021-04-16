@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace Poloknightse
 {
@@ -9,17 +10,39 @@ namespace Poloknightse
     {
         const float SPEED = 1;
 
-        public Bullet(Point gridPosition, Vector2 direction) : base(gridPosition, "GameObjects/bomb")
+        public Bullet(Vector2 gridPosition, Vector2 direction) : base(gridPosition, "GameObjects/bomb")
         {
             direction.Normalize();
             velocity = direction * SPEED;
         }
 
-		public override void FixedUpdate(GameTime gameTime)
+        public bool CheckBulletOutOfBounds()
 		{
-			base.FixedUpdate(gameTime);
+            //check if the ball is out of bounds on either the x or y axis.
+            if (this.gridPosition.X >= LevelLoader.grid.GetLength(0) || this.gridPosition.X < 0 ||
+                this.gridPosition.Y >= LevelLoader.grid.GetLength(1) || this.gridPosition.Y < 0)
+			{
+                return true;
+			}
+			else
+			{
+                return false;
+			}
+		}
 
-            gridPosition += velocity.ToPoint(); ;
+        public override void FixedUpdate(GameTime gameTime)
+        {
+            base.FixedUpdate(gameTime);
+
+            gridPosition += velocity;
+            
+            //remove from the gameObjectList is out of bounds.
+            if(CheckBulletOutOfBounds())
+            {
+                GameEnvironment.CurrentGameState.gameObjectList.Remove(this);
+            }
         }
+            
+        
 	}
 }
