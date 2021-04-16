@@ -13,14 +13,11 @@ namespace Poloknightse
             List<Point> totalPath = new List<Point>();
             totalPath.Add(current);
 
-            //if (cameFrom[CoordsToIndex(current)] != (-Vector2.One).ToPoint())
-            //{
-            while (/*Array.IndexOf(cameFrom, current) != -1 &&*/ cameFrom[CoordsToIndex(current)] != (-Vector2.One).ToPoint())
+            while (cameFrom[CoordsToIndex(current)] != (-Vector2.One).ToPoint())
             {
                 current = cameFrom[CoordsToIndex(current)];
                 totalPath.Add(current);
             }
-            //}
             return totalPath;
         }
 
@@ -29,14 +26,22 @@ namespace Poloknightse
         private static Point[] GetNeighbors(Point center)
         {
             List<Point> neighbors = new List<Point>();
-            if (center.X != LevelLoader.grid.GetLength(0) - 1)
+            if (center.X != LevelLoader.grid.GetLength(0) - 1 && LevelLoader.grid[center.X + 1, center.Y].tileType == Tile.TileType.GROUND)
+            {
                 neighbors.Add(new Point(center.X + 1, center.Y));
-            if (center.Y != LevelLoader.grid.GetLength(1) - 1)
+            }
+            if (center.Y != LevelLoader.grid.GetLength(1) - 1 && LevelLoader.grid[center.X, center.Y + 1].tileType == Tile.TileType.GROUND)
+            {
                 neighbors.Add(new Point(center.X, center.Y + 1));
-            if (center.X != 0)
+            }
+            if (center.X != 0 && LevelLoader.grid[center.X - 1, center.Y].tileType == Tile.TileType.GROUND)
+            {
                 neighbors.Add(new Point(center.X - 1, center.Y));
-            if (center.Y != 0)
+            }
+            if (center.Y != 0 && LevelLoader.grid[center.X, center.Y - 1].tileType == Tile.TileType.GROUND)
+            {
                 neighbors.Add(new Point(center.X, center.Y - 1));
+            }
 
             return neighbors.ToArray();
         }

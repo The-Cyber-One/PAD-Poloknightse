@@ -73,7 +73,7 @@ namespace Poloknightse
         /// <param name="toState">Connection to this state</param>
         /// <param name="func">The function that checks when to switch</param>
         /// <param name="referanceVariables">Variables to keep track of for the function</param>
-        public void AddConnection(string fromState, string toState, Func<object, bool> func, ref int referanceVariables)
+        public void AddConnection(string fromState, string toState, Func<object, bool> func, State referanceVariables)
         {
             if (states.ContainsKey(fromState) && states.ContainsKey(toState))
             {

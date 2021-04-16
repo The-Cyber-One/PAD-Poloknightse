@@ -52,7 +52,7 @@ namespace Poloknightse
     class ChaseState : State
     {
         public int stamina;
-        private const int MAX_STAMINA = 5;
+        private const int MAX_STAMINA = 100;
         GameObject gameObject, player;
         Point[] path;
 
@@ -74,7 +74,7 @@ namespace Poloknightse
         {
             stamina--;
 
-            gameObject.gridPosition = path[path.Length + stamina - MAX_STAMINA - 1];
+            gameObject.gridPosition = path[stamina];
         }
     }
 
@@ -123,8 +123,14 @@ namespace Poloknightse
     class EnemyWalking : GameObject
     {
         StateMachine stateMachine;
+        bool isLoaded = false;
 
         public EnemyWalking(Point gridPosition) : base(gridPosition, "GameObjects/Player/Koning")
+        {
+
+        }
+
+        private void Load()
         {
             stateMachine = new StateMachine();
 
@@ -135,22 +141,25 @@ namespace Poloknightse
             stateMachine.AddState(new CryingState(this));
             //stateMachine.AddState(new SearchState());
 
-            //Make a function to check stamina in the states
-            Func<object, bool> StaminaCheck = new Func<object, bool>((object stamina) => (int)stamina <= 0);
-
             //Add connections between states
-            stateMachine.AddConnection("Patrol", "Return", StaminaCheck, ref (stateMachine.GetState("Patrol") as PatrolState).stamina);
-            stateMachine.AddConnection("Chase", "Return", StaminaCheck, ref (stateMachine.GetState("Chase") as ChaseState).stamina);
-            stateMachine.AddConnection("Return", "Patrol", StaminaCheck, ref (stateMachine.GetState("Return") as ReturnState).stamina);
+            stateMachine.AddConnection("Patrol", "Return", (object state) => (state as PatrolState).stamina <= 0, stateMachine.GetState("Patrol"));
+            stateMachine.AddConnection("Chase", "Return", (object state) => (state as ChaseState).stamina <= 0, stateMachine.GetState("Chase"));
+            stateMachine.AddConnection("Return", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Return"));
             stateMachine.AddConnectionToAll("Crying", () => !CanMove());
 
             //Set state to Patrol
-            stateMachine.SetState("Patrol");
+            stateMachine.SetState("Chase");
         }
 
         public override void FixedUpdate(GameTime gameTime)
         {
             base.FixedUpdate(gameTime);
+
+            if (!isLoaded)
+            {
+                isLoaded = true;
+                Load();
+            }
 
             if (!CanMove()) stateMachine.SetState("Crying");
 
