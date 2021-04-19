@@ -63,7 +63,7 @@ namespace Poloknightse
             {
                 Color.Red,
                 new Tuple<Type, string, Tile.TileType>(
-                    typeof(/*Change Tile for shooter enemy*/ Tile),
+                    typeof(EnemyShooter),
                     "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             },
@@ -79,7 +79,7 @@ namespace Poloknightse
                 new Tuple<Type, string, Tile.TileType>(
                     typeof(EnemyGhost),
                     "LevelTiles/Wall",
-                    Tile.TileType.WALL)
+                    Tile.TileType.GROUND)
             }
         };
 
