@@ -9,7 +9,7 @@ namespace Poloknightse
 {
     class Coin: GameObject
     {
-        public Coin(Vector2 gridPosition) : base(gridPosition, "GameObjects/bronze_coin")
+        public Coin(Point gridPosition) : base(gridPosition, "GameObjects/bronze_coin")
         {
 
         }

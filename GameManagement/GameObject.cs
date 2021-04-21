@@ -8,11 +8,11 @@ namespace Poloknightse
 	public class GameObject
 	{
 		protected Texture2D texture;
-		public Vector2 gridPosition;
+		public Point gridPosition;
 		public Vector2 velocity;
 		protected Rectangle positionSize;
 
-		public GameObject(Vector2 gridPosition, string assetName = null)
+		public GameObject(Point gridPosition, string assetName = null)
 		{
 			this.gridPosition = gridPosition;
 			if (assetName != null)
@@ -21,6 +21,14 @@ namespace Poloknightse
 				positionSize = new Rectangle(0, 0, GameEnvironment.gridTileSize, GameEnvironment.gridTileSize);
 			}
 		}
+
+		/// <summary>
+		/// This will be called after the level is loaded
+		/// </summary>
+		public virtual void Initialize()
+        {
+
+        }
 
 		/// <summary>
 		/// HandleInput will be called every frame before <see cref="Update(GameTime)"/>
