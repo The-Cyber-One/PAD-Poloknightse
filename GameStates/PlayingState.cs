@@ -13,7 +13,7 @@ namespace Poloknightse
 
         public override void Init()
         {
-            LevelLoader.LoadLevel("test");
+            LevelLoader.LoadLevel("Level-3");
         }
 
         public override void Draw(SpriteBatch spriteBatch)
