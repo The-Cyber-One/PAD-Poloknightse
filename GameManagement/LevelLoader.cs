@@ -154,6 +154,11 @@ namespace Poloknightse
                     (GameEnvironment.CurrentGameState as PlayingState).player = player;
                 }
             }
+
+            foreach (GameObject gameObject in GameEnvironment.CurrentGameState.gameObjectList)
+            {
+                gameObject.Initialize();
+            }
         }
 
         /// <summary>

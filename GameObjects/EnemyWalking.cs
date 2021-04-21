@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace Poloknightse
 {
@@ -74,11 +75,14 @@ namespace Poloknightse
         public override void FixedUpdate(GameTime gameTime)
         {
             path = AStar.FindPath(gameObject.gridPosition, player.GetCenter());
-            while (stamina >= path.Length) stamina--;
 
             stamina--;
+            int currentStep = path.Length - 2;
 
-            gameObject.gridPosition = path[stamina];
+            if (currentStep >= 0)
+                gameObject.gridPosition = path[currentStep];
+
+            if (gameObject.gridPosition == player.GetCenter())
             if (player.CheckCollision(gameObject))
             {
                 player.TakeDamage(gameObject.gridPosition);
@@ -138,7 +142,7 @@ namespace Poloknightse
 
         }
 
-        private void Load()
+        public override void Initialize()
         {
             stateMachine = new StateMachine();
 
@@ -162,14 +166,6 @@ namespace Poloknightse
         public override void FixedUpdate(GameTime gameTime)
         {
             base.FixedUpdate(gameTime);
-
-            if (!isLoaded)
-            {
-                isLoaded = true;
-                Load();
-            }
-
-            if (!CanMove()) stateMachine.SetState("Crying");
 
             stateMachine.FixedUpdate(gameTime);
         }
