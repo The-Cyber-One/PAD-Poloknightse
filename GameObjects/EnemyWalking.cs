@@ -140,7 +140,7 @@ namespace Poloknightse
 
         }
 
-        private void Load()
+        public override void Initialize()
         {
             stateMachine = new StateMachine();
 
@@ -164,14 +164,6 @@ namespace Poloknightse
         public override void FixedUpdate(GameTime gameTime)
         {
             base.FixedUpdate(gameTime);
-
-            if (!isLoaded)
-            {
-                isLoaded = true;
-                Load();
-            }
-
-            if (!CanMove()) stateMachine.SetState("Crying");
 
             stateMachine.FixedUpdate(gameTime);
         }
