@@ -27,9 +27,6 @@ namespace Poloknightse
 
         private void MovementPathCheck()
 		{
-            int (int)gridPosition.X = (int)gridPosition.X;
-            int (int)gridPosition.Y = (int)gridPosition.Y;
-
             if (enemyPos == "left" || enemyPos == "right")
             {
                 xOffsetCheck = 1;
