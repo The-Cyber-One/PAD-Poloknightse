@@ -14,18 +14,18 @@ namespace Poloknightse
         public override void Init()
         {
             LevelLoader.LoadLevel("Level-1");
-            gameObjectList.Add(new Coin(Vector2.One));
-            gameObjectList.Add(new HealthPickup(Vector2.One*2));
         }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             LevelLoader.Draw(spriteBatch);
             base.Draw(spriteBatch);
         }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            
+
             //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {

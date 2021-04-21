@@ -13,9 +13,9 @@ namespace Poloknightse
     {
         private List<PlayerFollower> followers = new List<PlayerFollower>();
         private bool addFollower;
-        private Vector2 newFollowerPosition;
+        private Point newFollowerPosition;
 
-        public Player(Vector2 gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
+        public Player(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
             velocity = Vector2.Zero;
             newFollowerPosition = gridPosition;
@@ -62,7 +62,7 @@ namespace Poloknightse
             }
 
             //Move player
-            gridPosition += velocity;
+            gridPosition += velocity.ToPoint(); ;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -115,7 +115,7 @@ namespace Poloknightse
             bool playerHitsPlayer = false;
             foreach (PlayerFollower playerFollower in followers)
             {
-                if (playerFollower.gridPosition == gridPosition + velocity)
+                if (playerFollower.gridPosition == (gridPosition.ToVector2() + velocity).ToPoint())
                 {
                     playerHitsPlayer = true;
                 }
@@ -128,7 +128,7 @@ namespace Poloknightse
         /// Split player at <paramref name="gridPosition"/>
         /// </summary>
         /// <param name="gridPosition">Position to take damage at</param>
-        public void TakeDamage(Vector2 gridPosition)
+        public void TakeDamage(Point gridPosition)
         {
             //Code to split player in half
         }
@@ -147,7 +147,7 @@ namespace Poloknightse
         /// Add follower to player
         /// </summary>
         /// <param name="position">Start position for the new follower</param>
-        public void AddFollower(GameTime gameTime, Vector2 position)
+        public void AddFollower(GameTime gameTime, Point position)
         {
             if (position == null)
             {
@@ -165,7 +165,12 @@ namespace Poloknightse
         public void LoadFollowers(Dictionary<Point, PlayerFollower> positionFollowerPairs)
         {
             List<Point> checkedNeighbours = new List<Point>();
-            followers = SortByNeighbour(gridPosition.ToPoint(), positionFollowerPairs, checkedNeighbours);
+            followers = SortByNeighbour(gridPosition, positionFollowerPairs, checkedNeighbours);
+        }
+
+        public Point GetCenter()
+        {
+            return followers[(int)followers.Count / 2].gridPosition;
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace Poloknightse
         private String enemyPos;
         private Vector2 shootDir;
 
-        public EnemyShooter(Vector2 gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
+        public EnemyShooter(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
         }
 
@@ -55,7 +55,7 @@ namespace Poloknightse
 		{
 			base.Update(gameTime);
 
-            gridPosition += velocity;
+            gridPosition += velocity.ToPoint();
 
             if (LevelLoader.grid[(int)gridPosition.X + 1, (int)gridPosition.Y].tileType == Tile.TileType.WALL)
 			{
