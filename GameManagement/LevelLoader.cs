@@ -142,6 +142,7 @@ namespace Poloknightse
                     else if (gameObject is PlayerFollower)
                     {
                         positionFollowerPairs.Add(new Point(x, y), gameObject as PlayerFollower);
+                        GameEnvironment.CurrentGameState.gameObjectList.Remove(gameObject);
                     }
                 }
             }

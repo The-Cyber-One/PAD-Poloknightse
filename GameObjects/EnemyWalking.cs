@@ -83,9 +83,10 @@ namespace Poloknightse
                 gameObject.gridPosition = path[currentStep];
 
             if (gameObject.gridPosition == player.GetCenter())
-            if (player.CheckCollision(gameObject))
             {
-                player.TakeDamage(gameObject.gridPosition);
+                stamina = 0;
+                player.TakeDamage(gameObject.gridPosition, gameTime);
+                Debug.WriteLine("sda");
             }
         }
     }
