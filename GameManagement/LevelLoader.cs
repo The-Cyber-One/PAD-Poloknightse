@@ -79,7 +79,7 @@ namespace Poloknightse
                 new Tuple<Type, string, Tile.TileType>(
                     typeof(EnemyGhost),
                     "LevelTiles/Wall",
-                    Tile.TileType.WALL)
+                    Tile.TileType.GROUND)
             }
         };
 

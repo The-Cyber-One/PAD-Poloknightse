@@ -10,7 +10,7 @@ namespace Poloknightse
     {
         public int stamina;
         private const int MAX_STAMINA = 5;
-        GameObject gameObject;
+        protected GameObject gameObject;
 
         public PatrolState(GameObject gameObject) : base("Patrol")
         {
@@ -27,26 +27,29 @@ namespace Poloknightse
             stamina--;
 
             Point direction = GetRandomDirection();
-            while (LevelLoader.grid[gameObject.gridPosition.X + direction.X, gameObject.gridPosition.Y + direction.Y].tileType == Tile.TileType.WALL)
-            {
-                direction = GetRandomDirection();
-            }
+
             gameObject.gridPosition += direction;
         }
 
         /// <summary>
         /// Gets a random orthogonal direction
         /// </summary>
-        private Point GetRandomDirection()
+        public virtual Point GetRandomDirection()
         {
-            if (GameEnvironment.Random.Next(2) == 0)
+            Point direction;
+            do
             {
-                return new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
+                if (GameEnvironment.Random.Next(2) == 0)
+                {
+                    direction = new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
+                }
+                else
+                {
+                    direction = new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
+                }
             }
-            else
-            {
-                return new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
-            }
+            while (LevelLoader.grid[gameObject.gridPosition.X + direction.X, gameObject.gridPosition.Y + direction.Y].tileType == Tile.TileType.WALL);
+            return direction;
         }
     }
 
@@ -54,8 +57,8 @@ namespace Poloknightse
     {
         public int stamina;
         private const int MAX_STAMINA = 100;
-        GameObject gameObject;
-        Player player;
+        protected GameObject gameObject;
+        protected Player player;
         Point[] path;
 
         public ChaseState(GameObject gameObject, Player player) : base("Chase")
@@ -66,7 +69,7 @@ namespace Poloknightse
 
         public override void Start()
         {
-            path = AStar.FindPath(gameObject.gridPosition, player.GetCenter());
+            path = GetNewPath();
 
             if (MAX_STAMINA >= path.Length) stamina = path.Length - 1;
             else stamina = MAX_STAMINA;
@@ -74,7 +77,7 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
-            path = AStar.FindPath(gameObject.gridPosition, player.GetCenter());
+            path = GetNewPath();
 
             stamina--;
             int currentStep = path.Length - 2;
@@ -88,6 +91,11 @@ namespace Poloknightse
                 player.TakeDamage(gameObject.gridPosition, gameTime);
                 Debug.WriteLine("sda");
             }
+        }
+
+        public virtual Point[] GetNewPath()
+        {
+            return AStar.FindPath(gameObject.gridPosition, player.GetCenter());
         }
     }
 
@@ -136,8 +144,11 @@ namespace Poloknightse
     class EnemyWalking : GameObject
     {
         StateMachine stateMachine;
-        bool isLoaded = false;
 
+        public EnemyWalking(Point gridPosition, string spritePath) : base(gridPosition, spritePath)
+        {
+
+        }
         public EnemyWalking(Point gridPosition) : base(gridPosition, "GameObjects/Player/Koning")
         {
 

@@ -23,22 +23,22 @@ namespace Poloknightse
 
         private static float defaultH(Point pointA, Point pointB) => Vector2.Distance(pointA.ToVector2(), pointB.ToVector2());
 
-        private static Point[] GetNeighbors(Point center)
+        private static Point[] GetNeighbors(Point center, bool canMoveThroughWalls)
         {
             List<Point> neighbors = new List<Point>();
-            if (center.X != LevelLoader.grid.GetLength(0) - 1 && LevelLoader.grid[center.X + 1, center.Y].tileType == Tile.TileType.GROUND)
+            if (center.X != LevelLoader.grid.GetLength(0) - 1 && (LevelLoader.grid[center.X + 1, center.Y].tileType == Tile.TileType.GROUND || canMoveThroughWalls))
             {
                 neighbors.Add(new Point(center.X + 1, center.Y));
             }
-            if (center.Y != LevelLoader.grid.GetLength(1) - 1 && LevelLoader.grid[center.X, center.Y + 1].tileType == Tile.TileType.GROUND)
+            if (center.Y != LevelLoader.grid.GetLength(1) - 1 && (LevelLoader.grid[center.X, center.Y + 1].tileType == Tile.TileType.GROUND || canMoveThroughWalls))
             {
                 neighbors.Add(new Point(center.X, center.Y + 1));
             }
-            if (center.X != 0 && LevelLoader.grid[center.X - 1, center.Y].tileType == Tile.TileType.GROUND)
+            if (center.X != 0 && (LevelLoader.grid[center.X - 1, center.Y].tileType == Tile.TileType.GROUND || canMoveThroughWalls))
             {
                 neighbors.Add(new Point(center.X - 1, center.Y));
             }
-            if (center.Y != 0 && LevelLoader.grid[center.X, center.Y - 1].tileType == Tile.TileType.GROUND)
+            if (center.Y != 0 && (LevelLoader.grid[center.X, center.Y - 1].tileType == Tile.TileType.GROUND || canMoveThroughWalls))
             {
                 neighbors.Add(new Point(center.X, center.Y - 1));
             }
@@ -50,7 +50,7 @@ namespace Poloknightse
 
         // A* finds a path from start to goal.
         // h is the heuristic function. h(n) estimates the cost to reach goal from node n.
-        public static Point[] FindPath(Point start, Point goal, Func<Point, Point, float> h = null)
+        public static Point[] FindPath(Point start, Point goal, bool canMoveThroughWalls = false, Func<Point, Point, float> h = null)
         {
             //Set defaultH function if it's null
             if (h is null) h = defaultH;
@@ -89,7 +89,7 @@ namespace Poloknightse
                     return ReconstructPath(cameFrom, current).ToArray();
                 }
                 openSet.Remove(current);
-                foreach (Point neighbor in GetNeighbors(current))
+                foreach (Point neighbor in GetNeighbors(current, canMoveThroughWalls))
                 {
                     // d(current,neighbor) is the weight of the edge from current to neighbor
                     // tentative_gScore is the distance from start to the neighbor through current
