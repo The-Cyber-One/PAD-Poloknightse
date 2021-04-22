@@ -27,9 +27,10 @@ namespace Poloknightse
 
         public virtual void Update(GameTime gameTime)
         {
-            foreach (GameObject gameObject in gameObjectList)
+			for (int i = 0; i < gameObjectList.Count; i++)
             {
-                gameObject.Update(gameTime);
+				GameObject gameObject = gameObjectList[i];
+				gameObject.Update(gameTime);
                 if (updateTimer >= tickTimeLength)
                 {
                     gameObject.FixedUpdate(gameTime);
