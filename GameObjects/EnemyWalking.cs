@@ -12,7 +12,7 @@ namespace Poloknightse
         private const int MAX_STAMINA = 5;
         protected GameObject gameObject;
 
-        public PatrolState(GameObject gameObject) : base("Patrol")
+        public PatrolState(GameObject gameObject, string stateName = "Patrol") : base(stateName)
         {
             this.gameObject = gameObject;
         }
@@ -37,6 +37,7 @@ namespace Poloknightse
         public virtual Point GetRandomDirection()
         {
             Point direction;
+            bool foundDirection = false;
             do
             {
                 if (GameEnvironment.Random.Next(2) == 0)
@@ -47,8 +48,17 @@ namespace Poloknightse
                 {
                     direction = new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
                 }
+
+                bool inbounds = LevelLoader.grid.GetLength(0) > gameObject.gridPosition.X + direction.X &&
+                    LevelLoader.grid.GetLength(1) > gameObject.gridPosition.Y + direction.Y &&
+                    gameObject.gridPosition.X + direction.X >= 0 &&
+                    gameObject.gridPosition.Y + direction.Y >= 0;
+                if (inbounds)
+                {
+                    foundDirection = LevelLoader.grid[gameObject.gridPosition.X + direction.X, gameObject.gridPosition.Y + direction.Y].tileType == Tile.TileType.WALL;
+                }
             }
-            while (LevelLoader.grid[gameObject.gridPosition.X + direction.X, gameObject.gridPosition.Y + direction.Y].tileType == Tile.TileType.WALL);
+            while (!foundDirection);
             return direction;
         }
     }
@@ -61,7 +71,7 @@ namespace Poloknightse
         protected Player player;
         Point[] path;
 
-        public ChaseState(GameObject gameObject, Player player) : base("Chase")
+        public ChaseState(GameObject gameObject, Player player, string stateName = "Chase") : base(stateName)
         {
             this.gameObject = gameObject;
             this.player = player;
@@ -106,7 +116,7 @@ namespace Poloknightse
         GameObject gameObject;
         Point[] path;
 
-        public ReturnState(GameObject gameObject) : base("Return")
+        public ReturnState(GameObject gameObject, string stateName = "Return") : base(stateName)
         {
             startPosition = gameObject.gridPosition;
             this.gameObject = gameObject;
@@ -143,12 +153,13 @@ namespace Poloknightse
 
     class EnemyWalking : GameObject
     {
-        StateMachine stateMachine;
+        protected StateMachine stateMachine;
 
         public EnemyWalking(Point gridPosition, string spritePath) : base(gridPosition, spritePath)
         {
 
         }
+
         public EnemyWalking(Point gridPosition) : base(gridPosition, "GameObjects/Player/Koning")
         {
 
@@ -163,7 +174,6 @@ namespace Poloknightse
             stateMachine.AddState(new ChaseState(this, (GameEnvironment.CurrentGameState as PlayingState).player));
             stateMachine.AddState(new ReturnState(this));
             stateMachine.AddState(new CryingState(this));
-            //stateMachine.AddState(new SearchState());
 
             //Add connections between states
             stateMachine.AddConnection("Patrol", "Return", (object state) => (state as PatrolState).stamina <= 0, stateMachine.GetState("Patrol"));
@@ -185,12 +195,22 @@ namespace Poloknightse
         /// <summary>
         /// Checks if enemy can walk orthogonaly to any place
         /// </summary>
-        private bool CanMove()
+        protected bool CanMove()
         {
-            return LevelLoader.grid[gridPosition.X + 1, gridPosition.Y].tileType == Tile.TileType.GROUND ||
-                LevelLoader.grid[gridPosition.X - 1, gridPosition.Y].tileType == Tile.TileType.GROUND ||
-                LevelLoader.grid[gridPosition.X, gridPosition.Y + 1].tileType == Tile.TileType.GROUND ||
-                LevelLoader.grid[gridPosition.X, gridPosition.Y - 1].tileType == Tile.TileType.GROUND;
+            bool canMove = false;
+            if (gridPosition.X + 1 < LevelLoader.grid.GetLength(0))
+                canMove = LevelLoader.grid[gridPosition.X + 1, gridPosition.Y].tileType == Tile.TileType.GROUND;
+
+            if (gridPosition.X - 1 >= 0)
+                canMove = LevelLoader.grid[gridPosition.X - 1, gridPosition.Y].tileType == Tile.TileType.GROUND || canMove;
+
+            if (gridPosition.Y + 1 < LevelLoader.grid.GetLength(1))
+                canMove = LevelLoader.grid[gridPosition.X, gridPosition.Y + 1].tileType == Tile.TileType.GROUND || canMove;
+
+            if (gridPosition.Y - 1 >= 0)
+                canMove = LevelLoader.grid[gridPosition.X, gridPosition.Y - 1].tileType == Tile.TileType.GROUND || canMove;
+
+            return canMove;
         }
     }
 }

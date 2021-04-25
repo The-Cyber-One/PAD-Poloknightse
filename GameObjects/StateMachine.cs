@@ -42,18 +42,27 @@ namespace Poloknightse
             states.Add(newState.name, newState);
         }
 
+        public void RemoveState(string stateName)
+        {
+            foreach (string stateKey in states.Keys)
+            {
+                states[stateKey].connections.Remove(stateName);
+            }
+            states.Remove(stateName);
+        }
+
         /// <summary>
         /// Sets the current state
         /// </summary>
         /// <param name="newState">The state that will be set</param>
         public void SetState(string newState)
         {
-            if (states.ContainsKey(newState))
-            {
-                if (currentState != null) currentState.End();
-                currentState = states[newState];
-                currentState.Start();
-            }
+            if (!states.ContainsKey(newState))
+                throw new Exception("state not found in list");
+            if (currentState != null) currentState.End();
+            currentState = states[newState];
+            currentState.Start();
+
         }
 
         /// <summary>
@@ -149,7 +158,7 @@ namespace Poloknightse
                 Func<object, bool> func = currentState.connections[otherState].Item1;
 
                 object args = currentState.connections[otherState].Item2;
-                
+
                 if (func.Invoke(args))
                 {
                     SetState(otherState);
