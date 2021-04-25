@@ -73,9 +73,11 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
+            int old = path.Length;
             path = AStar.FindPath(gameObject.gridPosition, player.GetCenter());
-            while (stamina >= path.Length) stamina--;
-
+            System.Diagnostics.Debug.WriteLine("1: " + stamina);
+            stamina += path.Length - old;
+            System.Diagnostics.Debug.WriteLine("2: " + stamina);
             stamina--;
 
             gameObject.gridPosition = path[stamina];
@@ -138,7 +140,7 @@ namespace Poloknightse
 
         }
 
-        private void Load()
+        public override void Initialize()
         {
             stateMachine = new StateMachine();
 
@@ -162,14 +164,6 @@ namespace Poloknightse
         public override void FixedUpdate(GameTime gameTime)
         {
             base.FixedUpdate(gameTime);
-
-            if (!isLoaded)
-            {
-                isLoaded = true;
-                Load();
-            }
-
-            if (!CanMove()) stateMachine.SetState("Crying");
 
             stateMachine.FixedUpdate(gameTime);
         }

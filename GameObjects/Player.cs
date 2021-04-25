@@ -168,9 +168,12 @@ namespace Poloknightse
             followers = SortByNeighbour(gridPosition, positionFollowerPairs, checkedNeighbours);
         }
 
+        /// <summary>
+        /// Find the center of the player with followers
+        /// </summary>
         public Point GetCenter()
         {
-            return followers[(int)followers.Count / 2].gridPosition;
+            return followers[followers.Count / 2].gridPosition;
         }
 
         /// <summary>

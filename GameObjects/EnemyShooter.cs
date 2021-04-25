@@ -12,7 +12,7 @@ namespace Poloknightse
         private String enemyPos;
         private Vector2 shootDir;
 
-        public EnemyShooter(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
+        public EnemyShooter(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_Ridder")
         {
         }
 
@@ -51,32 +51,45 @@ namespace Poloknightse
 			
         }
 
-		public override void FixedUpdate(GameTime gameTime)
+		public override void Initialize()
 		{
-			base.Update(gameTime);
-
-            gridPosition += velocity.ToPoint();
+			base.Initialize();
 
             if (LevelLoader.grid[(int)gridPosition.X + 1, (int)gridPosition.Y].tileType == Tile.TileType.WALL)
-			{
+            {
                 enemyPos = "left";
+                velocity.X = 0;
+                velocity.Y = 1;
                 shootDir = new Vector2(1, 0);
             }
             if (LevelLoader.grid[(int)gridPosition.X - 1, (int)gridPosition.Y].tileType == Tile.TileType.WALL)
             {
                 enemyPos = "right";
+                velocity.X = 0;
+                velocity.Y = 1;
                 shootDir = new Vector2(-1, 0);
             }
             if (LevelLoader.grid[(int)gridPosition.X, (int)gridPosition.Y + 1].tileType == Tile.TileType.WALL)
             {
                 enemyPos = "top";
+                velocity.X = 1;
+                velocity.Y = 0;
                 shootDir = new Vector2(0, 1);
             }
             if (LevelLoader.grid[(int)gridPosition.X, (int)gridPosition.Y - 1].tileType == Tile.TileType.WALL)
             {
                 enemyPos = "bottom";
+                velocity.X = 1;
+                velocity.Y = 0;
                 shootDir = new Vector2(0, -1);
             }
+        }
+
+		public override void FixedUpdate(GameTime gameTime)
+		{
+			base.Update(gameTime);
+
+            gridPosition += velocity.ToPoint();
 
             MovementPathCheck();
         }

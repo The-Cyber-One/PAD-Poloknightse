@@ -23,6 +23,14 @@ namespace Poloknightse
 		}
 
 		/// <summary>
+		/// This will be called after the level is loaded
+		/// </summary>
+		public virtual void Initialize()
+        {
+
+        }
+
+		/// <summary>
 		/// HandleInput will be called every frame before <see cref="Update(GameTime)"/>
 		/// </summary>
 		/// <param name="inputHelper">Will help with getting input data</param>
