@@ -13,7 +13,7 @@ namespace Poloknightse
 
         public override void Init()
         {
-            LevelLoader.LoadLevel("Level-1");
+            LevelLoader.LoadLevel("test");
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -55,7 +55,7 @@ namespace Poloknightse
                 {
                     if (player.CheckCollision(gameObjectList[i]))
                     {
-                        player.TakeDamage(gameObjectList[i].gridPosition);
+                        player.TakeDamage(gameObjectList[i].gridPosition, gameTime);
                         gameObjectList.Remove(gameObjectList[i]);
                         continue;
                     }

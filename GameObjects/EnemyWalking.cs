@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace Poloknightse
 {
@@ -73,17 +74,19 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
-            int old = path.Length;
             path = AStar.FindPath(gameObject.gridPosition, player.GetCenter());
-            System.Diagnostics.Debug.WriteLine("1: " + stamina);
-            stamina += path.Length - old;
-            System.Diagnostics.Debug.WriteLine("2: " + stamina);
-            stamina--;
 
-            gameObject.gridPosition = path[stamina];
-            if (player.CheckCollision(gameObject))
+            stamina--;
+            int currentStep = path.Length - 2;
+
+            if (currentStep >= 0)
+                gameObject.gridPosition = path[currentStep];
+
+            if (gameObject.gridPosition == player.GetCenter())
             {
-                player.TakeDamage(gameObject.gridPosition);
+                stamina = 0;
+                player.TakeDamage(gameObject.gridPosition, gameTime);
+                Debug.WriteLine("sda");
             }
         }
     }
