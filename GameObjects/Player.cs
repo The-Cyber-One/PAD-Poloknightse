@@ -135,13 +135,14 @@ namespace Poloknightse
             if (followers.Count <= minFollowers)
             {
                 GameEnvironment.CurrentGameState.gameObjectList.Remove(this);
+                PlayingState.ChangeToGameOverState();
                 return;
             }
             Player player = new Player(followers[followers.Count - 1].gridPosition);
             GameEnvironment.CurrentGameState.gameObjectList.Add(player);
             for (int i = followers.Count - 1; i >= 0; i--)
             {
-                Debug.WriteLine("asd");
+                Debug.WriteLine("added other playable player");
                 if (followers[i].gridPosition == gridPosition)
                 {
                     for(int j = followers.Count - 1; j >= i; j--)

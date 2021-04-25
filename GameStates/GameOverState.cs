@@ -10,7 +10,6 @@ namespace Poloknightse
 	{
 		public GameOverState()
 		{
-			Debug.WriteLine("GAME_OVER");
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
@@ -22,6 +21,7 @@ namespace Poloknightse
 		{
 			if (inputHelper.AnyKeyPressed)
 			{
+				Debug.WriteLine("going to start state");
 				GameEnvironment.SwitchTo(GameEnvironment.GameStates.START_STATE);
 			}
 			base.HandleInput(inputHelper);
