@@ -17,6 +17,7 @@ namespace Poloknightse
         {
             LevelLoader.LoadLevel("test");
 
+            //Count how many coins there are in the level
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
                 
@@ -49,8 +50,8 @@ namespace Poloknightse
         {
             base.Update(gameTime);
 
-            //Check if all coins got pickedup
-            if (CoinAmount == 0)
+            //Check if all coins got picked up
+            if (CoinAmount <= 0)
 			{
                 ChangeToWinState();
 			}
@@ -58,7 +59,6 @@ namespace Poloknightse
             //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
-                Debug.WriteLine(CoinAmount);
 
                 //Coin -> Player collision
                 if (gameObjectList[i] is Coin)
