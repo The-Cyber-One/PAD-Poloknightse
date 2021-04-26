@@ -52,7 +52,7 @@ namespace Poloknightse
         int ghostCooldownSteps = 10;
         int stepsCounter;
 
-        public GhostChaseState(GameObject gameObject, Player player) : base(gameObject, player, "GhostChase")
+        public GhostChaseState(GameObject gameObject) : base(gameObject, "GhostChase")
         {
 
         }
@@ -147,7 +147,7 @@ namespace Poloknightse
 
             //Add states to stateMachine
             stateMachine.AddState(new GhostPatrolState(this));
-            stateMachine.AddState(new GhostChaseState(this, (GameEnvironment.CurrentGameState as PlayingState).player));
+            stateMachine.AddState(new GhostChaseState(this));
             stateMachine.AddState(new GhostReturnState(this));
             stateMachine.AddState(new CryingState(this));
 
@@ -155,10 +155,24 @@ namespace Poloknightse
             stateMachine.AddConnection("GhostPatrol", "GhostReturn", (object state) => (state as GhostPatrolState).stamina <= 0, stateMachine.GetState("GhostPatrol"));
             stateMachine.AddConnection("GhostChase", "GhostReturn", (object state) => (state as GhostChaseState).stamina <= 0, stateMachine.GetState("GhostChase"));
             stateMachine.AddConnection("GhostReturn", "GhostPatrol", (object state) => (state as GhostReturnState).updated, stateMachine.GetState("GhostReturn"));
+            stateMachine.AddConnectionToAll("GhostChase", (object state) =>
+            {
+                float closestPlayer = float.PositiveInfinity;
+                foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+                {
+                    float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+                    if (distance <= 10 && distance < closestPlayer)
+                    {
+                        closestPlayer = distance;
+                        (state as ChaseState).player = player;
+                    }
+                }
+                return float.IsFinite(closestPlayer);
+            }, stateMachine.GetState("GhostChase"));
             stateMachine.AddConnectionToAll("Crying", () => !CanMove());
 
             //Set state to Patrol
-            stateMachine.SetState("GhostChase");
+            stateMachine.SetState("GhostPatrol");
         }
     }
 }

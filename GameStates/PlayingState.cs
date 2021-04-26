@@ -7,7 +7,7 @@ namespace Poloknightse
 {
     class PlayingState : GameState
     {
-        public List<Player> player;
+        public List<Player> players = new List<Player>();
         private int CoinAmount;
 
         public PlayingState()
@@ -16,7 +16,7 @@ namespace Poloknightse
 
         public override void Init()
         {
-            LevelLoader.LoadLevel("Level-5");
+            LevelLoader.LoadLevel("Level-3");
 
             //Count how many coins there are in the level
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
@@ -60,37 +60,39 @@ namespace Poloknightse
             //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
-
-                //Coin -> Player collision
-                if (gameObjectList[i] is Coin)
+                foreach (Player player in players)
                 {
-                    if (player.CheckCollision(gameObjectList[i]))
+                    //Coin -> Player collision
+                    if (gameObjectList[i] is Coin)
                     {
-                        gameObjectList.Remove(gameObjectList[i]);
-                        CoinAmount -= 1;
-                        continue;
+                        if (player.CheckCollision(gameObjectList[i]))
+                        {
+                            gameObjectList.Remove(gameObjectList[i]);
+                            CoinAmount -= 1;
+                            continue;
+                        }
                     }
-                }
 
-                //HealthPickup -> Player collision
-                if (gameObjectList[i] is HealthPickup)
-                {
-                    if (player.CheckCollision(gameObjectList[i]))
+                    //HealthPickup -> Player collision
+                    if (gameObjectList[i] is HealthPickup)
                     {
-                        gameObjectList.Remove(gameObjectList[i]);
-                        player.AddFollower(gameTime);
-                        continue;
+                        if (player.CheckCollision(gameObjectList[i]))
+                        {
+                            gameObjectList.Remove(gameObjectList[i]);
+                            player.AddFollower(gameTime);
+                            continue;
+                        }
                     }
-                }
 
-                //Bullet -> Player collsion
-                if (gameObjectList[i] is Bullet)
-                {
-                    if (player.CheckCollision(gameObjectList[i]))
+                    //Bullet -> Player collsion
+                    if (gameObjectList[i] is Bullet)
                     {
-                        player.TakeDamage(gameObjectList[i].gridPosition, gameTime);
-                        gameObjectList.Remove(gameObjectList[i]);
-                        continue;
+                        if (player.CheckCollision(gameObjectList[i]))
+                        {
+                            player.TakeDamage(gameObjectList[i].gridPosition, gameTime);
+                            gameObjectList.Remove(gameObjectList[i]);
+                            continue;
+                        }
                     }
                 }
             }
