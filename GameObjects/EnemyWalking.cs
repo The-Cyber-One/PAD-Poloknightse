@@ -55,7 +55,7 @@ namespace Poloknightse
                     gameObject.gridPosition.Y + direction.Y >= 0;
                 if (inbounds)
                 {
-                    foundDirection = LevelLoader.grid[gameObject.gridPosition.X + direction.X, gameObject.gridPosition.Y + direction.Y].tileType == Tile.TileType.WALL;
+                    foundDirection = LevelLoader.grid[gameObject.gridPosition.X + direction.X, gameObject.gridPosition.Y + direction.Y].tileType == Tile.TileType.GROUND;
                 }
             }
             while (!foundDirection);
