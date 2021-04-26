@@ -21,7 +21,6 @@ namespace Poloknightse
             //Count how many coins there are in the level
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
-                
                 if (gameObjectList[i] is Coin)
                 {
                     CoinAmount += 1;

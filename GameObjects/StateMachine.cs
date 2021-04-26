@@ -118,6 +118,7 @@ namespace Poloknightse
                 foreach (string state in states.Keys)
                 {
                     if (state == toState) continue;
+                    if (states[state].connections.ContainsKey(toState)) continue;
                     states[state].connections.Add(toState, new Tuple<Func<object, bool>, object>(func1, null));
                 }
             }

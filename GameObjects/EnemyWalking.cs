@@ -192,23 +192,37 @@ namespace Poloknightse
             stateMachine.AddConnection("Patrol", "Return", (object state) => (state as PatrolState).stamina <= 0, stateMachine.GetState("Patrol"));
             stateMachine.AddConnection("Chase", "Return", (object state) => (state as ChaseState).stamina <= 0, stateMachine.GetState("Chase"));
             stateMachine.AddConnection("Return", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Return"));
-            stateMachine.AddConnectionToAll("Chase", (object state) =>
-            {
-                float closestPlayer = float.PositiveInfinity;
-                if ((GameEnvironment.CurrentGameState as PlayingState).players.Count > 0)
-                {
-                    foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
-                    {
-                        float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
-                        if (distance <= 10 && distance < closestPlayer)
-                        {
-                            closestPlayer = distance;
-                            (state as ChaseState).player = player;
-                        }
-                    }
-                }
-                return float.IsFinite(closestPlayer);
-            }, stateMachine.GetState("Chase"));
+            
+            //stateMachine.AddConnection("Patrol", "Chase", () =>
+            //{
+            //    foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+            //    {
+            //        float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+            //        if (distance <= 10)
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //    return false;
+            //});
+
+            //stateMachine.AddConnection("Patrol", "Chase", (object state) =>
+            //{
+            //    float closestPlayer = float.PositiveInfinity;
+            //    if ((GameEnvironment.CurrentGameState as PlayingState).players.Count > 0)
+            //    {
+            //        foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+            //        {
+            //            float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+            //            if (distance <= 10 && distance < closestPlayer)
+            //            {
+            //                closestPlayer = distance;
+            //                (state as ChaseState).player = player;
+            //            }
+            //        }
+            //    }
+            //    return float.IsFinite(closestPlayer);
+            //}, stateMachine.GetState("Chase"));
             stateMachine.AddConnectionToAll("Crying", () => !CanMove());
 
             //Set state to Patrol
