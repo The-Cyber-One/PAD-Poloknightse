@@ -1,12 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Poloknightse
 {
     class PlayingState : GameState
     {
-        public Player player;
+        public List<Player> player;
         private int CoinAmount;
 
         public PlayingState()

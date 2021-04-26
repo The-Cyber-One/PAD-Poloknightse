@@ -117,7 +117,25 @@ namespace Poloknightse
             {
                 foreach (string state in states.Keys)
                 {
+                    if (state == toState) continue;
                     states[state].connections.Add(toState, new Tuple<Func<object, bool>, object>(func1, null));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add a connection from all states to <paramref name="toState"/> in the dictionary
+        /// </summary>
+        /// <param name="toState">Connection to this state</param>
+        /// <param name="func">The function that checks when to switch</param>
+        public void AddConnectionToAll(string toState, Func<object, bool> func, State referanceVariables)
+        {
+            if (states.ContainsKey(toState))
+            {
+                foreach (string state in states.Keys)
+                {
+                    if (state == toState) continue;
+                    states[state].connections.Add(toState, new Tuple<Func<object, bool>, object>(func, referanceVariables));
                 }
             }
         }
