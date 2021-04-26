@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Poloknightse
 {
-    class Tile : GameObject
+    public class Tile : GameObject
     {
         public Rectangle rectangle;
         public TileType tileType;

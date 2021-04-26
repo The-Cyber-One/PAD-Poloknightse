@@ -78,7 +78,7 @@ namespace Poloknightse
                 Color.Gainsboro,
                 new Tuple<Type, string, Tile.TileType>(
                     typeof(EnemyGhost),
-                    "LevelTiles/Wall",
+                    "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             }
         };
@@ -142,6 +142,7 @@ namespace Poloknightse
                     else if (gameObject is PlayerFollower)
                     {
                         positionFollowerPairs.Add(new Point(x, y), gameObject as PlayerFollower);
+                        GameEnvironment.CurrentGameState.gameObjectList.Remove(gameObject);
                     }
                 }
             }
@@ -153,6 +154,11 @@ namespace Poloknightse
                 {
                     (GameEnvironment.CurrentGameState as PlayingState).player = player;
                 }
+            }
+
+            foreach (GameObject gameObject in GameEnvironment.CurrentGameState.gameObjectList)
+            {
+                gameObject.Initialize();
             }
         }
 

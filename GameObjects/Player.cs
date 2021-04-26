@@ -14,6 +14,7 @@ namespace Poloknightse
         private List<PlayerFollower> followers = new List<PlayerFollower>();
         private bool addFollower;
         private Point newFollowerPosition;
+        int minFollowers = 3;
 
         public Player(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
@@ -128,9 +129,32 @@ namespace Poloknightse
         /// Split player at <paramref name="gridPosition"/>
         /// </summary>
         /// <param name="gridPosition">Position to take damage at</param>
-        public void TakeDamage(Point gridPosition)
+        public void TakeDamage(Point gridPosition, GameTime gameTime)
         {
             //Code to split player in half
+            if (followers.Count <= minFollowers)
+            {
+                GameEnvironment.CurrentGameState.gameObjectList.Remove(this);
+                PlayingState.ChangeToGameOverState();
+                return;
+            }
+            Player player = new Player(followers[followers.Count - 1].gridPosition);
+            GameEnvironment.CurrentGameState.gameObjectList.Add(player);
+            for (int i = followers.Count - 1; i >= 0; i--)
+            {
+                Debug.WriteLine("added other playable player");
+                if (followers[i].gridPosition == gridPosition)
+                {
+                    for(int j = followers.Count - 1; j >= i; j--)
+                    {
+                        player.AddFollower(gameTime, followers[j].gridPosition);
+                        followers.RemoveAt(j);
+                    }
+                    followers.RemoveAt(followers.Count - 1);
+                    player.followers.RemoveAt(0);
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -168,9 +192,12 @@ namespace Poloknightse
             followers = SortByNeighbour(gridPosition, positionFollowerPairs, checkedNeighbours);
         }
 
+        /// <summary>
+        /// Find the center of the player with followers
+        /// </summary>
         public Point GetCenter()
         {
-            return followers[(int)followers.Count / 2].gridPosition;
+            return followers[followers.Count / 2].gridPosition;
         }
 
         /// <summary>

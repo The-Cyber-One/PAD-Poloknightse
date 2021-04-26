@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Poloknightse
 {
     class PlayingState : GameState
     {
-        public Player player;
+        public List<Player> player;
+        private int CoinAmount;
 
         public PlayingState()
         {
@@ -13,7 +16,17 @@ namespace Poloknightse
 
         public override void Init()
         {
-            LevelLoader.LoadLevel("Level-3");
+            LevelLoader.LoadLevel("Level-5");
+
+            //Count how many coins there are in the level
+            for (int i = gameObjectList.Count - 1; i >= 0; i--)
+            {
+                
+                if (gameObjectList[i] is Coin)
+                {
+                    CoinAmount += 1;
+                }
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -22,19 +35,39 @@ namespace Poloknightse
             base.Draw(spriteBatch);
         }
 
+        public static void ChangeToGameOverState()
+        {
+            Debug.WriteLine("going to game over state");
+            GameEnvironment.SwitchTo(GameEnvironment.GameStates.GAME_OVER_STATE);
+        }
+
+        public static void ChangeToWinState()
+        {
+            Debug.WriteLine("going to win state");
+            GameEnvironment.SwitchTo(GameEnvironment.GameStates.WIN_STATE);
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
+            //Check if all coins got picked up
+            if (CoinAmount <= 0)
+			{
+                ChangeToWinState();
+			}
+
             //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
+
                 //Coin -> Player collision
                 if (gameObjectList[i] is Coin)
                 {
                     if (player.CheckCollision(gameObjectList[i]))
                     {
                         gameObjectList.Remove(gameObjectList[i]);
+                        CoinAmount -= 1;
                         continue;
                     }
                 }
@@ -55,7 +88,7 @@ namespace Poloknightse
                 {
                     if (player.CheckCollision(gameObjectList[i]))
                     {
-                        player.TakeDamage(gameObjectList[i].gridPosition);
+                        player.TakeDamage(gameObjectList[i].gridPosition, gameTime);
                         gameObjectList.Remove(gameObjectList[i]);
                         continue;
                     }

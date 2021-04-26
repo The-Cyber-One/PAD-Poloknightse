@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace Poloknightse
 {
@@ -9,9 +10,9 @@ namespace Poloknightse
     {
         public int stamina;
         private const int MAX_STAMINA = 5;
-        GameObject gameObject;
+        protected GameObject gameObject;
 
-        public PatrolState(GameObject gameObject) : base("Patrol")
+        public PatrolState(GameObject gameObject, string stateName = "Patrol") : base(stateName)
         {
             this.gameObject = gameObject;
         }
@@ -26,26 +27,39 @@ namespace Poloknightse
             stamina--;
 
             Point direction = GetRandomDirection();
-            while (LevelLoader.grid[gameObject.gridPosition.X + direction.X, gameObject.gridPosition.Y + direction.Y].tileType == Tile.TileType.WALL)
-            {
-                direction = GetRandomDirection();
-            }
+
             gameObject.gridPosition += direction;
         }
 
         /// <summary>
         /// Gets a random orthogonal direction
         /// </summary>
-        private Point GetRandomDirection()
+        public virtual Point GetRandomDirection()
         {
-            if (GameEnvironment.Random.Next(2) == 0)
+            Point direction;
+            bool foundDirection = false;
+            do
             {
-                return new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
+                if (GameEnvironment.Random.Next(2) == 0)
+                {
+                    direction = new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
+                }
+                else
+                {
+                    direction = new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
+                }
+
+                bool inbounds = LevelLoader.grid.GetLength(0) > gameObject.gridPosition.X + direction.X &&
+                    LevelLoader.grid.GetLength(1) > gameObject.gridPosition.Y + direction.Y &&
+                    gameObject.gridPosition.X + direction.X >= 0 &&
+                    gameObject.gridPosition.Y + direction.Y >= 0;
+                if (inbounds)
+                {
+                    foundDirection = LevelLoader.grid[gameObject.gridPosition.X + direction.X, gameObject.gridPosition.Y + direction.Y].tileType == Tile.TileType.GROUND;
+                }
             }
-            else
-            {
-                return new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
-            }
+            while (!foundDirection);
+            return direction;
         }
     }
 
@@ -53,11 +67,11 @@ namespace Poloknightse
     {
         public int stamina;
         private const int MAX_STAMINA = 100;
-        GameObject gameObject;
-        Player player;
+        protected GameObject gameObject;
+        public Player player;
         Point[] path;
 
-        public ChaseState(GameObject gameObject, Player player) : base("Chase")
+        public ChaseState(GameObject gameObject, Player player, string stateName = "Chase") : base(stateName)
         {
             this.gameObject = gameObject;
             this.player = player;
@@ -65,7 +79,7 @@ namespace Poloknightse
 
         public override void Start()
         {
-            path = AStar.FindPath(gameObject.gridPosition, player.GetCenter());
+            path = GetNewPath();
 
             if (MAX_STAMINA >= path.Length) stamina = path.Length - 1;
             else stamina = MAX_STAMINA;
@@ -73,16 +87,25 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
-            path = AStar.FindPath(gameObject.gridPosition, player.GetCenter());
-            while (stamina >= path.Length) stamina--;
+            path = GetNewPath();
 
             stamina--;
+            int currentStep = path.Length - 2;
 
-            gameObject.gridPosition = path[stamina];
-            if (player.CheckCollision(gameObject))
+            if (currentStep >= 0)
+                gameObject.gridPosition = path[currentStep];
+
+            if (gameObject.gridPosition == player.GetCenter())
             {
-                player.TakeDamage(gameObject.gridPosition);
+                stamina = 0;
+                player.TakeDamage(gameObject.gridPosition, gameTime);
+                Debug.WriteLine("sda");
             }
+        }
+
+        public virtual Point[] GetNewPath()
+        {
+            return AStar.FindPath(gameObject.gridPosition, player.GetCenter());
         }
     }
 
@@ -93,7 +116,7 @@ namespace Poloknightse
         GameObject gameObject;
         Point[] path;
 
-        public ReturnState(GameObject gameObject) : base("Return")
+        public ReturnState(GameObject gameObject, string stateName = "Return") : base(stateName)
         {
             startPosition = gameObject.gridPosition;
             this.gameObject = gameObject;
@@ -130,15 +153,19 @@ namespace Poloknightse
 
     class EnemyWalking : GameObject
     {
-        StateMachine stateMachine;
-        bool isLoaded = false;
+        protected StateMachine stateMachine;
+
+        public EnemyWalking(Point gridPosition, string spritePath) : base(gridPosition, spritePath)
+        {
+
+        }
 
         public EnemyWalking(Point gridPosition) : base(gridPosition, "GameObjects/Player/Koning")
         {
 
         }
 
-        private void Load()
+        public override void Initialize()
         {
             stateMachine = new StateMachine();
 
@@ -147,12 +174,25 @@ namespace Poloknightse
             stateMachine.AddState(new ChaseState(this, (GameEnvironment.CurrentGameState as PlayingState).player));
             stateMachine.AddState(new ReturnState(this));
             stateMachine.AddState(new CryingState(this));
-            //stateMachine.AddState(new SearchState());
 
             //Add connections between states
             stateMachine.AddConnection("Patrol", "Return", (object state) => (state as PatrolState).stamina <= 0, stateMachine.GetState("Patrol"));
             stateMachine.AddConnection("Chase", "Return", (object state) => (state as ChaseState).stamina <= 0, stateMachine.GetState("Chase"));
             stateMachine.AddConnection("Return", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Return"));
+            stateMachine.AddConnectionToAll("Chase", (object state) =>
+            {
+                float closestPlayer = float.PositiveInfinity;
+                foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+                {
+                    float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+                    if (distance <= 10 && distance < closestPlayer)
+                    {
+                        closestPlayer = distance;
+                        (state as ChaseState).player = player;
+                    }
+                }
+                return float.IsFinite(closestPlayer);
+            }, stateMachine.GetState("Chase"));
             stateMachine.AddConnectionToAll("Crying", () => !CanMove());
 
             //Set state to Patrol
@@ -163,26 +203,28 @@ namespace Poloknightse
         {
             base.FixedUpdate(gameTime);
 
-            if (!isLoaded)
-            {
-                isLoaded = true;
-                Load();
-            }
-
-            if (!CanMove()) stateMachine.SetState("Crying");
-
             stateMachine.FixedUpdate(gameTime);
         }
 
         /// <summary>
         /// Checks if enemy can walk orthogonaly to any place
         /// </summary>
-        private bool CanMove()
+        protected bool CanMove()
         {
-            return LevelLoader.grid[gridPosition.X + 1, gridPosition.Y].tileType == Tile.TileType.GROUND ||
-                LevelLoader.grid[gridPosition.X - 1, gridPosition.Y].tileType == Tile.TileType.GROUND ||
-                LevelLoader.grid[gridPosition.X, gridPosition.Y + 1].tileType == Tile.TileType.GROUND ||
-                LevelLoader.grid[gridPosition.X, gridPosition.Y - 1].tileType == Tile.TileType.GROUND;
+            bool canMove = false;
+            if (gridPosition.X + 1 < LevelLoader.grid.GetLength(0))
+                canMove = LevelLoader.grid[gridPosition.X + 1, gridPosition.Y].tileType == Tile.TileType.GROUND;
+
+            if (gridPosition.X - 1 >= 0)
+                canMove = LevelLoader.grid[gridPosition.X - 1, gridPosition.Y].tileType == Tile.TileType.GROUND || canMove;
+
+            if (gridPosition.Y + 1 < LevelLoader.grid.GetLength(1))
+                canMove = LevelLoader.grid[gridPosition.X, gridPosition.Y + 1].tileType == Tile.TileType.GROUND || canMove;
+
+            if (gridPosition.Y - 1 >= 0)
+                canMove = LevelLoader.grid[gridPosition.X, gridPosition.Y - 1].tileType == Tile.TileType.GROUND || canMove;
+
+            return canMove;
         }
     }
 }
