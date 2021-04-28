@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Poloknightse
@@ -7,6 +8,7 @@ namespace Poloknightse
     class PlayingState : GameState
     {
         public Player player;
+        public static List<Player> playersList = new List<Player>();
         private int CoinAmount;
 
         public PlayingState()
@@ -16,6 +18,7 @@ namespace Poloknightse
         public override void Init()
         {
             LevelLoader.LoadLevel("Level-5");
+            playersList.Add(player);
 
             //Count how many coins there are in the level
             for (int i = gameObjectList.Count - 1; i >= 0; i--)

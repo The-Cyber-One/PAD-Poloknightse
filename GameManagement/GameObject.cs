@@ -7,12 +7,15 @@ namespace Poloknightse
 {
 	public class GameObject
 	{
+		protected GameObject parent;
 		protected Texture2D texture;
+		protected int layer;
+		protected string id;
 		public Point gridPosition;
 		public Vector2 velocity;
 		protected Rectangle positionSize;
 
-		public GameObject(Point gridPosition, string assetName = null)
+		public GameObject(Point gridPosition, string assetName = null, int layer = 0)
 		{
 			this.gridPosition = gridPosition;
 			if (assetName != null)
@@ -20,6 +23,7 @@ namespace Poloknightse
 				texture = GameEnvironment.ContentManager.Load<Texture2D>(assetName);
 				positionSize = new Rectangle(0, 0, GameEnvironment.gridTileSize, GameEnvironment.gridTileSize);
 			}
+			this.layer = layer;
 		}
 
 		/// <summary>
@@ -63,6 +67,9 @@ namespace Poloknightse
 		{
 			spriteBatch.Draw(texture, positionSize, Color.White);
 		}
+
+		public virtual void Reset() { }
+
 		// boolean to check if to objects collide
 		public bool CheckCollision(GameObject gameObject)
 		{
@@ -78,6 +85,34 @@ namespace Poloknightse
 			{
 				return false;
 			}
+		}
+		public GameObject Root
+		{
+			get
+			{
+				if (parent != null)
+				{
+					return parent.Root;
+				}
+				else
+				{
+					return this;
+				}
+			}
+		}
+		public virtual GameObject Parent
+		{
+			get { return parent; }
+			set { parent = value; }
+		}
+		public virtual int Layer
+		{
+			get { return layer; }
+			set { layer = value; }
+		}
+		public string Id
+		{
+			get { return id; }
 		}
 	}
 }
