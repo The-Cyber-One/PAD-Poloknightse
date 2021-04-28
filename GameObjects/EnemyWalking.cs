@@ -66,7 +66,7 @@ namespace Poloknightse
     class ChaseState : State
     {
         public int stamina;
-        private const int MAX_STAMINA = 10;
+        private const int MAX_STAMINA = 100;
         protected GameObject gameObject;
         public Player player;
         Point[] path;
@@ -75,8 +75,9 @@ namespace Poloknightse
         {
             this.gameObject = gameObject;
             float closestPlayer = float.PositiveInfinity;
-            foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+            for (int i = 0; i < (GameEnvironment.CurrentGameState as PlayingState).players.Children.Count; i++)
             {
+                Player player = (GameEnvironment.CurrentGameState as PlayingState).players.Children[i] as Player;
                 float distance = Vector2.Distance(player.gridPosition.ToVector2(), gameObject.gridPosition.ToVector2());
                 if (distance <= 10 && distance < closestPlayer)
                 {
@@ -86,7 +87,7 @@ namespace Poloknightse
             }
             if (float.IsInfinity(closestPlayer))
             {
-                player = (GameEnvironment.CurrentGameState as PlayingState).players[GameEnvironment.Random.Next((GameEnvironment.CurrentGameState as PlayingState).players.Count)];
+                player = (GameEnvironment.CurrentGameState as PlayingState).players.Children[GameEnvironment.Random.Next((GameEnvironment.CurrentGameState as PlayingState).players.Children.Count)] as Player;
             }
         }
 
@@ -226,7 +227,7 @@ namespace Poloknightse
             stateMachine.AddConnectionToAll("Crying", () => !CanMove());
 
             //Set state to Patrol
-            stateMachine.SetState("Patrol");
+            stateMachine.SetState("Chase");
         }
 
         public override void FixedUpdate(GameTime gameTime)

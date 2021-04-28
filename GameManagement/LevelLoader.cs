@@ -102,7 +102,6 @@ namespace Poloknightse
 
             //Here we check the colors of the image and load the correct tiles.
             grid = new Tile[level.Width, level.Height];
-            Player player = new Player(new Point());
             Dictionary<Point, PlayerFollower> positionFollowerPairs = new Dictionary<Point, PlayerFollower>();
 
             for (int i = 0; i < colors.Length; i++)
@@ -136,8 +135,7 @@ namespace Poloknightse
 
                     if (gameObject is Player)
                     {
-                        player = gameObject as Player;
-                        (GameEnvironment.CurrentGameState as PlayingState).playersList.Add(player);
+                        (GameEnvironment.CurrentGameState as PlayingState).players.Add(gameObject);
                     }
                     else if (gameObject is PlayerFollower)
                     {
@@ -150,12 +148,11 @@ namespace Poloknightse
                 }
             }
 
-            if (player != null)
+            if ((GameEnvironment.CurrentGameState as PlayingState).players.Children.Count > 0)
             {
-                player.LoadFollowers(positionFollowerPairs);
-                if (GameEnvironment.CurrentGameState is PlayingState)
+                foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players.Children)
                 {
-                    (GameEnvironment.CurrentGameState as PlayingState).players.Add(player);
+                    player.LoadFollowers(positionFollowerPairs);
                 }
             }
 

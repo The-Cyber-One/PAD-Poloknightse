@@ -75,6 +75,14 @@ namespace Poloknightse
                 obj.Update(gameTime);
             }
         }
+        public override void FixedUpdate(GameTime gameTime)
+        {
+            base.FixedUpdate(gameTime);
+            foreach (GameObject obj in children)
+            {
+                obj.FixedUpdate(gameTime);
+            }
+        }
 
         public override void Draw(SpriteBatch spriteBatch)
         {

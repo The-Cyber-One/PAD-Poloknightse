@@ -97,7 +97,7 @@ namespace Poloknightse
             {
                 velocity = Vector2.Zero;
                 velocity.Y = 1;
-            }
+            } 
 
             CollisionDetection.CheckWallCollision(this);
             CheckPlayerCollsion();

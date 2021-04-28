@@ -14,6 +14,7 @@ namespace Poloknightse
 		public Point gridPosition;
 		public Vector2 velocity;
 		protected Rectangle positionSize;
+		public bool chosen = false;
 
 		public GameObject(Point gridPosition, string assetName = null, int layer = 0)
 		{

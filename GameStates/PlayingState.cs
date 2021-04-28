@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -7,7 +8,7 @@ namespace Poloknightse
 {
     class PlayingState : GameState
     {
-        public GameObjectList playersList = new GameObjectList(Vector2.Zero.ToPoint());
+        public GameObjectList players = new GameObjectList(Vector2.Zero.ToPoint());
         private int CoinAmount;
 
         public PlayingState()
@@ -17,7 +18,7 @@ namespace Poloknightse
         public override void Init()
         {
             LevelLoader.LoadLevel("Level-5");
-            gameObjectList.Add(playersList);
+            gameObjectList.Add(players);
             //Count how many coins there are in the level
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
@@ -48,6 +49,10 @@ namespace Poloknightse
 
         public override void Update(GameTime gameTime)
         {
+            if(players.Children.Count == 1)
+            {
+                players.Children[0].chosen = true;
+            }
             base.Update(gameTime);
 
             //Check if all coins got picked up
@@ -59,8 +64,9 @@ namespace Poloknightse
             //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
-                foreach (Player player in players)
+                for (int j = 0; j < players.Children.Count; j++)
                 {
+                    Player player = players.Children[j] as Player;
                     //Coin -> Player collision
                     if (gameObjectList[i] is Coin)
                     {
@@ -91,6 +97,29 @@ namespace Poloknightse
                             player.TakeDamage(gameObjectList[i].gridPosition, gameTime);
                             gameObjectList.Remove(gameObjectList[i]);
                             continue;
+                        }
+                    }
+                }
+            }
+        }
+        public override void HandleInput(InputHelper inputHelper)
+        {
+            for(int i = 0; i < players.Children.Count; i++)
+            {
+                if (players.Children[i].chosen == true)
+                {
+                    players.Children[i].HandleInput(inputHelper);
+                    if (inputHelper.KeyPressed(Keys.Q))
+                    {
+                        players.Children[i].chosen = false;
+                        players.Children[i].velocity = Vector2.Zero;
+                        if(i + 1 >= players.Children.Count)
+                        {
+                            players.Children[i].chosen = true;
+                        }
+                        else
+                        {
+                        players.Children[i + 1].chosen = true;
                         }
                     }
                 }

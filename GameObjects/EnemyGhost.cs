@@ -158,8 +158,9 @@ namespace Poloknightse
             stateMachine.AddConnectionToAll("GhostChase", (object state) =>
             {
                 float closestPlayer = float.PositiveInfinity;
-                foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+                for (int i = 0; i < (GameEnvironment.CurrentGameState as PlayingState).players.Children.Count; i++)
                 {
+                    Player player = (GameEnvironment.CurrentGameState as PlayingState).players.Children[i] as Player;
                     float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
                     if (distance <= 10 && distance < closestPlayer)
                     {
