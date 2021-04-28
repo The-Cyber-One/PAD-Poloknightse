@@ -66,15 +66,28 @@ namespace Poloknightse
     class ChaseState : State
     {
         public int stamina;
-        private const int MAX_STAMINA = 100;
+        private const int MAX_STAMINA = 10;
         protected GameObject gameObject;
-        protected Player player;
+        public Player player;
         Point[] path;
 
-        public ChaseState(GameObject gameObject, Player player, string stateName = "Chase") : base(stateName)
+        public ChaseState(GameObject gameObject, string stateName = "Chase") : base(stateName)
         {
             this.gameObject = gameObject;
-            this.player = player;
+            float closestPlayer = float.PositiveInfinity;
+            foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+            {
+                float distance = Vector2.Distance(player.gridPosition.ToVector2(), gameObject.gridPosition.ToVector2());
+                if (distance <= 10 && distance < closestPlayer)
+                {
+                    closestPlayer = distance;
+                    this.player = player;
+                }
+            }
+            if (float.IsInfinity(closestPlayer))
+            {
+                player = (GameEnvironment.CurrentGameState as PlayingState).players[GameEnvironment.Random.Next((GameEnvironment.CurrentGameState as PlayingState).players.Count)];
+            }
         }
 
         public override void Start()
@@ -171,7 +184,7 @@ namespace Poloknightse
 
             //Add states to stateMachine
             stateMachine.AddState(new PatrolState(this));
-            stateMachine.AddState(new ChaseState(this, (GameEnvironment.CurrentGameState as PlayingState).player));
+            stateMachine.AddState(new ChaseState(this));
             stateMachine.AddState(new ReturnState(this));
             stateMachine.AddState(new CryingState(this));
 
@@ -179,10 +192,41 @@ namespace Poloknightse
             stateMachine.AddConnection("Patrol", "Return", (object state) => (state as PatrolState).stamina <= 0, stateMachine.GetState("Patrol"));
             stateMachine.AddConnection("Chase", "Return", (object state) => (state as ChaseState).stamina <= 0, stateMachine.GetState("Chase"));
             stateMachine.AddConnection("Return", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Return"));
+            
+            //stateMachine.AddConnection("Patrol", "Chase", () =>
+            //{
+            //    foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+            //    {
+            //        float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+            //        if (distance <= 10)
+            //        {
+            //            return true;
+            //        }
+            //    }
+            //    return false;
+            //});
+
+            //stateMachine.AddConnection("Patrol", "Chase", (object state) =>
+            //{
+            //    float closestPlayer = float.PositiveInfinity;
+            //    if ((GameEnvironment.CurrentGameState as PlayingState).players.Count > 0)
+            //    {
+            //        foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+            //        {
+            //            float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+            //            if (distance <= 10 && distance < closestPlayer)
+            //            {
+            //                closestPlayer = distance;
+            //                (state as ChaseState).player = player;
+            //            }
+            //        }
+            //    }
+            //    return float.IsFinite(closestPlayer);
+            //}, stateMachine.GetState("Chase"));
             stateMachine.AddConnectionToAll("Crying", () => !CanMove());
 
             //Set state to Patrol
-            stateMachine.SetState("Chase");
+            stateMachine.SetState("Patrol");
         }
 
         public override void FixedUpdate(GameTime gameTime)

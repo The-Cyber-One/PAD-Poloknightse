@@ -139,7 +139,7 @@ namespace Poloknightse
                 return;
             }
             Player player = new Player(followers[followers.Count - 1].gridPosition);
-            PlayingState.playersList.Add(player);
+            (GameEnvironment.CurrentGameState as PlayingState).players.Add(player);
             for (int i = followers.Count - 1; i >= 0; i--)
             {
                 Debug.WriteLine("added other playable player");
