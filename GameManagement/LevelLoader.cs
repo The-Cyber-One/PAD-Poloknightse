@@ -133,16 +133,19 @@ namespace Poloknightse
                 {
                     Point gridPosition = new Point(x, y);
                     GameObject gameObject = Activator.CreateInstance(tilePairs.Item1, gridPosition) as GameObject;
-                    GameEnvironment.CurrentGameState.gameObjectList.Add(gameObject);
 
                     if (gameObject is Player)
                     {
                         player = gameObject as Player;
+                        (GameEnvironment.CurrentGameState as PlayingState).playersList.Add(player);
                     }
-                    if (gameObject is PlayerFollower)
+                    else if (gameObject is PlayerFollower)
                     {
                         positionFollowerPairs.Add(new Point(x, y), gameObject as PlayerFollower);
-                        GameEnvironment.CurrentGameState.gameObjectList.Remove(gameObject);
+                    }
+                    else
+                    {
+                    GameEnvironment.CurrentGameState.gameObjectList.Add(gameObject);
                     }
                 }
             }
