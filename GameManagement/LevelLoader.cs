@@ -152,7 +152,7 @@ namespace Poloknightse
                 player.LoadFollowers(positionFollowerPairs);
                 if (GameEnvironment.CurrentGameState is PlayingState)
                 {
-                    (GameEnvironment.CurrentGameState as PlayingState).players.Add(player);
+                    GameEnvironment.GetState<PlayingState>("PlayingState").players.Add(player);
                 }
             }
 

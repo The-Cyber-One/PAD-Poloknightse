@@ -37,13 +37,15 @@ namespace Poloknightse
         public static void ChangeToGameOverState()
         {
             Debug.WriteLine("going to game over state");
-            GameEnvironment.SwitchTo(GameEnvironment.GameStates.GAME_OVER_STATE);
+            GameEnvironment.GetState<PlayingState>("PlayingState").gameObjectList.Clear();
+            GameEnvironment.SwitchTo("GameOverState");
         }
 
         public static void ChangeToWinState()
         {
             Debug.WriteLine("going to win state");
-            GameEnvironment.SwitchTo(GameEnvironment.GameStates.WIN_STATE);
+            GameEnvironment.GetState<PlayingState>("PlayingState").gameObjectList.Clear();
+            GameEnvironment.SwitchTo("WinState");
         }
 
         public override void Update(GameTime gameTime)

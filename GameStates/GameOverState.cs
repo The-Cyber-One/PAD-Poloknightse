@@ -22,7 +22,7 @@ namespace Poloknightse
 			if (inputHelper.AnyKeyPressed)
 			{
 				Debug.WriteLine("going to start state");
-				GameEnvironment.SwitchTo(GameEnvironment.GameStates.START_STATE);
+				GameEnvironment.SwitchTo("StartState");
 			}
 			base.HandleInput(inputHelper);
 		}

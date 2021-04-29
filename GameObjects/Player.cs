@@ -11,7 +11,7 @@ namespace Poloknightse
 {
     class Player : GameObject
     {
-        private List<PlayerFollower> followers = new List<PlayerFollower>();
+        public List<PlayerFollower> followers = new List<PlayerFollower>();
         private bool addFollower;
         private Point newFollowerPosition;
         int minFollowers = 3;
@@ -139,7 +139,7 @@ namespace Poloknightse
                 return;
             }
             Player player = new Player(followers[followers.Count - 1].gridPosition);
-            (GameEnvironment.CurrentGameState as PlayingState).players.Add(player);
+            GameEnvironment.GetState<PlayingState>("PlayingState").players.Add(player);
             for (int i = followers.Count - 1; i >= 0; i--)
             {
                 Debug.WriteLine("added other playable player");
