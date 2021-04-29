@@ -166,6 +166,7 @@ namespace Poloknightse
 
     class EnemyWalking : GameObject
     {
+        private const int TrackingDistance = 10;
         protected StateMachine stateMachine;
 
         public EnemyWalking(Point gridPosition, string spritePath) : base(gridPosition, spritePath)
@@ -235,13 +236,14 @@ namespace Poloknightse
 
             stateMachine.FixedUpdate(gameTime);
 
+            //Find the closest player 
             float closestPlayer = float.PositiveInfinity;
             if ((GameEnvironment.CurrentGameState as PlayingState).players.Count > 0)
             {
                 foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
                 {
                     float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
-                    if (distance <= 10 && distance < closestPlayer)
+                    if (distance <= TrackingDistance && distance < closestPlayer)
                     {
                         closestPlayer = distance;
                         (stateMachine.GetState("Chase") as ChaseState).player = player;
@@ -249,6 +251,7 @@ namespace Poloknightse
                 }
             }
             
+            //If a player was found in range then attack it
             if(float.IsFinite(closestPlayer))
             {
                 stateMachine.SetState("Chase");

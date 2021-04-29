@@ -27,9 +27,11 @@ namespace Poloknightse
 
         public override Point GetRandomDirection()
         {
+            //Return basic direction
             if (stepsCounter > 0)
                 return base.GetRandomDirection();
 
+            //Return ghost direction
             if (GameEnvironment.Random.Next(2) == 0)
                 return new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
 
@@ -136,6 +138,8 @@ namespace Poloknightse
     }
     class EnemyGhost : EnemyWalking
     {
+        private const int TrackingDistance = 10;
+
         public EnemyGhost(Point gridPosition) : base(gridPosition, "GameObjects/Enemies/EnemyGhost")
         {
 
@@ -181,13 +185,14 @@ namespace Poloknightse
 
             stateMachine.FixedUpdate(gameTime);
 
+            //Find closest player
             float closestPlayer = float.PositiveInfinity;
             if ((GameEnvironment.CurrentGameState as PlayingState).players.Count > 0)
             {
                 foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
                 {
                     float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
-                    if (distance <= 10 && distance < closestPlayer)
+                    if (distance <= TrackingDistance && distance < closestPlayer)
                     {
                         closestPlayer = distance;
                         (stateMachine.GetState("GhostChase") as GhostChaseState).player = player;
@@ -195,6 +200,7 @@ namespace Poloknightse
                 }
             }
 
+            //If a player was found in range then attack it
             if (float.IsFinite(closestPlayer))
             {
                 stateMachine.SetState("GhostChase");
