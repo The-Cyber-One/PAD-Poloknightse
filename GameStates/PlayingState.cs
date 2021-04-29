@@ -49,7 +49,7 @@ namespace Poloknightse
 
         public override void Update(GameTime gameTime)
         {
-            if(players.Children.Count == 1)
+            if (players.Children.Count == 1)
             {
                 players.Children[0].chosen = true;
             }
@@ -57,9 +57,9 @@ namespace Poloknightse
 
             //Check if all coins got picked up
             if (CoinAmount <= 0)
-			{
+            {
                 ChangeToWinState();
-			}
+            }
 
             //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
@@ -102,24 +102,30 @@ namespace Poloknightse
                 }
             }
         }
+
         public override void HandleInput(InputHelper inputHelper)
         {
-            for(int i = 0; i < players.Children.Count; i++)
+            foreach (GameObject gameObject in gameObjectList)
             {
-                if (players.Children[i].chosen == true)
+                if (!(gameObject is Player)) gameObject.HandleInput(inputHelper);
+            }
+
+            for (int i = 0; i < players.Children.Count; i++)
+            {
+                if (players.Children[i].chosen)
                 {
                     players.Children[i].HandleInput(inputHelper);
                     if (inputHelper.KeyPressed(Keys.Q))
                     {
                         players.Children[i].chosen = false;
                         players.Children[i].velocity = Vector2.Zero;
-                        if(i + 1 >= players.Children.Count)
+                        if (i + 1 >= players.Children.Count)
                         {
                             players.Children[i].chosen = true;
                         }
                         else
                         {
-                        players.Children[i + 1].chosen = true;
+                            players.Children[i + 1].chosen = true;
                         }
                     }
                 }
