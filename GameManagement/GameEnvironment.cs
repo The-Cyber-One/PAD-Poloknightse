@@ -66,6 +66,7 @@ namespace Poloknightse
         {
             if (gameStateDict.ContainsKey(gameStateName))
             {
+                if (currentGameState != null) currentGameState.Reset();
                 currentGameState = gameStateDict.GetValueOrDefault(gameStateName);
                 currentGameState.Init();
             }

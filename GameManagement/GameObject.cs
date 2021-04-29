@@ -23,6 +23,14 @@ namespace Poloknightse
 		}
 
 		/// <summary>
+		/// This will be called to reset the gameobject
+		/// </summary>
+		public virtual void Reset()
+		{
+
+		}
+
+		/// <summary>
 		/// This will be called after the level is loaded
 		/// </summary>
 		public virtual void Initialize()

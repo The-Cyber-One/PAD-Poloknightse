@@ -13,6 +13,16 @@ namespace Poloknightse
         public List<GameObject> gameObjectRemovedList = new List<GameObject>();
         public double updateTimer;
         public const float tickTimeLength = 0.5f;
+
+        public virtual void Reset()
+        {
+            foreach (GameObject gameObject in gameObjectList)
+            {
+                gameObject.Reset();
+            }
+            gameObjectList.Clear();
+        }
+
         public virtual void Init()
         {
         }

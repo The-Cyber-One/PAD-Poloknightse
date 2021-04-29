@@ -12,6 +12,14 @@ namespace Poloknightse
 
         public PlayingState()
         {
+
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            players.Clear();
+            //Init();
         }
 
         public override void Init()
@@ -34,20 +42,6 @@ namespace Poloknightse
             base.Draw(spriteBatch);
         }
 
-        public static void ChangeToGameOverState()
-        {
-            Debug.WriteLine("going to game over state");
-            GameEnvironment.GetState<PlayingState>("PlayingState").gameObjectList.Clear();
-            GameEnvironment.SwitchTo("GameOverState");
-        }
-
-        public static void ChangeToWinState()
-        {
-            Debug.WriteLine("going to win state");
-            GameEnvironment.GetState<PlayingState>("PlayingState").gameObjectList.Clear();
-            GameEnvironment.SwitchTo("WinState");
-        }
-
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -55,7 +49,7 @@ namespace Poloknightse
             //Check if all coins got picked up
             if (CoinAmount <= 0)
 			{
-                ChangeToWinState();
+                GameEnvironment.SwitchTo("WinState");
 			}
 
             //Collision detection

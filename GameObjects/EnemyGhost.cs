@@ -54,7 +54,7 @@ namespace Poloknightse
         int ghostCooldownSteps = 10;
         int stepsCounter;
 
-        public GhostChaseState(GameObject gameObject) : base(gameObject, "GhostChase")
+        public GhostChaseState(GameObject gameObject, StateMachine stateMachine) : base(gameObject, stateMachine, "GhostChase")
         {
 
         }
@@ -151,7 +151,7 @@ namespace Poloknightse
 
             //Add states to stateMachine
             stateMachine.AddState(new GhostPatrolState(this));
-            stateMachine.AddState(new GhostChaseState(this));
+            stateMachine.AddState(new GhostChaseState(this, stateMachine));
             stateMachine.AddState(new GhostReturnState(this));
             stateMachine.AddState(new CryingState(this));
 

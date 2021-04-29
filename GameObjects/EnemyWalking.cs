@@ -70,9 +70,11 @@ namespace Poloknightse
         protected GameObject gameObject;
         public Player player;
         Point[] path;
+        StateMachine stateMachine;
 
-        public ChaseState(GameObject gameObject, string stateName = "Chase") : base(stateName)
+        public ChaseState(GameObject gameObject, StateMachine stateMachine, string stateName = "Chase") : base(stateName)
         {
+            this.stateMachine = stateMachine;
             this.gameObject = gameObject;
             float closestPlayer = float.PositiveInfinity;
             foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players)
@@ -115,6 +117,7 @@ namespace Poloknightse
                 {
                     stamina = 0;
                     player.TakeDamage(player.GetCenter(), gameTime);
+                    stateMachine.SetState("Return");
                     break;
                 }
             }
@@ -189,7 +192,7 @@ namespace Poloknightse
 
             //Add states to stateMachine
             stateMachine.AddState(new PatrolState(this));
-            stateMachine.AddState(new ChaseState(this));
+            stateMachine.AddState(new ChaseState(this, stateMachine));
             stateMachine.AddState(new ReturnState(this));
             stateMachine.AddState(new CryingState(this));
 
@@ -197,7 +200,7 @@ namespace Poloknightse
             stateMachine.AddConnection("Patrol", "Return", (object state) => (state as PatrolState).stamina <= 0, stateMachine.GetState("Patrol"));
             stateMachine.AddConnection("Chase", "Return", (object state) => (state as ChaseState).stamina <= 0, stateMachine.GetState("Chase"));
             stateMachine.AddConnection("Return", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Return"));
-            
+
             //stateMachine.AddConnection("Patrol", "Chase", () =>
             //{
             //    foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players)
@@ -240,7 +243,9 @@ namespace Poloknightse
 
             stateMachine.FixedUpdate(gameTime);
 
-            //Find the closest player 
+            if (stateMachine.CurrentState == stateMachine.GetState("Return")) return;
+
+            //Find the closest player
             float closestPlayer = float.PositiveInfinity;
             if (GameEnvironment.GetState<PlayingState>("PlayingState").players.Count > 0)
             {
@@ -254,9 +259,9 @@ namespace Poloknightse
                     }
                 }
             }
-            
+
             //If a player was found in range then attack it
-            if(float.IsFinite(closestPlayer))
+            if (float.IsFinite(closestPlayer))
             {
                 stateMachine.SetState("Chase");
             }
