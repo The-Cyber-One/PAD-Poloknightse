@@ -155,24 +155,50 @@ namespace Poloknightse
             stateMachine.AddConnection("GhostPatrol", "GhostReturn", (object state) => (state as GhostPatrolState).stamina <= 0, stateMachine.GetState("GhostPatrol"));
             stateMachine.AddConnection("GhostChase", "GhostReturn", (object state) => (state as GhostChaseState).stamina <= 0, stateMachine.GetState("GhostChase"));
             stateMachine.AddConnection("GhostReturn", "GhostPatrol", (object state) => (state as GhostReturnState).updated, stateMachine.GetState("GhostReturn"));
-            stateMachine.AddConnectionToAll("GhostChase", (object state) =>
+            //stateMachine.AddConnectionToAll("GhostChase", (object state) =>
+            //{
+            //    float closestPlayer = float.PositiveInfinity;
+            //    foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+            //    {
+            //        float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+            //        if (distance <= 10 && distance < closestPlayer)
+            //        {
+            //            closestPlayer = distance;
+            //            (state as ChaseState).player = player;
+            //        }
+            //    }
+            //    return float.IsFinite(closestPlayer);
+            //}, stateMachine.GetState("GhostChase"));
+            //stateMachine.AddConnectionToAll("Crying", () => !CanMove());
+
+            //Set state to Patrol
+            stateMachine.SetState("GhostPatrol");
+        }
+
+        public override void FixedUpdate(GameTime gameTime)
+        {
+            base.FixedUpdate(gameTime);
+
+            stateMachine.FixedUpdate(gameTime);
+
+            float closestPlayer = float.PositiveInfinity;
+            if ((GameEnvironment.CurrentGameState as PlayingState).players.Count > 0)
             {
-                float closestPlayer = float.PositiveInfinity;
                 foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
                 {
                     float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
                     if (distance <= 10 && distance < closestPlayer)
                     {
                         closestPlayer = distance;
-                        (state as ChaseState).player = player;
+                        (stateMachine.GetState("GhostChase") as GhostChaseState).player = player;
                     }
                 }
-                return float.IsFinite(closestPlayer);
-            }, stateMachine.GetState("GhostChase"));
-            stateMachine.AddConnectionToAll("Crying", () => !CanMove());
+            }
 
-            //Set state to Patrol
-            stateMachine.SetState("GhostPatrol");
+            if (float.IsFinite(closestPlayer))
+            {
+                stateMachine.SetState("GhostChase");
+            }
         }
     }
 }

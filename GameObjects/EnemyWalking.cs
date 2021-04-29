@@ -234,6 +234,25 @@ namespace Poloknightse
             base.FixedUpdate(gameTime);
 
             stateMachine.FixedUpdate(gameTime);
+
+            float closestPlayer = float.PositiveInfinity;
+            if ((GameEnvironment.CurrentGameState as PlayingState).players.Count > 0)
+            {
+                foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players)
+                {
+                    float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+                    if (distance <= 10 && distance < closestPlayer)
+                    {
+                        closestPlayer = distance;
+                        (stateMachine.GetState("Chase") as ChaseState).player = player;
+                    }
+                }
+            }
+            
+            if(float.IsFinite(closestPlayer))
+            {
+                stateMachine.SetState("Chase");
+            }
         }
 
         /// <summary>
