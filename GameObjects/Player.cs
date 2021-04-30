@@ -142,7 +142,6 @@ namespace Poloknightse
             GameEnvironment.GetState<PlayingState>("PlayingState").players.Add(player);
             for (int i = followers.Count - 1; i >= 0; i--)
             {
-                Debug.WriteLine("added other playable player");
                 if (followers[i].gridPosition == gridPosition)
                 {
                     for(int j = followers.Count - 1; j >= i; j--)
@@ -152,6 +151,7 @@ namespace Poloknightse
                     }
                     followers.RemoveAt(followers.Count - 1);
                     player.followers.RemoveAt(0);
+                    Debug.WriteLine("added other playable player");
                     break;
                 }
             }

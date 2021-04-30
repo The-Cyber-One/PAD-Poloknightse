@@ -117,7 +117,7 @@ namespace Poloknightse
                 {
                     stamina = 0;
                     player.TakeDamage(player.GetCenter(), gameTime);
-                    stateMachine.SetState("Return");
+                    stateMachine.SetState("Attacked");
                     break;
                 }
             }
@@ -153,6 +153,14 @@ namespace Poloknightse
         {
             stamina--;
             gameObject.gridPosition = path[stamina];
+        }
+    }
+
+    class AttackedState : ReturnState
+    {
+        public AttackedState(GameObject gameObject) : base(gameObject, "Attacked")
+        {
+
         }
     }
 
@@ -194,12 +202,14 @@ namespace Poloknightse
             stateMachine.AddState(new PatrolState(this));
             stateMachine.AddState(new ChaseState(this, stateMachine));
             stateMachine.AddState(new ReturnState(this));
+            stateMachine.AddState(new AttackedState(this));
             stateMachine.AddState(new CryingState(this));
 
             //Add connections between states
             stateMachine.AddConnection("Patrol", "Return", (object state) => (state as PatrolState).stamina <= 0, stateMachine.GetState("Patrol"));
             stateMachine.AddConnection("Chase", "Return", (object state) => (state as ChaseState).stamina <= 0, stateMachine.GetState("Chase"));
             stateMachine.AddConnection("Return", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Return"));
+            stateMachine.AddConnection("Attacked", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Attacked"));
 
             //stateMachine.AddConnection("Patrol", "Chase", () =>
             //{
@@ -243,7 +253,7 @@ namespace Poloknightse
 
             stateMachine.FixedUpdate(gameTime);
 
-            if (stateMachine.CurrentState == stateMachine.GetState("Return")) return;
+            if (stateMachine.CurrentState == stateMachine.GetState("Attacked")) return;
 
             //Find the closest player
             float closestPlayer = float.PositiveInfinity;
