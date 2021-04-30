@@ -8,6 +8,7 @@ namespace Poloknightse
 {
     class StartState : GameState
     {
+        private const int TITLE_Y_OFFSET = 200;
         GameObjectList backgroundObjects = new GameObjectList();
         List<Point> secretPlaces = new List<Point>();
 
@@ -18,11 +19,16 @@ namespace Poloknightse
 
         public override async void Init()
         {
+            //Background
             LevelLoader.LoadLevel("MainMenu");
             AddSecret(new Coin());
             AddSecret(new HealthPickup());
             AddSecret(new EnemyGhost());
             AddSecret(new EnemyWalking());
+
+            //Menu
+            gameObjectList.Add(new TextGameObject("Poloknightse", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2 - TITLE_Y_OFFSET), Vector2.One / 2, Color.Black, "Fonts/Title"));
+            gameObjectList.Add(new TextGameObject("Press any button to begin", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2), Vector2.One / 2));
 
             Debug.WriteLine((await HighscoreManager.LoadScore()).ToString());
         }
@@ -41,7 +47,6 @@ namespace Poloknightse
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-
             LevelLoader.Draw(spriteBatch);
             backgroundObjects.Draw(spriteBatch);
             base.Draw(spriteBatch);
@@ -51,7 +56,7 @@ namespace Poloknightse
         {
             if (inputHelper.AnyKeyPressed)
             {
-                GameEnvironment.SwitchTo("PlayingState");
+                //GameEnvironment.SwitchTo("PlayingState");
             }
             base.HandleInput(inputHelper);
         }

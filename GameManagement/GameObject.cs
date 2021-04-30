@@ -70,10 +70,10 @@ namespace Poloknightse
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             positionSize = new Rectangle(
-                gridPosition.X * GameEnvironment.gridTileSize + GameEnvironment.startGridPoint.X,
-                gridPosition.Y * GameEnvironment.gridTileSize + GameEnvironment.startGridPoint.Y,
-                GameEnvironment.gridTileSize,
-                GameEnvironment.gridTileSize);
+                gridPosition.X * LevelLoader.gridTileSize + GameEnvironment.startGridPoint.X,
+                gridPosition.Y * LevelLoader.gridTileSize + GameEnvironment.startGridPoint.Y,
+                LevelLoader.gridTileSize,
+                LevelLoader.gridTileSize);
             spriteBatch.Draw(texture, positionSize, Color.White);
         }
 

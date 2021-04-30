@@ -26,7 +26,7 @@ namespace Poloknightse
         {
             gameObjectList.Clear();
 
-            LevelLoader.LoadLevel("test");
+            LevelLoader.LoadLevel("Level-5");
             gameObjectList.Add(players);
 
             //Count how many coins there are in the level

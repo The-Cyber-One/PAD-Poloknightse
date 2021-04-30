@@ -9,7 +9,7 @@ namespace Poloknightse
 {
     class LevelLoader
     {
-        private static int gridTileSize = GameEnvironment.gridTileSize;
+        public static int gridTileSize;
         public static Tile[,] grid;
 
         private static Dictionary<Color, Tuple<Type, string, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Type, string, Tile.TileType>>()
@@ -19,7 +19,7 @@ namespace Poloknightse
                 Color.Black,                                //Color in png
                 new Tuple<Type, string, Tile.TileType>(     //
                     typeof(Tile),                           //Extra GameObject to instantiate (if it is Tile then no extra GameObject will be instantiated)
-                    "LevelTiles/Wall",                      //Tile texture path
+                    "LevelTiles/SmoothWall",                      //Tile texture path
                     Tile.TileType.WALL)                     //Associated TileType
             },
             {
@@ -95,7 +95,7 @@ namespace Poloknightse
             level.GetData(colors);
 
             //Change the tile size and calculate the center
-            GameEnvironment.gridTileSize = GameEnvironment.Screen.Y / level.Height;
+            gridTileSize = GameEnvironment.Screen.Y / level.Height;
             int xOffset = GameEnvironment.Screen.X / 2 - (level.Width / 2) * gridTileSize;
             int yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
             GameEnvironment.startGridPoint = new Point(xOffset, yOffset);
