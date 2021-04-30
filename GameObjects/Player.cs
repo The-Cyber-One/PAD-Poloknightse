@@ -78,26 +78,26 @@ namespace Poloknightse
         public override void HandleInput(InputHelper inputHelper)
         {
             //Change the movement direction
-            if (inputHelper.KeyPressed(Keys.D))
+            if (inputHelper.KeyPressed(Keys.D) || inputHelper.KeyPressed(Keys.Right))
             {
                 velocity = Vector2.Zero;
                 velocity.X = 1;
             }
-            else if (inputHelper.KeyPressed(Keys.A))
+            else if (inputHelper.KeyPressed(Keys.A) || inputHelper.KeyPressed(Keys.Left))
             {
                 velocity = Vector2.Zero;
                 velocity.X = -1;
             }
-            else if (inputHelper.KeyPressed(Keys.W))
+            else if (inputHelper.KeyPressed(Keys.W) || inputHelper.KeyPressed(Keys.Up))
             {
                 velocity = Vector2.Zero;
                 velocity.Y = -1;
             }
-            else if (inputHelper.KeyPressed(Keys.S))
+            else if (inputHelper.KeyPressed(Keys.S) || inputHelper.KeyPressed(Keys.Down))
             {
                 velocity = Vector2.Zero;
                 velocity.Y = 1;
-            } 
+            }
 
             CollisionDetection.CheckWallCollision(this);
             CheckPlayerCollsion();
@@ -145,7 +145,7 @@ namespace Poloknightse
                 Debug.WriteLine("added other playable player");
                 if (followers[i].gridPosition == gridPosition)
                 {
-                    for(int j = followers.Count - 1; j >= i; j--)
+                    for (int j = followers.Count - 1; j >= i; j--)
                     {
                         player.AddFollower(gameTime, followers[j].gridPosition);
                         followers.RemoveAt(j);

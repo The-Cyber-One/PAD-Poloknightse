@@ -115,7 +115,7 @@ namespace Poloknightse
                 if (players.Children[i].chosen)
                 {
                     players.Children[i].HandleInput(inputHelper);
-                    if (inputHelper.KeyPressed(Keys.Q))
+                    if (inputHelper.KeyPressed(Keys.E) || inputHelper.KeyPressed(Keys.Space))
                     {
                         players.Children[i].chosen = false;
                         players.Children[i].velocity = Vector2.Zero;
