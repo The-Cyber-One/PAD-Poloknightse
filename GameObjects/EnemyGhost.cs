@@ -32,10 +32,19 @@ namespace Poloknightse
                 return base.GetRandomDirection();
 
             //Return ghost direction
-            if (GameEnvironment.Random.Next(2) == 0)
-                return new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
+            Point direction = new Point();
+            do
+            {
+                if (GameEnvironment.Random.Next(2) == 0)
+                    direction = new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
 
-            return new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
+                direction = new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
+            } 
+            while (LevelLoader.grid.GetLength(0) < gameObject.gridPosition.X + direction.X &&
+                LevelLoader.grid.GetLength(1) < gameObject.gridPosition.Y + direction.Y &&
+                gameObject.gridPosition.X + direction.X < 0 &&
+                gameObject.gridPosition.Y + direction.Y < 0);
+            return direction;
         }
 
         public override void FixedUpdate(GameTime gameTime)
@@ -153,27 +162,14 @@ namespace Poloknightse
             stateMachine.AddState(new GhostPatrolState(this));
             stateMachine.AddState(new GhostChaseState(this, stateMachine));
             stateMachine.AddState(new GhostReturnState(this));
+            stateMachine.AddState(new AttackedState(this));
             stateMachine.AddState(new CryingState(this));
 
             //Add connections between states
             stateMachine.AddConnection("GhostPatrol", "GhostReturn", (object state) => (state as GhostPatrolState).stamina <= 0, stateMachine.GetState("GhostPatrol"));
             stateMachine.AddConnection("GhostChase", "GhostReturn", (object state) => (state as GhostChaseState).stamina <= 0, stateMachine.GetState("GhostChase"));
             stateMachine.AddConnection("GhostReturn", "GhostPatrol", (object state) => (state as GhostReturnState).updated, stateMachine.GetState("GhostReturn"));
-            //stateMachine.AddConnectionToAll("GhostChase", (object state) =>
-            //{
-            //    float closestPlayer = float.PositiveInfinity;
-            //    foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players)
-            //    {
-            //        float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
-            //        if (distance <= 10 && distance < closestPlayer)
-            //        {
-            //            closestPlayer = distance;
-            //            (state as ChaseState).player = player;
-            //        }
-            //    }
-            //    return float.IsFinite(closestPlayer);
-            //}, stateMachine.GetState("GhostChase"));
-            //stateMachine.AddConnectionToAll("Crying", () => !CanMove());
+            stateMachine.AddConnection("Attacked", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Attacked"));
 
             //Set state to Patrol
             stateMachine.SetState("GhostPatrol");
@@ -181,15 +177,15 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
-            base.FixedUpdate(gameTime);
-
             stateMachine.FixedUpdate(gameTime);
+
+            if (stateMachine.CurrentState.name == "Attacked") return;
 
             //Find closest player
             float closestPlayer = float.PositiveInfinity;
-            if (GameEnvironment.GetState<PlayingState>("PlayingState").players.Count > 0)
+            if (GameEnvironment.GetState<PlayingState>("PlayingState").players.Children.Count > 0)
             {
-                foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players)
+                foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players.Children)
                 {
                     float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
                     if (distance <= TrackingDistance && distance < closestPlayer)

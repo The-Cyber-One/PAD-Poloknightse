@@ -7,8 +7,7 @@ namespace Poloknightse
 {
     class PlayingState : GameState
     {
-        public Player player;
-        public static List<Player> playersList = new List<Player>();
+        public GameObjectList players = new GameObjectList(Vector2.Zero.ToPoint());
         private int CoinAmount;
 
         public PlayingState()
@@ -25,8 +24,10 @@ namespace Poloknightse
 
         public override void Init()
         {
+            gameObjectList.Clear();
+
             LevelLoader.LoadLevel("Level-5");
-            playersList.Add(player);
+            gameObjectList.Add(players);
 
             //Count how many coins there are in the level
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
@@ -57,7 +58,7 @@ namespace Poloknightse
             //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
-                foreach (Player player in players)
+                foreach (Player player in players.Children)
                 {
                     //Coin -> Player collision
                     if (gameObjectList[i] is Coin)

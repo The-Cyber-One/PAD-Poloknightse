@@ -77,7 +77,8 @@ namespace Poloknightse
             this.stateMachine = stateMachine;
             this.gameObject = gameObject;
             float closestPlayer = float.PositiveInfinity;
-            foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players)
+            List<GameObject> players = GameEnvironment.GetState<PlayingState>("PlayingState").players.Children;
+            foreach (Player player in players)
             {
                 float distance = Vector2.Distance(player.gridPosition.ToVector2(), gameObject.gridPosition.ToVector2());
                 if (distance <= 10 && distance < closestPlayer)
@@ -88,13 +89,14 @@ namespace Poloknightse
             }
             if (float.IsInfinity(closestPlayer))
             {
-                player = GameEnvironment.GetState<PlayingState>("PlayingState").players[GameEnvironment.Random.Next(GameEnvironment.GetState<PlayingState>("PlayingState").players.Count)];
+                player = players[GameEnvironment.Random.Next(players.Count)] as Player;
             }
         }
 
         public override void Start()
         {
             path = GetNewPath();
+            if (path == null) return;
 
             if (MAX_STAMINA >= path.Length) stamina = path.Length - 1;
             else stamina = MAX_STAMINA;
@@ -105,11 +107,14 @@ namespace Poloknightse
             path = GetNewPath();
 
             stamina--;
-            int currentStep = path.Length - 2;
 
-            if (currentStep >= 0)
-                gameObject.gridPosition = path[currentStep];
+            if (path != null)
+            {
+                int currentStep = path.Length - 2;
 
+                if (currentStep >= 0)
+                    gameObject.gridPosition = path[currentStep];
+            }
             for (int i = player.followers.Count - 1; i >= 0; i--)
             {
                 PlayerFollower follower = player.followers[i];
@@ -121,6 +126,7 @@ namespace Poloknightse
                     break;
                 }
             }
+
         }
 
         public virtual Point[] GetNewPath()
@@ -211,36 +217,6 @@ namespace Poloknightse
             stateMachine.AddConnection("Return", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Return"));
             stateMachine.AddConnection("Attacked", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Attacked"));
 
-            //stateMachine.AddConnection("Patrol", "Chase", () =>
-            //{
-            //    foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players)
-            //    {
-            //        float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
-            //        if (distance <= 10)
-            //        {
-            //            return true;
-            //        }
-            //    }
-            //    return false;
-            //});
-
-            //stateMachine.AddConnection("Patrol", "Chase", (object state) =>
-            //{
-            //    float closestPlayer = float.PositiveInfinity;
-            //    if (GameEnvironment.GetState<PlayingState>("PlayingState").players.Count > 0)
-            //    {
-            //        foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players)
-            //        {
-            //            float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
-            //            if (distance <= 10 && distance < closestPlayer)
-            //            {
-            //                closestPlayer = distance;
-            //                (state as ChaseState).player = player;
-            //            }
-            //        }
-            //    }
-            //    return float.IsFinite(closestPlayer);
-            //}, stateMachine.GetState("Chase"));
             stateMachine.AddConnectionToAll("Crying", () => !CanMove());
 
             //Set state to Patrol
@@ -253,13 +229,13 @@ namespace Poloknightse
 
             stateMachine.FixedUpdate(gameTime);
 
-            if (stateMachine.CurrentState == stateMachine.GetState("Attacked")) return;
+            if (stateMachine.CurrentState.name == "Attacked") return;
 
             //Find the closest player
             float closestPlayer = float.PositiveInfinity;
-            if (GameEnvironment.GetState<PlayingState>("PlayingState").players.Count > 0)
+            if (GameEnvironment.GetState<PlayingState>("PlayingState").players.Children.Count > 0)
             {
-                foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players)
+                foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players.Children)
                 {
                     float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
                     if (distance <= TrackingDistance && distance < closestPlayer)

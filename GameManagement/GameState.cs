@@ -10,7 +10,6 @@ namespace Poloknightse
     class GameState
     {
         public List<GameObject> gameObjectList = new List<GameObject>();
-        public List<GameObject> gameObjectRemovedList = new List<GameObject>();
         public double updateTimer;
         public const float tickTimeLength = 0.5f;
 
@@ -20,7 +19,6 @@ namespace Poloknightse
             {
                 gameObject.Reset();
             }
-            gameObjectList.Clear();
         }
 
         public virtual void Init()

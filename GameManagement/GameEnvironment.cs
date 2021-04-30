@@ -19,6 +19,7 @@ namespace Poloknightse
         public static int gridTileSize = 16;
         public static Point startGridPoint = new Point();
         static protected GameState currentGameState;
+        static private GameState previousGameState;
         protected static string playerName = "spelernaam hiero";
 
         static protected Dictionary<string, GameState> gameStateDict;

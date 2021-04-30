@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -36,6 +37,14 @@ namespace Poloknightse
         {
             children.Remove(obj);
             obj.Parent = null;
+        }
+
+        public void Clear()
+        {
+            for (int i = children.Count - 1; i >= 0; i--)
+            {
+                children.RemoveAt(i);
+            }
         }
 
         public GameObject Find(string id)

@@ -76,8 +76,6 @@ namespace Poloknightse
 			spriteBatch.Draw(texture, positionSize, Color.White);
 		}
 
-		public virtual void Reset() { }
-
 		// boolean to check if to objects collide
 		public bool CheckCollision(GameObject gameObject)
 		{
