@@ -195,7 +195,7 @@ namespace Poloknightse
 
         }
 
-        public EnemyWalking(Point gridPosition) : base(gridPosition, "GameObjects/Player/Koning")
+        public EnemyWalking(Point gridPosition = new Point()) : base(gridPosition, "GameObjects/Player/Koning")
         {
 
         }

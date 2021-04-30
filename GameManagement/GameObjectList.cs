@@ -9,8 +9,10 @@ namespace Poloknightse
     {
         protected List<GameObject> children;
 
-        public GameObjectList(Point gridPosition, int layer = 0, string id = "") : base(gridPosition, null, layer)
+        public GameObjectList(Point? gridPosition = null, int layer = 0, string id = "") : base(gridPosition, null, layer)
         {
+            if (gridPosition == null) gridPosition = Point.Zero;
+            this.gridPosition = gridPosition.Value;
             children = new List<GameObject>();
         }
 

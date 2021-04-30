@@ -149,7 +149,7 @@ namespace Poloknightse
     {
         private const int TrackingDistance = 10;
 
-        public EnemyGhost(Point gridPosition) : base(gridPosition, "GameObjects/Enemies/EnemyGhost")
+        public EnemyGhost(Point gridPosition = new Point()) : base(gridPosition, "GameObjects/Enemies/EnemyGhost")
         {
 
         }

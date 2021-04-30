@@ -7,7 +7,7 @@ namespace Poloknightse
 {
     class PlayingState : GameState
     {
-        public GameObjectList players = new GameObjectList(Vector2.Zero.ToPoint());
+        public GameObjectList players = new GameObjectList();
         private int CoinAmount;
 
         public PlayingState()
@@ -26,7 +26,7 @@ namespace Poloknightse
         {
             gameObjectList.Clear();
 
-            LevelLoader.LoadLevel("Level-5");
+            LevelLoader.LoadLevel("test");
             gameObjectList.Add(players);
 
             //Count how many coins there are in the level

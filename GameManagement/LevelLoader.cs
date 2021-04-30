@@ -122,7 +122,7 @@ namespace Poloknightse
 
                 //Get position
                 int x = i % level.Width;
-                int y = i / level.Height;
+                int y = i / level.Width;
                 Rectangle rectangle = new Rectangle(x * gridTileSize + xOffset, y * gridTileSize + yOffset, gridTileSize, gridTileSize);
 
                 //Set tile
