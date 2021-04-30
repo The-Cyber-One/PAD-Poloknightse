@@ -30,7 +30,7 @@ namespace Poloknightse
     class StateMachine
     {
         private Dictionary<string, State> states = new Dictionary<string, State>();
-        State currentState;
+        public State CurrentState { private set; get; }
 
         /// <summary>
         /// Add a <see cref="State"/> state to the dictiorary with <see cref="State.name"/> as key
@@ -59,9 +59,9 @@ namespace Poloknightse
         {
             if (!states.ContainsKey(newState))
                 throw new Exception("state not found in list");
-            if (currentState != null) currentState.End();
-            currentState = states[newState];
-            currentState.Start();
+            if (CurrentState != null) CurrentState.End();
+            CurrentState = states[newState];
+            CurrentState.Start();
 
         }
 
@@ -117,7 +117,26 @@ namespace Poloknightse
             {
                 foreach (string state in states.Keys)
                 {
+                    if (state == toState) continue;
+                    if (states[state].connections.ContainsKey(toState)) continue;
                     states[state].connections.Add(toState, new Tuple<Func<object, bool>, object>(func1, null));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add a connection from all states to <paramref name="toState"/> in the dictionary
+        /// </summary>
+        /// <param name="toState">Connection to this state</param>
+        /// <param name="func">The function that checks when to switch</param>
+        public void AddConnectionToAll(string toState, Func<object, bool> func, State referanceVariables)
+        {
+            if (states.ContainsKey(toState))
+            {
+                foreach (string state in states.Keys)
+                {
+                    if (state == toState) continue;
+                    states[state].connections.Add(toState, new Tuple<Func<object, bool>, object>(func, referanceVariables));
                 }
             }
         }
@@ -128,9 +147,9 @@ namespace Poloknightse
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.Update(gameTime);
+                CurrentState.Update(gameTime);
                 CheckConnections();
             }
         }
@@ -141,9 +160,9 @@ namespace Poloknightse
         /// <param name="gameTime"></param>
         public void FixedUpdate(GameTime gameTime)
         {
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.FixedUpdate(gameTime);
+                CurrentState.FixedUpdate(gameTime);
                 CheckConnections();
             }
         }
@@ -153,11 +172,11 @@ namespace Poloknightse
         /// </summary>
         private void CheckConnections()
         {
-            foreach (string otherState in currentState.connections.Keys)
+            foreach (string otherState in CurrentState.connections.Keys)
             {
-                Func<object, bool> func = currentState.connections[otherState].Item1;
+                Func<object, bool> func = CurrentState.connections[otherState].Item1;
 
-                object args = currentState.connections[otherState].Item2;
+                object args = CurrentState.connections[otherState].Item2;
 
                 if (func.Invoke(args))
                 {

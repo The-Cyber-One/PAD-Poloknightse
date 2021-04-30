@@ -19,12 +19,12 @@ namespace Poloknightse
             
 
             //Initialize GameStates
-            gameStateDict.Add(GameStates.START_STATE, new StartState());
-            gameStateDict.Add(GameStates.PLAYING_STATE, new PlayingState());
-            gameStateDict.Add(GameStates.WIN_STATE, new WinState());
-            gameStateDict.Add(GameStates.GAME_OVER_STATE, new GameOverState());
+            gameStateDict.Add("StartState", new StartState());
+            gameStateDict.Add("PlayingState", new PlayingState());
+            gameStateDict.Add("WinState", new WinState());
+            gameStateDict.Add("GameOverState", new GameOverState());
 
-            SwitchTo(GameStates.START_STATE);
+            SwitchTo("StartState");
         }
 
         protected override void LoadContent()

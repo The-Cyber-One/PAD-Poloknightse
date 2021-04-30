@@ -27,9 +27,11 @@ namespace Poloknightse
 
         public override Point GetRandomDirection()
         {
+            //Return basic direction
             if (stepsCounter > 0)
                 return base.GetRandomDirection();
 
+            //Return ghost direction
             if (GameEnvironment.Random.Next(2) == 0)
                 return new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
 
@@ -52,7 +54,7 @@ namespace Poloknightse
         int ghostCooldownSteps = 10;
         int stepsCounter;
 
-        public GhostChaseState(GameObject gameObject, Player player) : base(gameObject, player, "GhostChase")
+        public GhostChaseState(GameObject gameObject, StateMachine stateMachine) : base(gameObject, stateMachine, "GhostChase")
         {
 
         }
@@ -136,6 +138,8 @@ namespace Poloknightse
     }
     class EnemyGhost : EnemyWalking
     {
+        private const int TrackingDistance = 10;
+
         public EnemyGhost(Point gridPosition) : base(gridPosition, "GameObjects/Enemies/EnemyGhost")
         {
 
@@ -147,7 +151,7 @@ namespace Poloknightse
 
             //Add states to stateMachine
             stateMachine.AddState(new GhostPatrolState(this));
-            stateMachine.AddState(new GhostChaseState(this, (GameEnvironment.CurrentGameState as PlayingState).player));
+            stateMachine.AddState(new GhostChaseState(this, stateMachine));
             stateMachine.AddState(new GhostReturnState(this));
             stateMachine.AddState(new CryingState(this));
 
@@ -155,10 +159,52 @@ namespace Poloknightse
             stateMachine.AddConnection("GhostPatrol", "GhostReturn", (object state) => (state as GhostPatrolState).stamina <= 0, stateMachine.GetState("GhostPatrol"));
             stateMachine.AddConnection("GhostChase", "GhostReturn", (object state) => (state as GhostChaseState).stamina <= 0, stateMachine.GetState("GhostChase"));
             stateMachine.AddConnection("GhostReturn", "GhostPatrol", (object state) => (state as GhostReturnState).updated, stateMachine.GetState("GhostReturn"));
-            stateMachine.AddConnectionToAll("Crying", () => !CanMove());
+            //stateMachine.AddConnectionToAll("GhostChase", (object state) =>
+            //{
+            //    float closestPlayer = float.PositiveInfinity;
+            //    foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players)
+            //    {
+            //        float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+            //        if (distance <= 10 && distance < closestPlayer)
+            //        {
+            //            closestPlayer = distance;
+            //            (state as ChaseState).player = player;
+            //        }
+            //    }
+            //    return float.IsFinite(closestPlayer);
+            //}, stateMachine.GetState("GhostChase"));
+            //stateMachine.AddConnectionToAll("Crying", () => !CanMove());
 
             //Set state to Patrol
-            stateMachine.SetState("GhostChase");
+            stateMachine.SetState("GhostPatrol");
+        }
+
+        public override void FixedUpdate(GameTime gameTime)
+        {
+            base.FixedUpdate(gameTime);
+
+            stateMachine.FixedUpdate(gameTime);
+
+            //Find closest player
+            float closestPlayer = float.PositiveInfinity;
+            if (GameEnvironment.GetState<PlayingState>("PlayingState").players.Count > 0)
+            {
+                foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players)
+                {
+                    float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+                    if (distance <= TrackingDistance && distance < closestPlayer)
+                    {
+                        closestPlayer = distance;
+                        (stateMachine.GetState("GhostChase") as GhostChaseState).player = player;
+                    }
+                }
+            }
+
+            //If a player was found in range then attack it
+            if (float.IsFinite(closestPlayer))
+            {
+                stateMachine.SetState("GhostChase");
+            }
         }
     }
 }

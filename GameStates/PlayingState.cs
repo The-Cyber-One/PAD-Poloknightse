@@ -13,6 +13,14 @@ namespace Poloknightse
 
         public PlayingState()
         {
+
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            players.Clear();
+            //Init();
         }
 
         public override void Init()
@@ -23,7 +31,6 @@ namespace Poloknightse
             //Count how many coins there are in the level
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
-                
                 if (gameObjectList[i] is Coin)
                 {
                     CoinAmount += 1;
@@ -37,18 +44,6 @@ namespace Poloknightse
             base.Draw(spriteBatch);
         }
 
-        public static void ChangeToGameOverState()
-        {
-            Debug.WriteLine("going to game over state");
-            GameEnvironment.SwitchTo(GameEnvironment.GameStates.GAME_OVER_STATE);
-        }
-
-        public static void ChangeToWinState()
-        {
-            Debug.WriteLine("going to win state");
-            GameEnvironment.SwitchTo(GameEnvironment.GameStates.WIN_STATE);
-        }
-
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -56,43 +51,45 @@ namespace Poloknightse
             //Check if all coins got picked up
             if (CoinAmount <= 0)
 			{
-                ChangeToWinState();
+                GameEnvironment.SwitchTo("WinState");
 			}
 
             //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
-
-                //Coin -> Player collision
-                if (gameObjectList[i] is Coin)
+                foreach (Player player in players)
                 {
-                    if (player.CheckCollision(gameObjectList[i]))
+                    //Coin -> Player collision
+                    if (gameObjectList[i] is Coin)
                     {
-                        gameObjectList.Remove(gameObjectList[i]);
-                        CoinAmount -= 1;
-                        continue;
+                        if (player.CheckCollision(gameObjectList[i]))
+                        {
+                            gameObjectList.Remove(gameObjectList[i]);
+                            CoinAmount -= 1;
+                            continue;
+                        }
                     }
-                }
 
-                //HealthPickup -> Player collision
-                if (gameObjectList[i] is HealthPickup)
-                {
-                    if (player.CheckCollision(gameObjectList[i]))
+                    //HealthPickup -> Player collision
+                    if (gameObjectList[i] is HealthPickup)
                     {
-                        gameObjectList.Remove(gameObjectList[i]);
-                        player.AddFollower(gameTime);
-                        continue;
+                        if (player.CheckCollision(gameObjectList[i]))
+                        {
+                            gameObjectList.Remove(gameObjectList[i]);
+                            player.AddFollower(gameTime);
+                            continue;
+                        }
                     }
-                }
 
-                //Bullet -> Player collsion
-                if (gameObjectList[i] is Bullet)
-                {
-                    if (player.CheckCollision(gameObjectList[i]))
+                    //Bullet -> Player collsion
+                    if (gameObjectList[i] is Bullet)
                     {
-                        player.TakeDamage(gameObjectList[i].gridPosition, gameTime);
-                        gameObjectList.Remove(gameObjectList[i]);
-                        continue;
+                        if (player.CheckCollision(gameObjectList[i]))
+                        {
+                            player.TakeDamage(gameObjectList[i].gridPosition, gameTime);
+                            gameObjectList.Remove(gameObjectList[i]);
+                            continue;
+                        }
                     }
                 }
             }
