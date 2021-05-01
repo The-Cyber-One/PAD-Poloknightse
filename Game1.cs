@@ -6,6 +6,18 @@ namespace Poloknightse
 {
     class Game1 : GameEnvironment
     {
+        public static int currentLevel;
+
+        public static string[] levels =
+            {
+            "test",
+            "Level-1",
+            "Level-2",
+            "Level-3",
+            //"Level-4",
+            "Level-5"
+            };
+
         public Game1()
         {
             IsMouseVisible = true;

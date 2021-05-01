@@ -8,8 +8,8 @@ namespace Poloknightse
 {
     class TextGameObject : GameObject
     {
+        public string text;
         SpriteFont font;
-        string text;
         Vector2 position;
         Color color;
         Vector2 origin;

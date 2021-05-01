@@ -12,7 +12,7 @@ namespace Poloknightse
 
         public PlayingState()
         {
-
+            Game1.currentLevel = 0;
         }
 
         public override void Reset()
@@ -26,7 +26,7 @@ namespace Poloknightse
         {
             gameObjectList.Clear();
 
-            LevelLoader.LoadLevel("Level-5");
+            LevelLoader.LoadLevel(Game1.levels[Game1.currentLevel]);
             gameObjectList.Add(players);
 
             //Count how many coins there are in the level
@@ -51,15 +51,18 @@ namespace Poloknightse
 
             //Check if all coins got picked up
             if (CoinAmount <= 0)
-			{
+            {
+                Game1.currentLevel++;
+                if (Game1.currentLevel >= Game1.levels.Length) Game1.currentLevel = 0;
                 GameEnvironment.SwitchTo("WinState");
-			}
+            }
 
             //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
-                foreach (Player player in players.Children)
+                for (int j = players.Children.Count - 1; j >= 0; j--)
                 {
+                    Player player = (Player)players.Children[j];
                     //Coin -> Player collision
                     if (gameObjectList[i] is Coin)
                     {
