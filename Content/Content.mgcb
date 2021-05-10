@@ -214,6 +214,18 @@
 /processorParam:TextureFormat=Color
 /build:Levels/MainMenu.png
 
+#begin Levels/GameOver.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/GameOver.png
+
 #begin Levels/StarterLevel.png
 /importer:TextureImporter
 /processor:TextureProcessor

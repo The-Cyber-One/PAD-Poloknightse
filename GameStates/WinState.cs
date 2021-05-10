@@ -13,7 +13,6 @@ namespace Poloknightse
 
 		public WinState()
 		{
-			Debug.WriteLine("WIN");
 			gameObjectList.Add(textObject);
 		}
 
