@@ -95,6 +95,7 @@ namespace Poloknightse
         {
             path = GetNewPath();
 
+            if (path == null) return;
             if (MAX_STAMINA >= path.Length) stamina = path.Length - 1;
             else stamina = MAX_STAMINA;
         }

@@ -40,6 +40,10 @@ namespace Poloknightse
         {
             stepsCounter--;
             base.FixedUpdate(gameTime);
+            if (LevelLoader.grid.GetLength(0) > gameObject.gridPosition.X &&
+                    LevelLoader.grid.GetLength(1) > gameObject.gridPosition.Y &&
+                    gameObject.gridPosition.X >= 0 &&
+                    gameObject.gridPosition.Y >= 0) return;
             if (LevelLoader.grid[gameObject.gridPosition.X, gameObject.gridPosition.Y].tileType == Tile.TileType.WALL)
             {
                 stepsCounter = ghostCooldownSteps;
