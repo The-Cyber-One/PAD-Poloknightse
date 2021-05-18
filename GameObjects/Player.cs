@@ -211,6 +211,7 @@ namespace Poloknightse
         /// </summary>
         public Point GetCenter()
         {
+            if (followers.Count == 0) return gridPosition;
             return followers[followers.Count / 2].gridPosition;
         }
 

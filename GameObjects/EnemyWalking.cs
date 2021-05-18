@@ -98,7 +98,6 @@ namespace Poloknightse
             path = GetNewPath();
             if (path == null) return;
 
-            if (path == null) return;
             if (MAX_STAMINA >= path.Length) stamina = path.Length - 1;
             else stamina = MAX_STAMINA;
         }
@@ -112,6 +111,10 @@ namespace Poloknightse
             if (path != null)
             {
                 int currentStep = path.Length - 2;
+                if (currentStep >= 0)
+                {
+                    gameObject.gridPosition = path[currentStep];
+                }
 
                 if (player.CheckCollision(gameObject))
                 {
@@ -121,9 +124,10 @@ namespace Poloknightse
                 for (int i = player.followers.Count - 1; i >= 0; i--)
                 {
                     PlayerFollower follower = player.followers[i];
+
+                    if (gameObject.gridPosition == follower.gridPosition)
                     {
-                        if (gameObject.gridPosition == follower.gridPosition)
-                            stamina = 0;
+                        stamina = 0;
                         player.TakeDamage(player.GetCenter(), gameTime);
                         stateMachine.SetState("Attacked");
                         break;

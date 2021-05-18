@@ -13,13 +13,12 @@ namespace Poloknightse
 
         public PlayingState()
         {
-            Game1.currentLevel = 3;
+            Game1.currentLevel = 2;
         }
 
         public override void Init()
         {
             players.Clear();
-            gameObjectList.Clear();
             LevelLoader.LoadLevel(Game1.levels[Game1.currentLevel]);
             gameObjectList.Add(players);
 
