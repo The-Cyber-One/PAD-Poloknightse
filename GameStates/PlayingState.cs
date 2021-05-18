@@ -101,7 +101,7 @@ namespace Poloknightse
             foreach (GameObject gameObject in gameObjectList)
             {
                 if (!(gameObject is Player)) gameObject.HandleInput(inputHelper);
-                //check is fout Player bevind zich niet in gameObjectList maar in de players dus handleInput wordt altijd uitgevoerd voor players
+                //TODO: check is fout Player bevind zich niet in gameObjectList maar in de players dus handleInput wordt altijd uitgevoerd voor players
             }
 
             for (int i = players.Children.Count - 1; i >= 0; i--)
