@@ -10,6 +10,7 @@ namespace Poloknightse
 
         public static string[] levels =
             {
+            "StarterLevel",
             "Level-1",
             "Level-2",
             "Level-3",
@@ -34,6 +35,7 @@ namespace Poloknightse
             gameStateDict.Add("PlayingState", new PlayingState());
             gameStateDict.Add("WinState", new WinState());
             gameStateDict.Add("GameOverState", new GameOverState());
+            gameStateDict.Add("LevelSelectState", new LevelSelectState());
 
             SwitchTo("StartState");
         }

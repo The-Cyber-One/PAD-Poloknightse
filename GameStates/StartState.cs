@@ -56,7 +56,7 @@ namespace Poloknightse
         {
             if (inputHelper.AnyKeyPressed)
             {
-                GameEnvironment.SwitchTo("PlayingState");
+                GameEnvironment.SwitchTo("LevelSelectState");
             }
             base.HandleInput(inputHelper);
         }
