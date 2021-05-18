@@ -102,6 +102,7 @@ namespace Poloknightse
 
             //Here we check the colors of the image and load the correct tiles.
             grid = new Tile[level.Width, level.Height];
+            Player player = new Player(new Point());
             Dictionary<Point, PlayerFollower> positionFollowerPairs = new Dictionary<Point, PlayerFollower>();
 
             for (int i = 0; i < colors.Length; i++)
@@ -132,25 +133,28 @@ namespace Poloknightse
                 {
                     Point gridPosition = new Point(x, y);
                     GameObject gameObject = Activator.CreateInstance(tilePairs.Item1, gridPosition) as GameObject;
+                    GameEnvironment.CurrentGameState.gameObjectList.Add(gameObject);
 
                     if (gameObject is Player)
                     {
-                        (GameEnvironment.CurrentGameState as PlayingState).players.Add(gameObject);
+                        player = gameObject as Player;
+                        if (GameEnvironment.CurrentGameState == GameEnvironment.GetState<PlayingState>("PlayingState"))
+                        {
+                            GameEnvironment.CurrentGameState.gameObjectList.Remove(gameObject);
+                        }
                     }
-                    else if (gameObject is PlayerFollower)
+                    if (gameObject is PlayerFollower)
                     {
                         positionFollowerPairs.Add(new Point(x, y), gameObject as PlayerFollower);
-                    }
-                    else
-                    {
-                    GameEnvironment.CurrentGameState.gameObjectList.Add(gameObject);
+                        GameEnvironment.CurrentGameState.gameObjectList.Remove(gameObject);
                     }
                 }
             }
 
-            if ((GameEnvironment.CurrentGameState as PlayingState).players.Children.Count > 0)
+            if (player != null)
             {
-                foreach (Player player in (GameEnvironment.CurrentGameState as PlayingState).players.Children)
+                player.LoadFollowers(positionFollowerPairs);
+                if (GameEnvironment.CurrentGameState is PlayingState)
                 {
                     GameEnvironment.GetState<PlayingState>("PlayingState").players.Add(player);
                 }

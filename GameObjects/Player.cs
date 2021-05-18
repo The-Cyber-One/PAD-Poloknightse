@@ -130,7 +130,7 @@ namespace Poloknightse
             bool playerHitsObject = base.CheckCollision(gameObject);
             foreach (PlayerFollower playerFollower in followers)
             {
-                if (playerFollower.gridPosition == (gridPosition.ToVector2() + velocity).ToPoint())
+                if (playerFollower.gridPosition == gameObject.gridPosition)
                 {
                     playerHitsObject = true;
                 }
