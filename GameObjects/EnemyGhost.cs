@@ -27,13 +27,24 @@ namespace Poloknightse
 
         public override Point GetRandomDirection()
         {
+            //Return basic direction
             if (stepsCounter > 0)
                 return base.GetRandomDirection();
 
-            if (GameEnvironment.Random.Next(2) == 0)
-                return new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
+            //Return ghost direction
+            Point direction = new Point();
+            do
+            {
+                if (GameEnvironment.Random.Next(2) == 0)
+                    direction = new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
 
-            return new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
+                direction = new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
+            } 
+            while (LevelLoader.grid.GetLength(0) < gameObject.gridPosition.X + direction.X &&
+                LevelLoader.grid.GetLength(1) < gameObject.gridPosition.Y + direction.Y &&
+                gameObject.gridPosition.X + direction.X < 0 &&
+                gameObject.gridPosition.Y + direction.Y < 0);
+            return direction;
         }
 
         public override void FixedUpdate(GameTime gameTime)
@@ -56,7 +67,7 @@ namespace Poloknightse
         int ghostCooldownSteps = 10;
         int stepsCounter;
 
-        public GhostChaseState(GameObject gameObject) : base(gameObject, "GhostChase")
+        public GhostChaseState(GameObject gameObject, StateMachine stateMachine) : base(gameObject, stateMachine, "GhostChase")
         {
 
         }
@@ -140,7 +151,9 @@ namespace Poloknightse
     }
     class EnemyGhost : EnemyWalking
     {
-        public EnemyGhost(Point gridPosition) : base(gridPosition, "GameObjects/Enemies/EnemyGhost")
+        private const int TrackingDistance = 10;
+
+        public EnemyGhost(Point gridPosition = new Point()) : base(gridPosition, "GameObjects/Enemies/EnemyGhost")
         {
 
         }
@@ -151,33 +164,48 @@ namespace Poloknightse
 
             //Add states to stateMachine
             stateMachine.AddState(new GhostPatrolState(this));
-            stateMachine.AddState(new GhostChaseState(this));
+            stateMachine.AddState(new GhostChaseState(this, stateMachine));
             stateMachine.AddState(new GhostReturnState(this));
+            stateMachine.AddState(new AttackedState(this));
             stateMachine.AddState(new CryingState(this));
 
             //Add connections between states
             stateMachine.AddConnection("GhostPatrol", "GhostReturn", (object state) => (state as GhostPatrolState).stamina <= 0, stateMachine.GetState("GhostPatrol"));
             stateMachine.AddConnection("GhostChase", "GhostReturn", (object state) => (state as GhostChaseState).stamina <= 0, stateMachine.GetState("GhostChase"));
             stateMachine.AddConnection("GhostReturn", "GhostPatrol", (object state) => (state as GhostReturnState).updated, stateMachine.GetState("GhostReturn"));
-            stateMachine.AddConnectionToAll("GhostChase", (object state) =>
-            {
-                float closestPlayer = float.PositiveInfinity;
-                for (int i = 0; i < (GameEnvironment.CurrentGameState as PlayingState).players.Children.Count; i++)
-                {
-                    Player player = (GameEnvironment.CurrentGameState as PlayingState).players.Children[i] as Player;
-                    float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
-                    if (distance <= 10 && distance < closestPlayer)
-                    {
-                        closestPlayer = distance;
-                        (state as ChaseState).player = player;
-                    }
-                }
-                return float.IsFinite(closestPlayer);
-            }, stateMachine.GetState("GhostChase"));
-            stateMachine.AddConnectionToAll("Crying", () => !CanMove());
+            stateMachine.AddConnection("Attacked", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Attacked"));
 
             //Set state to Patrol
             stateMachine.SetState("GhostPatrol");
+        }
+
+        public override void FixedUpdate(GameTime gameTime)
+        {
+            stateMachine.FixedUpdate(gameTime);
+
+            if (stateMachine.CurrentState.name == "Attacked") return;
+
+            //Find closest player
+            float closestPlayer = float.PositiveInfinity;
+            if (GameEnvironment.GetState<PlayingState>("PlayingState").players.Children.Count > 0)
+            {
+                foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players.Children)
+                {
+                    Player player = (GameEnvironment.CurrentGameState as PlayingState).players.Children[i] as Player;
+                    float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
+                    if (distance <= TrackingDistance && distance < closestPlayer)
+                    {
+                        closestPlayer = distance;
+                        (stateMachine.GetState("GhostChase") as GhostChaseState).player = player;
+                    }
+                }
+            }
+
+            //If a player was found in range then attack it
+            if (float.IsFinite(closestPlayer))
+            {
+                stateMachine.SetState("GhostChase");
+            }
         }
     }
 }

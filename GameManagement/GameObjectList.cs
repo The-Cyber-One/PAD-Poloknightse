@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,8 +9,10 @@ namespace Poloknightse
     {
         protected List<GameObject> children;
 
-        public GameObjectList(Point gridPosition, int layer = 0, string id = "") : base(gridPosition, null, layer)
+        public GameObjectList(Point? gridPosition = null, int layer = 0, string id = "") : base(gridPosition, null, layer)
         {
+            if (gridPosition == null) gridPosition = Point.Zero;
+            this.gridPosition = gridPosition.Value;
             children = new List<GameObject>();
         }
 
@@ -36,6 +39,14 @@ namespace Poloknightse
         {
             children.Remove(obj);
             obj.Parent = null;
+        }
+
+        public void Clear()
+        {
+            for (int i = children.Count - 1; i >= 0; i--)
+            {
+                children.RemoveAt(i);
+            }
         }
 
         public GameObject Find(string id)

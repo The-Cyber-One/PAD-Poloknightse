@@ -16,19 +16,11 @@ namespace Poloknightse
         protected InputHelper inputHelper;
         protected static Point screen;
         protected static Random random;
-        public static int gridTileSize = 16;
         public static Point startGridPoint = new Point();
         static protected GameState currentGameState;
         protected static string playerName = "spelernaam hiero";
 
-        static protected Dictionary<GameStates, GameState> gameStateDict;
-        public enum GameStates
-        {
-            START_STATE,
-            PLAYING_STATE,
-            WIN_STATE,
-            GAME_OVER_STATE
-        }
+        static protected Dictionary<string, GameState> gameStateDict;
 
         public static string PlayerName
         {
@@ -69,13 +61,19 @@ namespace Poloknightse
             }
         }
 
-        static public void SwitchTo(GameStates gameStateName)
+        static public void SwitchTo(string gameStateName)
         {
             if (gameStateDict.ContainsKey(gameStateName))
             {
+                if (currentGameState != null) currentGameState.Reset();
                 currentGameState = gameStateDict.GetValueOrDefault(gameStateName);
                 currentGameState.Init();
             }
+        }
+
+        static public T GetState<T>(string gameState)
+        {
+            return (T)Convert.ChangeType(gameStateDict[gameState], typeof(T));
         }
 
         public GameEnvironment()
@@ -83,7 +81,7 @@ namespace Poloknightse
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             content = Content;
-            gameStateDict = new Dictionary<GameStates, GameState>();
+            gameStateDict = new Dictionary<string, GameState>();
             random = new Random();
             inputHelper = new InputHelper();
         }

@@ -13,6 +13,27 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Fonts/Header.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Header.spritefont
+
+#begin Fonts/Paragraph.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Paragraph.spritefont
+
+#begin Fonts/Title.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Title.spritefont
+
 #begin GameObjects/bomb.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -48,13 +69,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:GameObjects/Enemies/EnemyGhost.png
-
-#begin GameObjects/GameFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:GameObjects/GameFont.spritefont
 
 #begin GameObjects/healthPickup.png
 /importer:TextureImporter
@@ -140,6 +154,18 @@
 /processorParam:TextureFormat=Color
 /build:GameObjects/Player/Onderbroek_Ridder.png
 
+#begin Levels/GameOver.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/GameOver.png
+
 #begin Levels/Level-1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -176,6 +202,18 @@
 /processorParam:TextureFormat=Color
 /build:Levels/Level-3.png
 
+#begin Levels/Level-4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/Level-4.png
+
 #begin Levels/Level-5.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -187,6 +225,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Levels/Level-5.png
+
+#begin Levels/MainMenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/MainMenu.png
 
 #begin Levels/StarterLevel.png
 /importer:TextureImporter
@@ -223,6 +273,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:LevelTiles/Ground.png
+
+#begin LevelTiles/SmoothWall.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:LevelTiles/SmoothWall.png
 
 #begin LevelTiles/Wall.png
 /importer:TextureImporter

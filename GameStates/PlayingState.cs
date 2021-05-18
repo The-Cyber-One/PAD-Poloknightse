@@ -8,17 +8,28 @@ namespace Poloknightse
 {
     class PlayingState : GameState
     {
-        public GameObjectList players = new GameObjectList(Vector2.Zero.ToPoint());
+        public GameObjectList players = new GameObjectList();
         private int CoinAmount;
 
         public PlayingState()
         {
+            Game1.currentLevel = 3;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            players.Clear();
+            //Init();
         }
 
         public override void Init()
         {
-            LevelLoader.LoadLevel("Level-1");
+            gameObjectList.Clear();
+
+            LevelLoader.LoadLevel(Game1.levels[Game1.currentLevel]);
             gameObjectList.Add(players);
+
             //Count how many coins there are in the level
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
@@ -35,18 +46,6 @@ namespace Poloknightse
             base.Draw(spriteBatch);
         }
 
-        public static void ChangeToGameOverState()
-        {
-            Debug.WriteLine("going to game over state");
-            GameEnvironment.SwitchTo(GameEnvironment.GameStates.GAME_OVER_STATE);
-        }
-
-        public static void ChangeToWinState()
-        {
-            Debug.WriteLine("going to win state");
-            GameEnvironment.SwitchTo(GameEnvironment.GameStates.WIN_STATE);
-        }
-
         public override void Update(GameTime gameTime)
         {
             if (players.Children.Count == 1)
@@ -58,15 +57,17 @@ namespace Poloknightse
             //Check if all coins got picked up
             if (CoinAmount <= 0)
             {
-                ChangeToWinState();
+                Game1.currentLevel++;
+                if (Game1.currentLevel >= Game1.levels.Length) Game1.currentLevel = 0;
+                GameEnvironment.SwitchTo("WinState");
             }
 
             //Collision detection
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
-                for (int j = 0; j < players.Children.Count; j++)
+                for (int j = players.Children.Count - 1; j >= 0; j--)
                 {
-                    Player player = players.Children[j] as Player;
+                    Player player = (Player)players.Children[j];
                     //Coin -> Player collision
                     if (gameObjectList[i] is Coin)
                     {

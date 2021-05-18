@@ -11,7 +11,7 @@ namespace Poloknightse
 {
     class Player : GameObject
     {
-        private List<PlayerFollower> followers = new List<PlayerFollower>();
+        public List<PlayerFollower> followers = new List<PlayerFollower>();
         private bool addFollower;
         private Point newFollowerPosition;
         int minFollowers = 3;
@@ -148,14 +148,13 @@ namespace Poloknightse
             if (followers.Count <= minFollowers)
             {
                 GameEnvironment.CurrentGameState.gameObjectList.Remove(this);
-                PlayingState.ChangeToGameOverState();
+                GameEnvironment.SwitchTo("GameOverState");
                 return;
             }
             Player player = new Player(followers[followers.Count - 1].gridPosition);
-            (GameEnvironment.CurrentGameState as PlayingState).players.Add(player);
+            GameEnvironment.GetState<PlayingState>("PlayingState").players.Add(player);
             for (int i = followers.Count - 1; i >= 0; i--)
             {
-                Debug.WriteLine("added other playable player");
                 if (followers[i].gridPosition == gridPosition)
                 {
                     for (int j = followers.Count - 1; j >= i; j--)
@@ -165,6 +164,7 @@ namespace Poloknightse
                     }
                     followers.RemoveAt(followers.Count - 1);
                     player.followers.RemoveAt(0);
+                    Debug.WriteLine("added other playable player");
                     break;
                 }
             }
