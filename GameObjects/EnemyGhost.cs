@@ -191,7 +191,6 @@ namespace Poloknightse
             {
                 foreach (Player player in GameEnvironment.GetState<PlayingState>("PlayingState").players.Children)
                 {
-                    Player player = (GameEnvironment.CurrentGameState as PlayingState).players.Children[i] as Player;
                     float distance = Vector2.Distance(player.gridPosition.ToVector2(), gridPosition.ToVector2());
                     if (distance <= TrackingDistance && distance < closestPlayer)
                     {

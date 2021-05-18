@@ -15,6 +15,7 @@ namespace Poloknightse
         private bool addFollower;
         private Point newFollowerPosition;
         int minFollowers = 3;
+        public bool chosen = false;
 
         public Player(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {

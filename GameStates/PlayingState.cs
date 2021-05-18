@@ -50,7 +50,7 @@ namespace Poloknightse
         {
             if (players.Children.Count == 1)
             {
-                players.Children[0].chosen = true;
+                (players.Children[0] as Player).chosen = true;
             }
             base.Update(gameTime);
 
@@ -113,20 +113,21 @@ namespace Poloknightse
 
             for (int i = 0; i < players.Children.Count; i++)
             {
-                if (players.Children[i].chosen)
+                Player player = players.Children[i] as Player;
+                if (player.chosen)
                 {
                     players.Children[i].HandleInput(inputHelper);
                     if (inputHelper.KeyPressed(Keys.E) || inputHelper.KeyPressed(Keys.Space))
                     {
-                        players.Children[i].chosen = false;
-                        players.Children[i].velocity = Vector2.Zero;
+                        player.chosen = false;
+                        player.velocity = Vector2.Zero;
                         if (i + 1 >= players.Children.Count)
                         {
-                            players.Children[i].chosen = true;
+                            player.chosen = true;
                         }
                         else
                         {
-                            players.Children[i + 1].chosen = true;
+                            (players.Children[i + 1] as Player).chosen = true;
                         }
                     }
                 }

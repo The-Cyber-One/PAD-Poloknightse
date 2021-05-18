@@ -78,7 +78,7 @@ namespace Poloknightse
         }
 
         // boolean to check if to objects collide
-        public bool CheckCollision(GameObject gameObject)
+        public virtual bool CheckCollision(GameObject gameObject)
         {
             float x0 = this.gridPosition.X,
                   y0 = this.gridPosition.Y,
@@ -105,6 +105,7 @@ namespace Poloknightse
             }
         }
 
+        public GameObject Root
         {
             get
             {
@@ -136,5 +137,5 @@ namespace Poloknightse
             get { return id; }
         }
     }
-        public GameObject Root
+
 }

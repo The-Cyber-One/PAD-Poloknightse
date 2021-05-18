@@ -80,7 +80,6 @@ namespace Poloknightse
             List<GameObject> players = GameEnvironment.GetState<PlayingState>("PlayingState").players.Children;
             foreach (Player player in players)
             {
-                Player player = (GameEnvironment.CurrentGameState as PlayingState).players.Children[i] as Player;
                 float distance = Vector2.Distance(player.gridPosition.ToVector2(), gameObject.gridPosition.ToVector2());
                 if (distance <= 10 && distance < closestPlayer)
                 {
@@ -114,23 +113,23 @@ namespace Poloknightse
             {
                 int currentStep = path.Length - 2;
 
-            if (player.CheckCollision(gameObject))
-            {
-                stamina = 0;
-                player.TakeDamage(gameObject.gridPosition, gameTime);
-            for (int i = player.followers.Count - 1; i >= 0; i--)
-            {
-                PlayerFollower follower = player.followers[i];
+                if (player.CheckCollision(gameObject))
                 {
-                if (gameObject.gridPosition == follower.gridPosition)
                     stamina = 0;
-                    player.TakeDamage(player.GetCenter(), gameTime);
-                    stateMachine.SetState("Attacked");
-                    break;
+                    player.TakeDamage(gameObject.gridPosition, gameTime);
+                }
+                for (int i = player.followers.Count - 1; i >= 0; i--)
+                {
+                    PlayerFollower follower = player.followers[i];
+                    {
+                        if (gameObject.gridPosition == follower.gridPosition)
+                            stamina = 0;
+                        player.TakeDamage(player.GetCenter(), gameTime);
+                        stateMachine.SetState("Attacked");
+                        break;
+                    }
                 }
             }
-            }
-
         }
 
         public virtual Point[] GetNewPath()
