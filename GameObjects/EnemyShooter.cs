@@ -55,6 +55,7 @@ namespace Poloknightse
 		{
 			base.Initialize();
 
+            //check at what position the enemy is placed
             if (LevelLoader.grid[(int)gridPosition.X + 1, (int)gridPosition.Y].tileType == Tile.TileType.WALL)
             {
                 enemyPos = "left";
@@ -98,7 +99,9 @@ namespace Poloknightse
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
-            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+
+            //timer for the interval of the shoot function
+            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;  
 
             if (currentTime >= countDuration)
             {
