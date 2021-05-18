@@ -124,6 +124,19 @@ namespace Poloknightse
             if (playerHitsPlayer) velocity = Vector2.Zero;
         }
 
+        public override bool CheckCollision(GameObject gameObject)
+        {
+            bool playerHitsObject = base.CheckCollision(gameObject);
+            foreach (PlayerFollower playerFollower in followers)
+            {
+                if (playerFollower.gridPosition == (gridPosition.ToVector2() + velocity).ToPoint())
+                {
+                    playerHitsObject = true;
+                }
+            }
+            return playerHitsObject;
+        }
+
 
         /// <summary>
         /// Split player at <paramref name="gridPosition"/>
