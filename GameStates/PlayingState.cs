@@ -101,21 +101,23 @@ namespace Poloknightse
             foreach (GameObject gameObject in gameObjectList)
             {
                 if (!(gameObject is Player)) gameObject.HandleInput(inputHelper);
+                //check is fout Player bevind zich niet in gameObjectList maar in de players dus handleInput wordt altijd uitgevoerd voor players
             }
 
-            for (int i = 0; i < players.Children.Count; i++)
+            for (int i = players.Children.Count - 1; i >= 0; i--)
             {
                 Player player = players.Children[i] as Player;
                 if (player.chosen)
                 {
                     players.Children[i].HandleInput(inputHelper);
+
                     if (inputHelper.KeyPressed(Keys.E) || inputHelper.KeyPressed(Keys.Space))
                     {
                         player.chosen = false;
                         player.velocity = Vector2.Zero;
                         if (i + 1 >= players.Children.Count)
                         {
-                            player.chosen = true;
+                            (players.Children[0] as Player).chosen = true;
                         }
                         else
                         {

@@ -145,13 +145,15 @@ namespace Poloknightse
         /// <param name="gridPosition">Position to take damage at</param>
         public void TakeDamage(Point gridPosition, GameTime gameTime)
         {
-            //Code to split player in half
+            //Check if GameOver
             if (followers.Count <= minFollowers)
             {
                 GameEnvironment.CurrentGameState.gameObjectList.Remove(this);
                 GameEnvironment.SwitchTo("GameOverState");
                 return;
             }
+
+            //Code to split player in half
             Player player = new Player(followers[followers.Count - 1].gridPosition);
             GameEnvironment.GetState<PlayingState>("PlayingState").players.Add(player);
             for (int i = followers.Count - 1; i >= 0; i--)
