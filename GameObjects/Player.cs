@@ -35,6 +35,8 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
+            CollisionDetection.CheckWallCollision(this);
+
             if (velocity != Vector2.Zero)
             {
                 //Add follower
@@ -100,7 +102,7 @@ namespace Poloknightse
                 velocity.Y = 1;
             }
 
-            CollisionDetection.CheckWallCollision(this);
+
             CheckPlayerCollsion();
 
             if (inputHelper.MouseLeftButtonPressed())

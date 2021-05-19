@@ -100,8 +100,7 @@ namespace Poloknightse
         {
             foreach (GameObject gameObject in gameObjectList)
             {
-                if (!(gameObject is Player)) gameObject.HandleInput(inputHelper);
-                //TODO: check is fout Player bevind zich niet in gameObjectList maar in de players dus handleInput wordt altijd uitgevoerd voor players
+                if (gameObject != players) gameObject.HandleInput(inputHelper);
             }
 
             for (int i = players.Children.Count - 1; i >= 0; i--)
@@ -114,14 +113,15 @@ namespace Poloknightse
                     if (inputHelper.KeyPressed(Keys.E) || inputHelper.KeyPressed(Keys.Space))
                     {
                         player.chosen = false;
-                        player.velocity = Vector2.Zero;
                         if (i + 1 >= players.Children.Count)
                         {
                             (players.Children[0] as Player).chosen = true;
+                            break;
                         }
                         else
                         {
                             (players.Children[i + 1] as Player).chosen = true;
+                            break;
                         }
                     }
                 }
