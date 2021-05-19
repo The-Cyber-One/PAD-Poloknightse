@@ -11,6 +11,7 @@ namespace Poloknightse
     {
         public static int gridTileSize;
         public static Tile[,] grid;
+        static int xOffset, yOffset;
 
         private static Dictionary<Color, Tuple<Type, string, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Type, string, Tile.TileType>>()
         {
@@ -96,8 +97,8 @@ namespace Poloknightse
 
             //Change the tile size and calculate the center
             gridTileSize = GameEnvironment.Screen.Y / level.Height;
-            int xOffset = GameEnvironment.Screen.X / 2 - (level.Width / 2) * gridTileSize;
-            int yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
+            xOffset = GameEnvironment.Screen.X / 2 - (level.Width / 2) * gridTileSize;
+            yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
             GameEnvironment.startGridPoint = new Point(xOffset, yOffset);
 
             //Here we check the colors of the image and load the correct tiles.
@@ -138,6 +139,10 @@ namespace Poloknightse
                     if (gameObject is Player)
                     {
                         player = gameObject as Player;
+                        if (GameEnvironment.CurrentGameState == GameEnvironment.GetState<PlayingState>("PlayingState"))
+                        {
+                            GameEnvironment.CurrentGameState.gameObjectList.Remove(gameObject);
+                        }
                     }
                     if (gameObject is PlayerFollower)
                     {
@@ -160,6 +165,11 @@ namespace Poloknightse
             {
                 gameObject.Initialize();
             }
+        }
+
+        public static Vector2 GridPointToWorld(Point point)
+        {
+            return point.ToVector2() * gridTileSize + new Vector2(xOffset, yOffset);
         }
 
         /// <summary>

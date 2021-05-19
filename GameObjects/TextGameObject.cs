@@ -10,7 +10,7 @@ namespace Poloknightse
     {
         public string text;
         SpriteFont font;
-        Vector2 position;
+        public Vector2 position;
         Color color;
         Vector2 origin;
         float angle;

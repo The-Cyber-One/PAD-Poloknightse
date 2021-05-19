@@ -15,11 +15,15 @@ namespace Poloknightse
         private bool addFollower;
         private Point newFollowerPosition;
         int minFollowers = 3;
+        public bool chosen = false;
+        TextGameObject chosenText;
+        float textOffset = -10;
 
         public Player(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
             velocity = Vector2.Zero;
             newFollowerPosition = gridPosition;
+            chosenText = new TextGameObject("!", gridPosition.ToVector2() + new Vector2(0, textOffset), Vector2.One / 2, Color.White, "Fonts/Title");
         }
 
         public override void Update(GameTime gameTime)
@@ -34,6 +38,8 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
+            CollisionDetection.CheckWallCollision(this);
+
             if (velocity != Vector2.Zero)
             {
                 //Add follower
@@ -73,33 +79,37 @@ namespace Poloknightse
             {
                 follower.Draw(spriteBatch);
             }
+            if (chosen)
+            {
+                chosenText.position = LevelLoader.GridPointToWorld(gridPosition) + new Vector2(0, textOffset);
+                chosenText.Draw(spriteBatch);
+            }
         }
 
         public override void HandleInput(InputHelper inputHelper)
         {
             //Change the movement direction
-            if (inputHelper.KeyPressed(Keys.D))
+            if (inputHelper.KeyPressed(Keys.D) || inputHelper.KeyPressed(Keys.Right))
             {
                 velocity = Vector2.Zero;
                 velocity.X = 1;
             }
-            else if (inputHelper.KeyPressed(Keys.A))
+            else if (inputHelper.KeyPressed(Keys.A) || inputHelper.KeyPressed(Keys.Left))
             {
                 velocity = Vector2.Zero;
                 velocity.X = -1;
             }
-            else if (inputHelper.KeyPressed(Keys.W))
+            else if (inputHelper.KeyPressed(Keys.W) || inputHelper.KeyPressed(Keys.Up))
             {
                 velocity = Vector2.Zero;
                 velocity.Y = -1;
             }
-            else if (inputHelper.KeyPressed(Keys.S))
+            else if (inputHelper.KeyPressed(Keys.S) || inputHelper.KeyPressed(Keys.Down))
             {
                 velocity = Vector2.Zero;
                 velocity.Y = 1;
             }
 
-            CollisionDetection.CheckWallCollision(this);
             CheckPlayerCollsion();
 
             if (inputHelper.MouseLeftButtonPressed())
@@ -107,6 +117,7 @@ namespace Poloknightse
                 addFollower = true;
             }
         }
+
 
         /// <summary>
         /// Checks if player will hit it self and if so stop moving
@@ -124,6 +135,19 @@ namespace Poloknightse
             if (playerHitsPlayer) velocity = Vector2.Zero;
         }
 
+        public override bool CheckCollision(GameObject gameObject)
+        {
+            bool playerHitsObject = base.CheckCollision(gameObject);
+            foreach (PlayerFollower playerFollower in followers)
+            {
+                if (playerFollower.gridPosition == gameObject.gridPosition)
+                {
+                    playerHitsObject = true;
+                }
+            }
+            return playerHitsObject;
+        }
+
 
         /// <summary>
         /// Split player at <paramref name="gridPosition"/>
@@ -131,20 +155,28 @@ namespace Poloknightse
         /// <param name="gridPosition">Position to take damage at</param>
         public void TakeDamage(Point gridPosition, GameTime gameTime)
         {
-            //Code to split player in half
-            if (followers.Count <= minFollowers)
+            GameObjectList players = GameEnvironment.GetState<PlayingState>("PlayingState").players;
+
+            //Check if player is dead
+            if (followers.Count <= minFollowers || !chosen)
             {
-                GameEnvironment.CurrentGameState.gameObjectList.Remove(this);
-                GameEnvironment.SwitchTo("GameOverState");
+                players.Remove(this);
+                //Check if GameOver
+                if (players.Children.Count == 0)
+                {
+                    GameEnvironment.SwitchTo("GameOverState");
+                }
                 return;
             }
+
+            //Code to split player in half
             Player player = new Player(followers[followers.Count - 1].gridPosition);
-            GameEnvironment.GetState<PlayingState>("PlayingState").players.Add(player);
+            players.Add(player);
             for (int i = followers.Count - 1; i >= 0; i--)
             {
                 if (followers[i].gridPosition == gridPosition)
                 {
-                    for(int j = followers.Count - 1; j >= i; j--)
+                    for (int j = followers.Count - 1; j >= i; j--)
                     {
                         player.AddFollower(gameTime, followers[j].gridPosition);
                         followers.RemoveAt(j);
@@ -197,6 +229,7 @@ namespace Poloknightse
         /// </summary>
         public Point GetCenter()
         {
+            if (followers.Count == 0) return gridPosition;
             return followers[followers.Count / 2].gridPosition;
         }
 

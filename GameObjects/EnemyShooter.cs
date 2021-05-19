@@ -9,7 +9,7 @@ namespace Poloknightse
         private float currentTime = 0f;
         private int xOffsetCheck, yOffsetCheck;
         private int endCalculationX, endCalculationY;
-        private String enemyPos;
+        private Point enemyPos;
         private Vector2 shootDir;
 
         public EnemyShooter(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_Ridder")
@@ -27,23 +27,23 @@ namespace Poloknightse
 
         private void MovementPathCheck()
 		{
-            if (enemyPos == "left" || enemyPos == "right")
-            {
-                xOffsetCheck = 1;
-                yOffsetCheck = 2;
-                endCalculationX = (int)gridPosition.X + xOffsetCheck;
-                endCalculationY = (int)gridPosition.Y - yOffsetCheck;
+              
+            
+            if(velocity.X == 0)
+			{
+                endCalculationX = (int)gridPosition.X + enemyPos.X;
+                endCalculationY = (int)gridPosition.Y - enemyPos.Y;
             }
-			else if(enemyPos == "top" || enemyPos == "bottom")
-            {
-                xOffsetCheck = 2;
-                yOffsetCheck = 1;
-                endCalculationX = (int)gridPosition.X - xOffsetCheck;
-                endCalculationY = (int)gridPosition.Y + yOffsetCheck;
+            else
+			{
+                endCalculationX = (int)gridPosition.X - enemyPos.X;
+                endCalculationY = (int)gridPosition.Y + enemyPos.Y;
             }
             
+            
+
             //check depending on enemyPos what tiles to check for it to detect to move the opposite way.
-            if (LevelLoader.grid[(int)gridPosition.X + xOffsetCheck, (int)gridPosition.Y + yOffsetCheck].tileType != Tile.TileType.WALL ||
+            if (LevelLoader.grid[(int)gridPosition.X + enemyPos.X, (int)gridPosition.Y + enemyPos.Y].tileType != Tile.TileType.WALL ||
                 LevelLoader.grid[endCalculationX, endCalculationY].tileType != Tile.TileType.WALL)
             {
                 velocity *= -1;
@@ -57,28 +57,29 @@ namespace Poloknightse
 
             if (LevelLoader.grid[(int)gridPosition.X + 1, (int)gridPosition.Y].tileType == Tile.TileType.WALL)
             {
-                enemyPos = "left";
+                enemyPos = new Point(1,-2);
                 velocity.X = 0;
                 velocity.Y = 1;
                 shootDir = new Vector2(1, 0);
             }
-            if (LevelLoader.grid[(int)gridPosition.X - 1, (int)gridPosition.Y].tileType == Tile.TileType.WALL)
+            else if (LevelLoader.grid[(int)gridPosition.X - 1, (int)gridPosition.Y].tileType == Tile.TileType.WALL)
             {
-                enemyPos = "right";
+                enemyPos = new Point(-1, -2);
                 velocity.X = 0;
                 velocity.Y = 1;
                 shootDir = new Vector2(-1, 0);
             }
+
             if (LevelLoader.grid[(int)gridPosition.X, (int)gridPosition.Y + 1].tileType == Tile.TileType.WALL)
             {
-                enemyPos = "top";
+                enemyPos = new Point(-2,1);
                 velocity.X = 1;
                 velocity.Y = 0;
                 shootDir = new Vector2(0, 1);
             }
-            if (LevelLoader.grid[(int)gridPosition.X, (int)gridPosition.Y - 1].tileType == Tile.TileType.WALL)
+            else if(LevelLoader.grid[(int)gridPosition.X, (int)gridPosition.Y - 1].tileType == Tile.TileType.WALL)
             {
-                enemyPos = "bottom";
+                enemyPos = new Point(-2,-1);
                 velocity.X = 1;
                 velocity.Y = 0;
                 shootDir = new Vector2(0, -1);
