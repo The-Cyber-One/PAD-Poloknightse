@@ -12,7 +12,7 @@ namespace Poloknightse
         private Point enemyPos;
         private Vector2 shootDir;
 
-        public EnemyShooter(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_Ridder")
+        public EnemyShooter(Point gridPosition) : base(gridPosition, "GameObjects/Enemies/EnemyShooter")
         {
         }
 
