@@ -181,7 +181,14 @@ namespace Poloknightse
                         player.AddFollower(gameTime, followers[j].gridPosition);
                         followers.RemoveAt(j);
                     }
-                    followers.RemoveAt(followers.Count - 1);
+                    if (followers.Count != 0)
+                    {
+                        followers.RemoveAt(followers.Count - 1);
+                    }
+                    else
+                    {
+                        player.followers.RemoveAt(player.followers.Count - 1);
+                    }
                     player.followers.RemoveAt(0);
                     Debug.WriteLine("added other playable player");
                     break;
