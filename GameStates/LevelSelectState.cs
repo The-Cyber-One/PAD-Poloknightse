@@ -26,7 +26,7 @@ namespace Poloknightse
         }
         public override void HandleInput(InputHelper inputHelper)
         {
-            if (inputHelper.AnyKeyPressed)
+            if (inputHelper.MousePosition.X <= GameEnvironment.Screen.X/4)
             {
                 GameEnvironment.SwitchTo("PlayingState");
             }
