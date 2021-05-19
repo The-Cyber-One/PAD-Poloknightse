@@ -16,11 +16,14 @@ namespace Poloknightse
         private Point newFollowerPosition;
         int minFollowers = 3;
         public bool chosen = false;
+        TextGameObject chosenText;
+        float textOffset = -10;
 
         public Player(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
             velocity = Vector2.Zero;
             newFollowerPosition = gridPosition;
+            chosenText = new TextGameObject("!", gridPosition.ToVector2() + new Vector2(0, textOffset), Vector2.One / 2, Color.White, "Fonts/Title");
         }
 
         public override void Update(GameTime gameTime)
@@ -76,6 +79,11 @@ namespace Poloknightse
             {
                 follower.Draw(spriteBatch);
             }
+            if (chosen)
+            {
+                chosenText.position = LevelLoader.GridPointToWorld(gridPosition) + new Vector2(0, textOffset);
+                chosenText.Draw(spriteBatch);
+            }
         }
 
         public override void HandleInput(InputHelper inputHelper)
@@ -109,6 +117,7 @@ namespace Poloknightse
                 addFollower = true;
             }
         }
+
 
         /// <summary>
         /// Checks if player will hit it self and if so stop moving
@@ -146,11 +155,14 @@ namespace Poloknightse
         /// <param name="gridPosition">Position to take damage at</param>
         public void TakeDamage(Point gridPosition, GameTime gameTime)
         {
-            //Check if GameOver
+            GameObjectList players = GameEnvironment.GetState<PlayingState>("PlayingState").players;
+
+            //Check if player is dead
             if (followers.Count <= minFollowers || !chosen)
             {
-                GameEnvironment.GetState<PlayingState>("PlayingState").players.Remove(this);
-                if (GameEnvironment.GetState<PlayingState>("PlayingState").players.Children.Count == 0)
+                players.Remove(this);
+                //Check if GameOver
+                if (players.Children.Count == 0)
                 {
                     GameEnvironment.SwitchTo("GameOverState");
                 }
@@ -159,7 +171,7 @@ namespace Poloknightse
 
             //Code to split player in half
             Player player = new Player(followers[followers.Count - 1].gridPosition);
-            GameEnvironment.GetState<PlayingState>("PlayingState").players.Add(player);
+            players.Add(player);
             for (int i = followers.Count - 1; i >= 0; i--)
             {
                 if (followers[i].gridPosition == gridPosition)
