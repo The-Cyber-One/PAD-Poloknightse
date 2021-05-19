@@ -190,6 +190,18 @@
 /processorParam:TextureFormat=Color
 /build:Levels/Level-2.png
 
+#begin Levels/Level-2Drawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/Level-2Drawn.png
+
 #begin Levels/Level-3.png
 /importer:TextureImporter
 /processor:TextureProcessor
