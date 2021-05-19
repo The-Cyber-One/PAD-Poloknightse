@@ -102,7 +102,6 @@ namespace Poloknightse
                 velocity.Y = 1;
             }
 
-
             CheckPlayerCollsion();
 
             if (inputHelper.MouseLeftButtonPressed())
@@ -148,10 +147,13 @@ namespace Poloknightse
         public void TakeDamage(Point gridPosition, GameTime gameTime)
         {
             //Check if GameOver
-            if (followers.Count <= minFollowers)
+            if (followers.Count <= minFollowers || !chosen)
             {
-                GameEnvironment.CurrentGameState.gameObjectList.Remove(this);
-                GameEnvironment.SwitchTo("GameOverState");
+                GameEnvironment.GetState<PlayingState>("PlayingState").players.Remove(this);
+                if (GameEnvironment.GetState<PlayingState>("PlayingState").players.Children.Count == 0)
+                {
+                    GameEnvironment.SwitchTo("GameOverState");
+                }
                 return;
             }
 
