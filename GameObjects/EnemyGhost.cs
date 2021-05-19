@@ -39,7 +39,7 @@ namespace Poloknightse
                     direction = new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
 
                 direction = new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
-            } 
+            }
             while (LevelLoader.grid.GetLength(0) < gameObject.gridPosition.X + direction.X &&
                 LevelLoader.grid.GetLength(1) < gameObject.gridPosition.Y + direction.Y &&
                 gameObject.gridPosition.X + direction.X < 0 &&
@@ -51,6 +51,10 @@ namespace Poloknightse
         {
             stepsCounter--;
             base.FixedUpdate(gameTime);
+            if (LevelLoader.grid.GetLength(0) > gameObject.gridPosition.X &&
+                    LevelLoader.grid.GetLength(1) > gameObject.gridPosition.Y &&
+                    gameObject.gridPosition.X >= 0 &&
+                    gameObject.gridPosition.Y >= 0) return;
             if (LevelLoader.grid[gameObject.gridPosition.X, gameObject.gridPosition.Y].tileType == Tile.TileType.WALL)
             {
                 stepsCounter = ghostCooldownSteps;

@@ -66,7 +66,7 @@ namespace Poloknightse
     class ChaseState : State
     {
         public int stamina;
-        private const int MAX_STAMINA = 10;
+        private const int MAX_STAMINA = 15;
         protected GameObject gameObject;
         public Player player;
         Point[] path;
@@ -95,11 +95,7 @@ namespace Poloknightse
 
         public override void Start()
         {
-            path = GetNewPath();
-            if (path == null) return;
-
-            if (MAX_STAMINA >= path.Length) stamina = path.Length - 1;
-            else stamina = MAX_STAMINA;
+            stamina = MAX_STAMINA;
         }
 
         public override void FixedUpdate(GameTime gameTime)
@@ -111,22 +107,29 @@ namespace Poloknightse
             if (path != null)
             {
                 int currentStep = path.Length - 2;
-
                 if (currentStep >= 0)
+                {
                     gameObject.gridPosition = path[currentStep];
-            }
-            for (int i = player.followers.Count - 1; i >= 0; i--)
-            {
-                PlayerFollower follower = player.followers[i];
-                if (gameObject.gridPosition == follower.gridPosition)
+                }
+
+                if (player.CheckCollision(gameObject))
                 {
                     stamina = 0;
-                    player.TakeDamage(player.GetCenter(), gameTime);
-                    stateMachine.SetState("Attacked");
-                    break;
+                    player.TakeDamage(gameObject.gridPosition, gameTime);
+                }
+                for (int i = player.followers.Count - 1; i >= 0; i--)
+                {
+                    PlayerFollower follower = player.followers[i];
+
+                    if (gameObject.gridPosition == follower.gridPosition)
+                    {
+                        stamina = 0;
+                        player.TakeDamage(player.GetCenter(), gameTime);
+                        stateMachine.SetState("Attacked");
+                        break;
+                    }
                 }
             }
-
         }
 
         public virtual Point[] GetNewPath()
@@ -152,7 +155,10 @@ namespace Poloknightse
         {
             Point gridPosition = gameObject.gridPosition;
             path = AStar.FindPath(gridPosition, startPosition);
-            stamina = path.Length - 1;
+            if (path != null)
+            {
+                stamina = path.Length - 1;
+            }
         }
 
         public override void FixedUpdate(GameTime gameTime)
@@ -181,7 +187,7 @@ namespace Poloknightse
 
         public override void Start()
         {
-            System.Diagnostics.Debug.WriteLine(":(");
+            Debug.WriteLine(":(");
         }
     }
 
@@ -213,7 +219,7 @@ namespace Poloknightse
 
             //Add connections between states
             stateMachine.AddConnection("Patrol", "Return", (object state) => (state as PatrolState).stamina <= 0, stateMachine.GetState("Patrol"));
-            stateMachine.AddConnection("Chase", "Return", (object state) => (state as ChaseState).stamina <= 0, stateMachine.GetState("Chase"));
+            stateMachine.AddConnection("Chase", "Attacked", (object state) => (state as ChaseState).stamina <= 0, stateMachine.GetState("Chase"));
             stateMachine.AddConnection("Return", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Return"));
             stateMachine.AddConnection("Attacked", "Patrol", (object state) => (state as ReturnState).stamina <= 0, stateMachine.GetState("Attacked"));
 
@@ -228,8 +234,6 @@ namespace Poloknightse
             base.FixedUpdate(gameTime);
 
             stateMachine.FixedUpdate(gameTime);
-
-            if (stateMachine.CurrentState.name == "Attacked") return;
 
             //Find the closest player
             float closestPlayer = float.PositiveInfinity;
@@ -247,7 +251,7 @@ namespace Poloknightse
             }
 
             //If a player was found in range then attack it
-            if (float.IsFinite(closestPlayer))
+            if (float.IsFinite(closestPlayer) && stateMachine.CurrentState != stateMachine.GetState("Attacked") && stateMachine.CurrentState != stateMachine.GetState("Chase"))
             {
                 stateMachine.SetState("Chase");
             }

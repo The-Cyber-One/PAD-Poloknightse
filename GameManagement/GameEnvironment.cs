@@ -18,6 +18,7 @@ namespace Poloknightse
         protected static Random random;
         public static Point startGridPoint = new Point();
         static protected GameState currentGameState;
+        static private GameState nextGameState;
         protected static string playerName = "spelernaam hiero";
 
         static protected Dictionary<string, GameState> gameStateDict;
@@ -65,9 +66,7 @@ namespace Poloknightse
         {
             if (gameStateDict.ContainsKey(gameStateName))
             {
-                if (currentGameState != null) currentGameState.Reset();
-                currentGameState = gameStateDict.GetValueOrDefault(gameStateName);
-                currentGameState.Init();
+                nextGameState = gameStateDict[gameStateName];
             }
         }
 
@@ -112,6 +111,15 @@ namespace Poloknightse
 
         protected void HandleInput()
         {
+            //Update Gamestate
+            if (nextGameState != currentGameState)
+            {
+                if (currentGameState != null) currentGameState.Reset();
+                currentGameState = nextGameState;
+                currentGameState.Init();
+            }
+
+            //Update input
             inputHelper.Update();
             if (inputHelper.KeyPressed(Keys.Escape))
             {

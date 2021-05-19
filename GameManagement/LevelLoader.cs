@@ -138,6 +138,10 @@ namespace Poloknightse
                     if (gameObject is Player)
                     {
                         player = gameObject as Player;
+                        if (GameEnvironment.CurrentGameState == GameEnvironment.GetState<PlayingState>("PlayingState"))
+                        {
+                            GameEnvironment.CurrentGameState.gameObjectList.Remove(gameObject);
+                        }
                     }
                     if (gameObject is PlayerFollower)
                     {

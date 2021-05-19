@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -12,20 +13,12 @@ namespace Poloknightse
 
         public PlayingState()
         {
-            Game1.currentLevel = 3;
-        }
-
-        public override void Reset()
-        {
-            base.Reset();
-            players.Clear();
-            //Init();
+            Game1.currentLevel = 2;
         }
 
         public override void Init()
         {
-            gameObjectList.Clear();
-
+            players.Clear();
             LevelLoader.LoadLevel(Game1.levels[Game1.currentLevel]);
             gameObjectList.Add(players);
 
@@ -47,6 +40,10 @@ namespace Poloknightse
 
         public override void Update(GameTime gameTime)
         {
+            if (players.Children.Count == 1)
+            {
+                (players.Children[0] as Player).chosen = true;
+            }
             base.Update(gameTime);
 
             //Check if all coins got picked up
@@ -93,6 +90,38 @@ namespace Poloknightse
                             player.TakeDamage(gameObjectList[i].gridPosition, gameTime);
                             gameObjectList.Remove(gameObjectList[i]);
                             continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        public override void HandleInput(InputHelper inputHelper)
+        {
+            foreach (GameObject gameObject in gameObjectList)
+            {
+                if (gameObject != players) gameObject.HandleInput(inputHelper);
+            }
+
+            for (int i = players.Children.Count - 1; i >= 0; i--)
+            {
+                Player player = players.Children[i] as Player;
+                if (player.chosen)
+                {
+                    players.Children[i].HandleInput(inputHelper);
+
+                    if (inputHelper.KeyPressed(Keys.E) || inputHelper.KeyPressed(Keys.Space))
+                    {
+                        player.chosen = false;
+                        if (i + 1 >= players.Children.Count)
+                        {
+                            (players.Children[0] as Player).chosen = true;
+                            break;
+                        }
+                        else
+                        {
+                            (players.Children[i + 1] as Player).chosen = true;
+                            break;
                         }
                     }
                 }
