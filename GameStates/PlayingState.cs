@@ -16,13 +16,6 @@ namespace Poloknightse
             Game1.currentLevel = 0;
         }
 
-        public override void Reset()
-        {
-            base.Reset();
-            players.Clear();
-            //Init();
-        }
-
         public override void Init()
         {
             players.Clear();
