@@ -18,6 +18,7 @@ namespace Poloknightse
         public bool chosen = false;
         TextGameObject chosenText;
         float textOffset = -10;
+        Vector2 nextVelocity = new Vector2();
 
         public Player(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
@@ -38,21 +39,22 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
-            CollisionDetection.CheckWallCollision(this);
+            //Check if player can activate stored velocity
+            if (!CollisionDetection.CheckWallCollision(gridPosition, nextVelocity) && !CheckFollowerCollsion((gridPosition.ToVector2() + nextVelocity).ToPoint()))
+            {
+                velocity = nextVelocity;
+            }
+
+            if (CheckFollowerCollsion(gridPosition) || CollisionDetection.CheckWallCollision(gridPosition, velocity))
+            {
+                velocity = Vector2.Zero;
+            }
 
             if (velocity != Vector2.Zero)
             {
-                //Add follower
-                if (addFollower)
-                {
-                    AddFollower(gameTime);
-                    addFollower = false;
-                }
-
                 //Update position of posible new follower
                 if (followers.Count > 0)
                 {
-
                     newFollowerPosition = followers[followers.Count - 1].gridPosition;
                 }
                 else
@@ -69,7 +71,7 @@ namespace Poloknightse
             }
 
             //Move player
-            gridPosition += velocity.ToPoint(); ;
+            gridPosition += velocity.ToPoint();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -91,60 +93,50 @@ namespace Poloknightse
             //Change the movement direction
             if (inputHelper.KeyPressed(Keys.D) || inputHelper.KeyPressed(Keys.Right))
             {
-                velocity = Vector2.Zero;
-                velocity.X = 1;
+                nextVelocity = Vector2.Zero;
+                nextVelocity.X = 1;
             }
             else if (inputHelper.KeyPressed(Keys.A) || inputHelper.KeyPressed(Keys.Left))
             {
-                velocity = Vector2.Zero;
-                velocity.X = -1;
+                nextVelocity = Vector2.Zero;
+                nextVelocity.X = -1;
             }
             else if (inputHelper.KeyPressed(Keys.W) || inputHelper.KeyPressed(Keys.Up))
             {
-                velocity = Vector2.Zero;
-                velocity.Y = -1;
+                nextVelocity = Vector2.Zero;
+                nextVelocity.Y = -1;
             }
             else if (inputHelper.KeyPressed(Keys.S) || inputHelper.KeyPressed(Keys.Down))
             {
-                velocity = Vector2.Zero;
-                velocity.Y = 1;
-            }
-
-            CheckPlayerCollsion();
-
-            if (inputHelper.MouseLeftButtonPressed())
-            {
-                addFollower = true;
+                nextVelocity = Vector2.Zero;
+                nextVelocity.Y = 1;
             }
         }
 
 
         /// <summary>
-        /// Checks if player will hit it self and if so stop moving
+        /// Checks if <paramref name="gridPosition"></paramref> will hit a follower
         /// </summary>
-        public void CheckPlayerCollsion()
+        private bool CheckFollowerCollsion(Point gridPosition)
         {
-            bool playerHitsPlayer = false;
+            bool playerHitsFollower = false;
             foreach (PlayerFollower playerFollower in followers)
             {
-                if (playerFollower.gridPosition == (gridPosition.ToVector2() + velocity).ToPoint())
+                if (playerFollower.gridPosition == gridPosition)
                 {
-                    playerHitsPlayer = true;
+                    return true;
                 }
             }
-            if (playerHitsPlayer) velocity = Vector2.Zero;
+            return playerHitsFollower;
         }
 
+        /// <summary>
+        /// Checks if <paramref name="gameObject"></paramref> collides with any part of the player
+        /// </summary>
         public override bool CheckCollision(GameObject gameObject)
         {
             bool playerHitsObject = base.CheckCollision(gameObject);
-            foreach (PlayerFollower playerFollower in followers)
-            {
-                if (playerFollower.gridPosition == gameObject.gridPosition)
-                {
-                    playerHitsObject = true;
-                }
-            }
+            CheckFollowerCollsion(gameObject.gridPosition);
             return playerHitsObject;
         }
 
