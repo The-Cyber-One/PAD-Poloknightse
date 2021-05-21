@@ -69,12 +69,15 @@ namespace Poloknightse
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            positionSize = new Rectangle(
+
+            
+                positionSize = new Rectangle(
                 gridPosition.X * LevelLoader.gridTileSize + GameEnvironment.startGridPoint.X,
                 gridPosition.Y * LevelLoader.gridTileSize + GameEnvironment.startGridPoint.Y,
                 LevelLoader.gridTileSize,
                 LevelLoader.gridTileSize);
-            spriteBatch.Draw(texture, positionSize, Color.White);
+                spriteBatch.Draw(texture, positionSize, Color.White);
+            
         }
 
         // boolean to check if to objects collide

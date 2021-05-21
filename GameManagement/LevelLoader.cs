@@ -12,6 +12,8 @@ namespace Poloknightse
         public static int gridTileSize;
         public static Tile[,] grid;
         static int xOffset, yOffset;
+        public static float scalingFactor;
+        static float groundTileSize = 110;
 
         private static Dictionary<Color, Tuple<Type, string, Tile.TileType>> colorTilePairs = new Dictionary<Color, Tuple<Type, string, Tile.TileType>>()
         {
@@ -97,6 +99,7 @@ namespace Poloknightse
 
             //Change the tile size and calculate the center
             gridTileSize = GameEnvironment.Screen.Y / level.Height;
+            scalingFactor = gridTileSize / groundTileSize;
             xOffset = GameEnvironment.Screen.X / 2 - (level.Width / 2) * gridTileSize;
             yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
             GameEnvironment.startGridPoint = new Point(xOffset, yOffset);

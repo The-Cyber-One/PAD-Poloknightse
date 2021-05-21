@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Poloknightse
@@ -106,6 +107,16 @@ namespace Poloknightse
                 currentTime -= countDuration;
                 Shoot(shootDir);
             }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            positionSize = new Rectangle(
+            gridPosition.X * LevelLoader.gridTileSize + GameEnvironment.startGridPoint.X + (int)(LevelLoader.gridTileSize / 2),
+            gridPosition.Y * LevelLoader.gridTileSize + GameEnvironment.startGridPoint.Y + (int)(LevelLoader.gridTileSize),
+            (int)(texture.Width * LevelLoader.scalingFactor),
+            (int)(texture.Height * LevelLoader.scalingFactor));
+            spriteBatch.Draw(texture, positionSize, null, Color.White, 0, new Vector2(texture.Width / 2, texture.Height), SpriteEffects.None, 1);
         }
     }
 }

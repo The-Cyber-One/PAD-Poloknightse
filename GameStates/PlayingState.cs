@@ -94,6 +94,7 @@ namespace Poloknightse
                     }
                 }
             }
+            Debug.WriteLine(LevelLoader.gridTileSize);
         }
 
         public override void HandleInput(InputHelper inputHelper)
