@@ -4,12 +4,16 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+
 namespace Poloknightse
 {
     class PlayingState : GameState
     {
         public GameObjectList players = new GameObjectList();
         private int CoinAmount;
+        private float ElapsedTimeSec = 0;
+        private float ElapsedTimeMin = 0;
+        private TextGameObject timerText;
 
         public PlayingState()
         {
@@ -30,6 +34,9 @@ namespace Poloknightse
                     CoinAmount += 1;
                 }
             }
+
+            timerText = new TextGameObject("0", new Vector2(GameEnvironment.Screen.X / 4, GameEnvironment.Screen.Y / 2), Vector2.One / 2, Color.White);
+            gameObjectList.Add(timerText);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -40,6 +47,17 @@ namespace Poloknightse
 
         public override void Update(GameTime gameTime)
         {
+            ElapsedTimeSec += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+			if (ElapsedTimeSec >= 60)
+			{
+                ElapsedTimeSec = 0;
+                ElapsedTimeMin += 1;
+			}
+
+            timerText.text = ElapsedTimeSec.ToString("0");
+
+
             if (players.Children.Count == 1)
             {
                 (players.Children[0] as Player).chosen = true;
@@ -94,6 +112,7 @@ namespace Poloknightse
                     }
                 }
             }
+            Debug.WriteLine(ElapsedTimeMin +" , "+  (int)ElapsedTimeSec);
         }
 
         public override void HandleInput(InputHelper inputHelper)

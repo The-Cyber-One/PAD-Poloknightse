@@ -25,7 +25,6 @@ namespace Poloknightse
 
 		public override void Draw(SpriteBatch spriteBatch)
 		{
-			base.Draw(spriteBatch);
 			LevelLoader.Draw(spriteBatch);
 			base.Draw(spriteBatch);
 		}

@@ -98,7 +98,8 @@ namespace Poloknightse
 
 		public override void Update(GameTime gameTime)
 		{
-			base.Update(gameTime);
+
+            base.Update(gameTime);
             currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
 
             if (currentTime >= countDuration)
