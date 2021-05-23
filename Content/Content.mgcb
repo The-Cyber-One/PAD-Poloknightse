@@ -154,6 +154,18 @@
 /processorParam:TextureFormat=Color
 /build:GameObjects/Player/Onderbroek_Ridder.png
 
+#begin Levels/CreditsMenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/CreditsMenu.png
+
 #begin Levels/GameOver.png
 /importer:TextureImporter
 /processor:TextureProcessor
