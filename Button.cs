@@ -12,7 +12,7 @@ namespace Poloknightse
         int test = 0;
         Rectangle buttonBox;
         public bool hovering, clicked;
-        public Button(Rectangle buttonBox) : base (new Point(buttonBox.X, buttonBox.Y), "GameObjects/bomb")
+        public Button(Rectangle buttonBox, String buttonSprite) : base (new Point(buttonBox.X, buttonBox.Y), "Levels/" + buttonSprite)
         {
             this.buttonBox = buttonBox;
         }

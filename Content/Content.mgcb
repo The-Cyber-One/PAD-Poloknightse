@@ -178,6 +178,18 @@
 /processorParam:TextureFormat=Color
 /build:Levels/Level-1.png
 
+#begin Levels/Level-1Drawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/Level-1Drawn.png
+
 #begin Levels/Level-2.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -214,6 +226,18 @@
 /processorParam:TextureFormat=Color
 /build:Levels/Level-3.png
 
+#begin Levels/Level-3Drawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/Level-3Drawn.png
+
 #begin Levels/Level-4.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -226,6 +250,18 @@
 /processorParam:TextureFormat=Color
 /build:Levels/Level-4.png
 
+#begin Levels/Level-4Drawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/Level-4Drawn.png
+
 #begin Levels/Level-5.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -237,6 +273,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Levels/Level-5.png
+
+#begin Levels/Level-5Drawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/Level-5Drawn.png
 
 #begin Levels/LevelSelectMenu.png
 /importer:TextureImporter
@@ -273,6 +321,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Levels/StarterLevel.png
+
+#begin Levels/StarterLevelDrawn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/StarterLevelDrawn.png
 
 #begin Levels/test.png
 /importer:TextureImporter

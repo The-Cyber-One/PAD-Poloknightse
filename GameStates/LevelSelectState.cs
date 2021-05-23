@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
 
 namespace Poloknightse
 {
@@ -28,11 +24,11 @@ namespace Poloknightse
             Point positionOffset = convertedSize + convertedOffset;
             for (int i = 0; i < Game1.levels.Length / 2; i++)
             {
-                    Rectangle buttonLocation = new Rectangle(convertedPosition.X + positionOffset.X * i, convertedPosition.Y, convertedSize.X, convertedSize.Y);
-                    buttons.Add(new Button(buttonLocation));
+                Rectangle buttonLocation = new Rectangle(convertedPosition.X + positionOffset.X * i, convertedPosition.Y, convertedSize.X, convertedSize.Y);
+                buttons.Add(new Button(buttonLocation, Game1.levels[i] + "Drawn"));
 
-                    Rectangle buttonLocation2 = new Rectangle(convertedPosition.X + positionOffset.X * i , convertedPosition.Y + positionOffset.Y, convertedSize.X, convertedSize.Y);
-                    buttons.Add(new Button(buttonLocation2));                           
+                Rectangle buttonLocation2 = new Rectangle(convertedPosition.X + positionOffset.X * i, convertedPosition.Y + positionOffset.Y, convertedSize.X, convertedSize.Y);
+                buttons.Add(new Button(buttonLocation2, Game1.levels[i * 2] + "Drawn"));
             }
             gameObjectList.Add(buttons);
         }
@@ -43,12 +39,30 @@ namespace Poloknightse
         }
         public override void HandleInput(InputHelper inputHelper)
         {
-            for (int i = 0; i < buttons.Children.Count; i++)
+            if (((Button)buttons.Children[0]).clicked)
             {
-                if (((Button)buttons.Children[i]).clicked)
-                {
-                    GameEnvironment.SwitchTo("PlayingState");
-                }
+                Game1.currentLevel = 0;
+                GameEnvironment.SwitchTo("PlayingState");
+            } else if (((Button)buttons.Children[1]).clicked)
+            {
+                Game1.currentLevel = 3;
+                GameEnvironment.SwitchTo("PlayingState");
+            } else if (((Button)buttons.Children[2]).clicked)
+            {
+                Game1.currentLevel = 1;
+                GameEnvironment.SwitchTo("PlayingState");
+            } else if (((Button)buttons.Children[3]).clicked)
+            {
+                Game1.currentLevel = 4;
+                GameEnvironment.SwitchTo("PlayingState");
+            } else if (((Button)buttons.Children[4]).clicked)
+            {
+                Game1.currentLevel = 2;
+                GameEnvironment.SwitchTo("PlayingState");
+            } else if (((Button)buttons.Children[5]).clicked)
+            {
+                Game1.currentLevel = 5;
+                GameEnvironment.SwitchTo("PlayingState");
             }
             base.HandleInput(inputHelper);
         }
