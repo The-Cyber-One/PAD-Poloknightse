@@ -6,9 +6,10 @@ namespace Poloknightse
 {
     class LevelSelectState : GameState
     {
-        Point offset = new Point(4, 4);
-        Point startPosition = new Point(4, 8);
-        Point buttonSize = new Point(16, 10);
+        Point offset = new Point(8, 4);
+        Point startPosition = new Point(6, 5);
+        Point buttonSize = new Point(12, 12);
+        Vector2 titleTextPosition = new Vector2(32, 2.5f);
         GameObjectList buttons = new GameObjectList();
         public LevelSelectState()
         {
@@ -18,7 +19,7 @@ namespace Poloknightse
         public override void Init()
         {
             LevelLoader.LoadLevel("Menu/LevelSelectMenu");
-            gameObjectList.Add(new TextGameObject("Select a level", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 8), Vector2.One / 2, Color.Black, "Fonts/Title"));
+            gameObjectList.Add(new TextGameObject("Select a level", LevelLoader.GridPointToWorld(titleTextPosition), Vector2.One / 2, Color.Black, "Fonts/Title"));
             Point convertedOffset = LevelLoader.GridPointToWorld(offset).ToPoint();
             Point convertedPosition = LevelLoader.GridPointToWorld(startPosition).ToPoint();
             Point convertedSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
@@ -26,10 +27,10 @@ namespace Poloknightse
             for (int i = 0; i < Game1.levels.Length / 2; i++)
             {
                 Rectangle buttonLocation = new Rectangle(convertedPosition.X + positionOffset.X * i, convertedPosition.Y, convertedSize.X, convertedSize.Y);
-                buttons.Add(new Button(buttonLocation, i));
+                buttons.Add(new LevelSelectButton(buttonLocation, i));
 
                 Rectangle buttonLocation2 = new Rectangle(convertedPosition.X + positionOffset.X * i, convertedPosition.Y + positionOffset.Y, convertedSize.X, convertedSize.Y);
-                buttons.Add(new Button(buttonLocation2, i + Game1.levels.Length / 2));
+                buttons.Add(new LevelSelectButton(buttonLocation2, i + Game1.levels.Length / 2));
             }
             gameObjectList.Add(buttons);
         }
@@ -47,7 +48,7 @@ namespace Poloknightse
                 GameEnvironment.SwitchTo("StartState");
             }
 
-            foreach (Button button in buttons.Children)
+            foreach (LevelSelectButton button in buttons.Children)
             {
                 if (button.clicked)
                 {

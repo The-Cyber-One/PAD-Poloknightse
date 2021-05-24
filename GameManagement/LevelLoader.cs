@@ -176,7 +176,10 @@ namespace Poloknightse
         {
             return new Vector2(x, y) * gridTileSize + new Vector2(xOffset, yOffset);
         }
-
+        public static Vector2 GridPointToWorld(Vector2 vector)
+        {
+            return vector * gridTileSize + new Vector2(xOffset, yOffset);
+        }
         /// <summary>
         /// Draw entire level
         /// </summary>
