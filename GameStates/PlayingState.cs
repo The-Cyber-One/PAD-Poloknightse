@@ -14,15 +14,15 @@ namespace Poloknightse
         private static Stopwatch stopWatch;
         private TimeSpan timeSpan;
         private int CoinAmount;
-        private TextGameObject timerText;
+        private TextGameObject timerText, coinsLeftText;
         private int playerAmountEnd;
         private int followerAmountEnd;
         private string elapsedTime;
+        private int totalEndTime;
 
         public PlayingState()
         {
             Game1.currentLevel = 0;
-
         }
 
         public override void Init()
@@ -40,20 +40,27 @@ namespace Poloknightse
                 }
             }
 
+            //Start the timer for score
             stopWatch = new Stopwatch();
             stopWatch.Start();
 
+            //UI components
+            gameObjectList.Add(new TextGameObject("Time:", new Vector2(GameEnvironment.Screen.X - 1420, GameEnvironment.Screen.Y / 2 - 350), Vector2.One / 2, Color.White, "Fonts/Title"));
             timerText = new TextGameObject("0", new Vector2(GameEnvironment.Screen.X - 1460, GameEnvironment.Screen.Y / 2 - 280), Vector2.One / 2, Color.White, "Fonts/Title", 0.6f);
             gameObjectList.Add(timerText);
 
-            gameObjectList.Add(new TextGameObject("Time:", new Vector2(GameEnvironment.Screen.X - 1420, GameEnvironment.Screen.Y / 2 - 350), Vector2.One / 2, Color.White, "Fonts/Title"));
-        
+            gameObjectList.Add(new TextGameObject("Coins Left:", new Vector2(GameEnvironment.Screen.X - 1420, GameEnvironment.Screen.Y / 2 - 130), Vector2.One / 2, Color.White, "Fonts/Title"));
+            coinsLeftText = new TextGameObject("0", new Vector2(GameEnvironment.Screen.X - 1425, GameEnvironment.Screen.Y / 2 - 60), Vector2.One / 2, Color.White, "Fonts/Title", 0.6f);
+            gameObjectList.Add(coinsLeftText);
         }
 
+        //This function will calculate the end score after the run is finished
         public void CalculateEndTime()
 		{
+            //stop the timer
             stopWatch.Stop();
 
+            //Count how many players and followers there are in the level
 			for (int i = 0; i < players.Children.Count; i++)
 			{
                 playerAmountEnd += 1;
@@ -64,11 +71,17 @@ namespace Poloknightse
                 }
             }
 
-            int timeSpanSec = (int)timeSpan.TotalSeconds;
-            timeSpanSec -= 2 * followerAmountEnd;
-            timeSpanSec -= 5 * playerAmountEnd;
+            //Subtract the time earned by how many players and followers are left in the level
+            int timeSpanTotalSec = (int)timeSpan.TotalSeconds;
+            timeSpanTotalSec -= 2 * followerAmountEnd;
+            timeSpanTotalSec -= 5 * playerAmountEnd;
 
-            Debug.Write(timeSpanSec);
+            //Calculate it from total seconds to a value we can use in the database
+            int sec = timeSpanTotalSec % 60;
+            int min = (int)Math.Round(timeSpanTotalSec / 60d ,0) * 100;
+            totalEndTime = min + sec;
+
+            Debug.Write(timeSpanTotalSec + " || " + min + " + " + sec + " = " + totalEndTime);
 		}
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -79,10 +92,13 @@ namespace Poloknightse
 
         public override void Update(GameTime gameTime)
         {
+            //Update the text of the stopwatch
             timeSpan = stopWatch.Elapsed;
             elapsedTime = String.Format("{0:00}:{1:00}", timeSpan.Minutes, timeSpan.Seconds);
-
             timerText.text = elapsedTime;
+
+            //Update the text for the amount of coins
+            coinsLeftText.text = CoinAmount.ToString();
 
             if (players.Children.Count == 1)
             {
