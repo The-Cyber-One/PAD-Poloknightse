@@ -27,7 +27,7 @@ namespace Poloknightse
         public override async void Init()
         {
             //Background
-            LevelLoader.LoadLevel("Menu/MainMenu");
+            LevelLoader.LoadLevel("Menu/StandardMenu");
             AddSecret(new Coin());
             AddSecret(new HealthPickup());
             AddSecret(new EnemyGhost());
@@ -67,12 +67,10 @@ namespace Poloknightse
         public override void HandleInput(InputHelper inputHelper)
         {
             Game1.exit = GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape);
-
             if (mainMenuButton.clicked)
             {
                 GameEnvironment.SwitchTo("LevelSelectState");
             }
-
             base.HandleInput(inputHelper);
         }
     }
