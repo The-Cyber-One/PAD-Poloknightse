@@ -9,7 +9,13 @@ namespace Poloknightse
 {
     class StartState : GameState
     {
-        private const int TITLE_Y_OFFSET = 200;
+        Vector2 titleTextPosition = new Vector2(32, 10.5f);
+        Point buttonPosition = new Point(28, 14);
+        Point buttonSize = new Point(8, 8);
+        string startButtonAssetName = "Menu/Start";
+        string startButtonText = "Click button to start";
+        Button mainMenuButton;
+
         GameObjectList backgroundObjects = new GameObjectList();
         List<Point> secretPlaces = new List<Point>();
 
@@ -28,8 +34,13 @@ namespace Poloknightse
             AddSecret(new EnemyWalking());
 
             //Menu
-            gameObjectList.Add(new TextGameObject("Poloknightse", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2 - TITLE_Y_OFFSET), Vector2.One / 2, Color.Black, "Fonts/Title"));
-            gameObjectList.Add(new TextGameObject("Press any button to begin", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2), Vector2.One / 2));
+            Vector2 convertedtitleTextPosition = LevelLoader.GridPointToWorld(titleTextPosition);
+            Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
+            Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
+            gameObjectList.Add(new TextGameObject("Poloknightse", convertedtitleTextPosition, Vector2.One / 2, Color.Black, "Fonts/Title"));
+            Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
+            mainMenuButton = new Button(button, startButtonAssetName, startButtonText);
+            gameObjectList.Add(mainMenuButton);
 
             Debug.WriteLine((await HighscoreManager.LoadScore()).ToString());
         }
@@ -57,7 +68,7 @@ namespace Poloknightse
         {
             Game1.exit = GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape);
 
-            if (inputHelper.AnyKeyPressed)
+            if (mainMenuButton.clicked)
             {
                 GameEnvironment.SwitchTo("LevelSelectState");
             }
