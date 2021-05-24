@@ -274,6 +274,18 @@
 /processorParam:TextureFormat=Color
 /build:LevelTiles/Wall.png
 
+#begin Menu/Back.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Menu/Back.png
+
 #begin Menu/GameOver.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -370,7 +382,7 @@
 /processorParam:TextureFormat=Color
 /build:Menu/LevelSelectMenu.png
 
-#begin Menu/MainMenu.png
+#begin Menu/StandardMenu.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -380,7 +392,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Menu/MainMenu.png
+/build:Menu/StandardMenu.png
 
 #begin Menu/Start.png
 /importer:TextureImporter

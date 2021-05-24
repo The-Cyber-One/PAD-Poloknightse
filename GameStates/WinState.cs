@@ -9,27 +9,40 @@ namespace Poloknightse
 {
 	class WinState : GameState
 	{
-		TextGameObject textObject = new TextGameObject("", GameEnvironment.Screen.ToVector2() / 2, Vector2.One / 2, Color.White);
+		Vector2 titleTextPosition = new Vector2(32, 10.5f);
+		Point buttonPosition = new Point(28, 14);
+		Point buttonSize = new Point(8, 8);
+		string backButtonAssetName = "Menu/Back";
+		string backButtonText = "Click button to return to level select menu";
+		Button winStateButton;
 
 		public WinState()
 		{
-			gameObjectList.Add(textObject);
+			
 		}
 
         public override void Init()
         {
-            base.Init();
-			textObject.text = $"Level {Game1.currentLevel} completed! \n Press any button to continue";
+			LevelLoader.LoadLevel("Menu/StandardMenu");
+
+			Vector2 convertedtitleTextPosition = LevelLoader.GridPointToWorld(titleTextPosition);
+			Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
+			Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
+			gameObjectList.Add(new TextGameObject("Level completed", convertedtitleTextPosition, Vector2.One / 2, Color.Black, "Fonts/Title"));
+			Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
+			winStateButton = new Button(button, backButtonAssetName, backButtonText);
+			gameObjectList.Add(winStateButton);
 		}
 
         public override void Draw(SpriteBatch spriteBatch)
 		{
+			LevelLoader.Draw(spriteBatch);
 			base.Draw(spriteBatch);
 		}
 
 		public override void HandleInput(InputHelper inputHelper)
 		{
-			if (inputHelper.AnyKeyPressed)
+			if (winStateButton.clicked)
 			{
 				GameEnvironment.SwitchTo("LevelSelectState");
 			}
