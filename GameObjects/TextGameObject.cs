@@ -27,8 +27,6 @@ namespace Poloknightse
             this.origin = font.MeasureString(text) * origin;
             this.angle = angle;
             this.scale = scale;
-            
-            
         }
 
         public override void Draw(SpriteBatch spriteBatch)

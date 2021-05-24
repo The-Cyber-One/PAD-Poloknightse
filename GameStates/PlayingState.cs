@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System;
 
 
 namespace Poloknightse
@@ -11,13 +12,14 @@ namespace Poloknightse
     {
         public GameObjectList players = new GameObjectList();
         private int CoinAmount;
-        private float ElapsedTimeSec = 0;
-        private float ElapsedTimeMin = 0;
         private TextGameObject timerText;
+        private TimeSpan timeSpan;
+        private Stopwatch stopWatch;
 
         public PlayingState()
         {
             Game1.currentLevel = 1;
+
         }
 
         public override void Init()
@@ -35,8 +37,14 @@ namespace Poloknightse
                 }
             }
 
-            timerText = new TextGameObject("0", new Vector2(GameEnvironment.Screen.X / 4, GameEnvironment.Screen.Y / 2), Vector2.One / 2, Color.White);
+            stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            timerText = new TextGameObject("0", new Vector2(GameEnvironment.Screen.X - 1460, GameEnvironment.Screen.Y / 2 - 280), Vector2.One / 2, Color.White, "Fonts/Title", 0.6f);
             gameObjectList.Add(timerText);
+
+            gameObjectList.Add(new TextGameObject("Time:", new Vector2(GameEnvironment.Screen.X - 1420, GameEnvironment.Screen.Y / 2 - 350), Vector2.One / 2, Color.White, "Fonts/Title"));
+        
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -47,16 +55,10 @@ namespace Poloknightse
 
         public override void Update(GameTime gameTime)
         {
-            ElapsedTimeSec += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timeSpan = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}", timeSpan.Minutes, timeSpan.Seconds);
 
-			if (ElapsedTimeSec >= 60)
-			{
-                ElapsedTimeSec = 0;
-                ElapsedTimeMin += 1;
-			}
-
-            timerText.text = ElapsedTimeSec.ToString("0");
-
+            timerText.text = elapsedTime;
 
             if (players.Children.Count == 1)
             {
@@ -67,6 +69,8 @@ namespace Poloknightse
             //Check if all coins got picked up
             if (CoinAmount <= 0)
             {
+                stopWatch.Stop();
+
                 Game1.currentLevel++;
                 if (Game1.currentLevel >= Game1.levels.Length) Game1.currentLevel = 0;
                 GameEnvironment.SwitchTo("WinState");
@@ -112,7 +116,6 @@ namespace Poloknightse
                     }
                 }
             }
-            Debug.WriteLine(ElapsedTimeMin +" , "+  (int)ElapsedTimeSec);
         }
 
         public override void HandleInput(InputHelper inputHelper)
