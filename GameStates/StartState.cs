@@ -30,7 +30,7 @@ namespace Poloknightse
             gameObjectList.Add(new TextGameObject("Poloknightse", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2 - TITLE_Y_OFFSET), Vector2.One / 2, Color.Black, "Fonts/Title"));
             gameObjectList.Add(new TextGameObject("Press any button to begin", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2), Vector2.One / 2));
 
-            Debug.WriteLine((await HighscoreManager.LoadScore()).ToString());
+            //Debug.WriteLine((await HighscoreManager.LoadScore()).ToString());
         }
 
         private void AddSecret(GameObject gameObject)

@@ -11,14 +11,17 @@ namespace Poloknightse
     class PlayingState : GameState
     {
         public GameObjectList players = new GameObjectList();
+        private static Stopwatch stopWatch;
+        private TimeSpan timeSpan;
         private int CoinAmount;
         private TextGameObject timerText;
-        private TimeSpan timeSpan;
-        private Stopwatch stopWatch;
+        private int playerAmountEnd;
+        private int followerAmountEnd;
+        private string elapsedTime;
 
         public PlayingState()
         {
-            Game1.currentLevel = 1;
+            Game1.currentLevel = 0;
 
         }
 
@@ -47,6 +50,27 @@ namespace Poloknightse
         
         }
 
+        public void CalculateEndTime()
+		{
+            stopWatch.Stop();
+
+			for (int i = 0; i < players.Children.Count; i++)
+			{
+                playerAmountEnd += 1;
+
+                for (int j = ((Player)players.Children[i]).followers.Count - 1; j >= 0; j--)
+                {
+                    followerAmountEnd += 1;
+                }
+            }
+
+            int timeSpanSec = (int)timeSpan.TotalSeconds;
+            timeSpanSec -= 2 * followerAmountEnd;
+            timeSpanSec -= 5 * playerAmountEnd;
+
+            Debug.Write(timeSpanSec);
+		}
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             LevelLoader.Draw(spriteBatch);
@@ -56,7 +80,7 @@ namespace Poloknightse
         public override void Update(GameTime gameTime)
         {
             timeSpan = stopWatch.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}", timeSpan.Minutes, timeSpan.Seconds);
+            elapsedTime = String.Format("{0:00}:{1:00}", timeSpan.Minutes, timeSpan.Seconds);
 
             timerText.text = elapsedTime;
 
@@ -69,7 +93,7 @@ namespace Poloknightse
             //Check if all coins got picked up
             if (CoinAmount <= 0)
             {
-                stopWatch.Stop();
+                CalculateEndTime();
 
                 Game1.currentLevel++;
                 if (Game1.currentLevel >= Game1.levels.Length) Game1.currentLevel = 0;
