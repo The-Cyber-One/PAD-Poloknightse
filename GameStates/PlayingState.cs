@@ -46,7 +46,7 @@ namespace Poloknightse
             }
             base.Update(gameTime);
 
-            //Check if all coins got picked up
+            //Check if all coins got picked up, go to next level when all are picked-up
             if (CoinAmount <= 0)
             {
                 Game1.currentLevel++;
