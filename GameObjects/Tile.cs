@@ -10,6 +10,7 @@ namespace Poloknightse
     {
         public Rectangle rectangle;
         public TileType tileType;
+
         public Texture2D TileTexture
         {
             get { return texture; }
