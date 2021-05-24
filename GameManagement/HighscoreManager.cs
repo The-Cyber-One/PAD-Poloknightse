@@ -23,13 +23,23 @@ namespace Poloknightse
         }
 
         /// <summary>
-        /// Gets the whole highscore table
+        /// Gets the whole highscore table orderd by score
         /// </summary>
         public static async Task<Table> LoadScore()
         {
             AppDb db = new AppDb();
-            Table highscores = await db.GetTable("SELECT * FROM Highscore;");
-            return highscores;
+            Table table = await db.GetTable("SELECT * FROM Highscore ORDER BY score ASC;");
+            return table;
+        }
+
+        /// <summary>
+        /// Gets the whole highscore table orderd by most recent
+        /// </summary>
+        public static async Task<Table> LoadRecent()
+        {
+            AppDb db = new AppDb();
+            Table table = await db.GetTable("SELECT * FROM Highscore ORDER BY dateTime DESC;");
+            return table;
         }
     }
 }
