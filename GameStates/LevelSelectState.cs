@@ -17,7 +17,7 @@ namespace Poloknightse
 
         public override void Init()
         {
-            LevelLoader.LoadLevel("LevelSelectMenu");
+            LevelLoader.LoadLevel("Menu/LevelSelectMenu");
             gameObjectList.Add(new TextGameObject("Select a level", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 8), Vector2.One / 2, Color.Black, "Fonts/Title"));
             Point convertedOffset = LevelLoader.GridPointToWorld(offset).ToPoint();
             Point convertedPosition = LevelLoader.GridPointToWorld(startPosition).ToPoint();

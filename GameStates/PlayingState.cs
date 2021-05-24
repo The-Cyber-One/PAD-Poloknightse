@@ -19,7 +19,7 @@ namespace Poloknightse
         public override void Init()
         {
             players.Clear();
-            LevelLoader.LoadLevel(Game1.levels[Game1.currentLevel]);
+            LevelLoader.LoadLevel("Levels/" + Game1.levels[Game1.currentLevel]);
             gameObjectList.Add(players);
 
             //Count how many coins there are in the level

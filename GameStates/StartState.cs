@@ -21,7 +21,7 @@ namespace Poloknightse
         public override async void Init()
         {
             //Background
-            LevelLoader.LoadLevel("MainMenu");
+            LevelLoader.LoadLevel("Menu/MainMenu");
             AddSecret(new Coin());
             AddSecret(new HealthPickup());
             AddSecret(new EnemyGhost());

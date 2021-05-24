@@ -87,11 +87,11 @@ namespace Poloknightse
         /// <summary>
         /// Load the level from a png file.
         /// </summary>
-        /// <param name="levelName">Filename from the levels folder.</param>
-        public static void LoadLevel(string levelName)
+        /// <param name="levelPath">Filename from the levels folder.</param>
+        public static void LoadLevel(string levelPath)
         {
             //Load the colors to a array
-            Texture2D level = GameEnvironment.ContentManager.Load<Texture2D>("Levels/" + levelName);
+            Texture2D level = GameEnvironment.ContentManager.Load<Texture2D>(levelPath);
             Color[] colors = new Color[level.Width * level.Height];
             level.GetData(colors);
 
