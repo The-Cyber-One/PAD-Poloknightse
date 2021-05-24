@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -54,10 +55,13 @@ namespace Poloknightse
 
         public override void HandleInput(InputHelper inputHelper)
         {
+            Game1.exit = GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.IsKeyDown(Keys.Escape);
+
             if (inputHelper.AnyKeyPressed)
             {
                 GameEnvironment.SwitchTo("LevelSelectState");
             }
+
             base.HandleInput(inputHelper);
         }
     }

@@ -7,6 +7,7 @@ namespace Poloknightse
     class Game1 : GameEnvironment
     {
         public static int currentLevel;
+        public static bool exit = false;
 
         public static string[] levels =
             {
@@ -47,11 +48,9 @@ namespace Poloknightse
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-        
+            if (exit) Exit();
             // TODO: Add your update logic here
-
+            
             base.Update(gameTime);
         }
     }

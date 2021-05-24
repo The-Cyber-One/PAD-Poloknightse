@@ -19,7 +19,7 @@ namespace Poloknightse
         public override void Init()
         {
             base.Init();
-			textObject.text = "press any button to load level " + (Game1.currentLevel + 1);
+			textObject.text = $"Level {Game1.currentLevel} completed! \n Press any button to continue";
 		}
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -31,7 +31,7 @@ namespace Poloknightse
 		{
 			if (inputHelper.AnyKeyPressed)
 			{
-				GameEnvironment.SwitchTo("PlayingState");
+				GameEnvironment.SwitchTo("LevelSelectState");
 			}
 			base.HandleInput(inputHelper);
 		}
