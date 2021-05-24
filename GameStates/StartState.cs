@@ -70,7 +70,7 @@ namespace Poloknightse
 
             if (mainMenuButton.clicked)
             {
-                GameEnvironment.SwitchTo("LevelSelectState");
+                GameEnvironment.SwitchTo("HighscoreState");
             }
 
             base.HandleInput(inputHelper);
