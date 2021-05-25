@@ -13,8 +13,8 @@ namespace Poloknightse
 		Vector2 titleTextPosition = new Vector2(32, 12f);
 		Point buttonPosition = new Point(28, 14);
 		Point buttonSize = new Point(8, 8);
-		string backButtonAssetName = "Menu/Back";
-		string backButtonText = "Click button to return to level select menu";
+		string backButtonAssetName = "Back";
+		string backButtonText = "Level select menu";
 		Button winStateButton;
 
 		public WinState()

@@ -9,6 +9,11 @@ namespace Poloknightse
 {
     class CreditsState : GameState
     {
+        Point buttonPosition = new Point(28, 25);
+        Point buttonSize = new Point(8, 8);
+        string backButtonAssetName = "Back";
+        string backButtonText = "Main menu";
+        Button creditsStateButton;
         public CreditsState() : base()
         {
 
@@ -17,8 +22,14 @@ namespace Poloknightse
         public override void Init()
         {
             LevelLoader.LoadLevel("Menu/CreditsMenu");
-            gameObjectList.Add(new TextGameObject("Poloknightse\nBy Stinky Koala's", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2), Vector2.One / 2, Color.Wheat, "Fonts/Title"));
-            gameObjectList.Add(new TextGameObject("Mees Dekker, Robin de Graaff, Joshua Knaven, Saad Zetouny, Martijn Zwart", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y * 2 / 3), Vector2.One / 2, Color.Wheat, "Fonts/Title", 0.7f));
+
+            Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
+            Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
+            gameObjectList.Add(new TextGameObject("Poloknightse\nBy Stinky Koala's", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 10 * 4), Vector2.One / 2, Color.Wheat, "Fonts/Title"));
+            gameObjectList.Add(new TextGameObject("Mees Dekker, Robin de Graaff, Joshua Knaven, Saad Zetouny, Martijn Zwart", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 10 * 6), Vector2.One / 2, Color.Wheat, "Fonts/Title", 0.7f));
+            Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
+            creditsStateButton = new Button(button, backButtonAssetName, backButtonText);
+            gameObjectList.Add(creditsStateButton);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -29,7 +40,7 @@ namespace Poloknightse
 
         public override void HandleInput(InputHelper inputHelper)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back))
+            if (creditsStateButton.clicked)
             {
                 GameEnvironment.SwitchTo("StartState");
             }
