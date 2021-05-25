@@ -16,8 +16,6 @@ namespace Poloknightse
         private Point newFollowerPosition;
         int minFollowers = 3;
         public bool chosen = false;
-        TextGameObject chosenText;
-        float textOffset = -10;
         Vector2 nextVelocity = new Vector2();
         GameObject
             arrowLeft = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconLeft"),
