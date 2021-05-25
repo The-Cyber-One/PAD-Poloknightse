@@ -11,7 +11,7 @@ namespace Poloknightse
     {
         public int level;
 
-        public LevelSelectButton(Rectangle buttonBox, int level) : base(buttonBox, "Menu/" + Game1.levels[level] + "Drawn", Game1.levels[level])
+        public LevelSelectButton(Rectangle buttonBox, int level) : base(buttonBox, Game1.levels[level] + "Drawn", Game1.levels[level])
         {
             this.level = level;
         }

@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Poloknightse
 {
-    class CreditsMenu : GameState
+    class CreditsState : GameState
     {
-        public CreditsMenu() : base()
+        public CreditsState() : base()
         {
 
         }
