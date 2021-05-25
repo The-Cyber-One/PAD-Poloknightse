@@ -22,7 +22,7 @@ namespace Poloknightse
 
         public PlayingState()
         {
-            Game1.currentLevel = 0;
+            Game1.currentLevel = 1;
         }
 
         public override void Init()

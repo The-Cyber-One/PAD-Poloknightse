@@ -69,7 +69,7 @@ namespace Poloknightse
             Game1.exit = GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape);
             if (mainMenuButton.clicked)
             {
-                GameEnvironment.SwitchTo("HighscoreState");
+                GameEnvironment.SwitchTo("WinState");
             }
             base.HandleInput(inputHelper);
         }
