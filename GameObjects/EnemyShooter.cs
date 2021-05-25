@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿ using Microsoft.Xna.Framework;
 using System;
 
 namespace Poloknightse
@@ -7,7 +7,6 @@ namespace Poloknightse
     {
         private float countDuration = 5f; //Every 5s.
         private float currentTime = 0f;
-        private int xOffsetCheck, yOffsetCheck;
         private int endCalculationX, endCalculationY;
         private Point enemyPos;
         private Vector2 shootDir;
@@ -98,7 +97,8 @@ namespace Poloknightse
 
 		public override void Update(GameTime gameTime)
 		{
-			base.Update(gameTime);
+
+            base.Update(gameTime);
             currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
 
             if (currentTime >= countDuration)
