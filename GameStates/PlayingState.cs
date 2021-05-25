@@ -85,8 +85,8 @@ namespace Poloknightse
 
             //Subtract the time earned by how many players and followers are left in the level
             timeSpanTotalSec = (int)timeSpan.TotalSeconds;
-           // timeSpanTotalSec -= 2 * followerAmountEnd;
-           // timeSpanTotalSec -= 5 * playerAmountEnd;
+            timeSpanTotalSec -= 2 * followerAmountEnd;
+            timeSpanTotalSec -= 5 * playerAmountEnd;
 
             //Calculate it from total seconds to a value we can use in the database
             int sec = timeSpanTotalSec % 60;
