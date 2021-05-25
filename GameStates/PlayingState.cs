@@ -32,6 +32,7 @@ namespace Poloknightse
             LevelLoader.LoadLevel("Levels/" + Game1.levels[Game1.currentLevel]);
             gameObjectList.Add(players);
 
+            CoinAmount = 0;
             //Count how many coins there are in the level
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
@@ -174,6 +175,10 @@ namespace Poloknightse
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back))
             {
                 GameEnvironment.SwitchTo("LevelSelectState");
+            }
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.P) || inputHelper.KeyPressed(Keys.Back))
+            {
+                GameEnvironment.SwitchTo("PauseState");
             }
 
             foreach (GameObject gameObject in gameObjectList)
