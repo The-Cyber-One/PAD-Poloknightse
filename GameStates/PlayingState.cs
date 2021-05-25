@@ -132,6 +132,11 @@ namespace Poloknightse
             {
                 for (int j = players.Children.Count - 1; j >= 0; j--)
                 {
+                    if(i >= gameObjectList.Count)
+					{
+                        i = gameObjectList.Count - 1;
+					}
+
                     Player player = (Player)players.Children[j];
                     //Coin -> Player collision
                     if (gameObjectList[i] is Coin)
@@ -170,40 +175,52 @@ namespace Poloknightse
         }
 
         public override void HandleInput(InputHelper inputHelper)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back))
-            {
-                GameEnvironment.SwitchTo("LevelSelectState");
-            }
+		{
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back))
+			{
+				GameEnvironment.SwitchTo("LevelSelectState");
+			}
 
-            foreach (GameObject gameObject in gameObjectList)
-            {
-                if (gameObject != players) gameObject.HandleInput(inputHelper);
-            }
+			foreach (GameObject gameObject in gameObjectList)
+			{
+				if (gameObject != players) gameObject.HandleInput(inputHelper);
+			}
 
+            if (inputHelper.KeyPressed(Keys.E) || inputHelper.KeyPressed(Keys.Space))
+            {
+                FindingNewChosen();
+            }
             for (int i = players.Children.Count - 1; i >= 0; i--)
             {
                 Player player = players.Children[i] as Player;
                 if (player.chosen)
                 {
                     players.Children[i].HandleInput(inputHelper);
-
-                    if (inputHelper.KeyPressed(Keys.E) || inputHelper.KeyPressed(Keys.Space))
-                    {
-                        player.chosen = false;
-                        if (i + 1 >= players.Children.Count)
-                        {
-                            (players.Children[0] as Player).chosen = true;
-                            break;
-                        }
-                        else
-                        {
-                            (players.Children[i + 1] as Player).chosen = true;
-                            break;
-                        }
-                    }
                 }
             }
         }
-    }
+
+		public void FindingNewChosen()
+		{
+			for (int i = players.Children.Count - 1; i >= 0; i--)
+			{
+				Player player = players.Children[i] as Player;
+				if (player.chosen)
+				{
+					player.chosen = false;
+					if (i + 1 >= players.Children.Count)
+					{
+						(players.Children[0] as Player).chosen = true;
+						break;
+					}
+					else
+					{
+						(players.Children[i + 1] as Player).chosen = true;
+						break;
+					}
+					
+				}
+			}
+		}
+	}
 }

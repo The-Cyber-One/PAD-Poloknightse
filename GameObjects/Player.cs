@@ -188,8 +188,8 @@ namespace Poloknightse
         public override bool CheckCollision(GameObject gameObject)
         {
             bool playerHitsObject = base.CheckCollision(gameObject);
-            CheckFollowerCollsion(gameObject.gridPosition);
-            return playerHitsObject;
+
+            return playerHitsObject || CheckFollowerCollsion(gameObject.gridPosition);
         }
 
 
@@ -202,9 +202,15 @@ namespace Poloknightse
             GameObjectList players = GameEnvironment.GetState<PlayingState>("PlayingState").players;
 
             //Check if player is dead
-            if (followers.Count <= minFollowers || !chosen)
+            if (followers.Count <= minFollowers || !chosen || gridPosition == this.gridPosition)
             {
                 players.Remove(this);
+
+				if (chosen)
+				{
+                    GameEnvironment.GetState<PlayingState>("PlayingState").FindingNewChosen();
+                }
+
                 //Check if GameOver
                 if (players.Children.Count == 0)
                 {
@@ -215,6 +221,7 @@ namespace Poloknightse
             }
 
             //Code to split player in half
+            //TODO ALS HOOFD WORD GERAAKT FIX DE SPLIT
             Player player = new Player(followers[followers.Count - 1].gridPosition);
             players.Add(player);
             for (int i = followers.Count - 1; i >= 0; i--)
