@@ -118,6 +118,102 @@
 /processorParam:TextureFormat=Color
 /build:GameObjects/Player/Cape_ridder.png
 
+#begin GameObjects/Player/DirectionIcon/DirectionIconDown.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GameObjects/Player/DirectionIcon/DirectionIconDown.png
+
+#begin GameObjects/Player/DirectionIcon/DirectionIconLeft.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GameObjects/Player/DirectionIcon/DirectionIconLeft.png
+
+#begin GameObjects/Player/DirectionIcon/DirectionIconRight.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GameObjects/Player/DirectionIcon/DirectionIconRight.png
+
+#begin GameObjects/Player/DirectionIcon/DirectionIconUp.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GameObjects/Player/DirectionIcon/DirectionIconUp.png
+
+#begin GameObjects/Player/DirectionIconSelected/DirectionIconSelectedDown.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GameObjects/Player/DirectionIconSelected/DirectionIconSelectedDown.png
+
+#begin GameObjects/Player/DirectionIconSelected/DirectionIconSelectedLeft.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GameObjects/Player/DirectionIconSelected/DirectionIconSelectedLeft.png
+
+#begin GameObjects/Player/DirectionIconSelected/DirectionIconSelectedRight.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GameObjects/Player/DirectionIconSelected/DirectionIconSelectedRight.png
+
+#begin GameObjects/Player/DirectionIconSelected/DirectionIconSelectedUp.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GameObjects/Player/DirectionIconSelected/DirectionIconSelectedUp.png
+
 #begin GameObjects/Player/Harnas_ridder.png
 /importer:TextureImporter
 /processor:TextureProcessor

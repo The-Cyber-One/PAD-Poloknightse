@@ -19,12 +19,20 @@ namespace Poloknightse
         TextGameObject chosenText;
         float textOffset = -10;
         Vector2 nextVelocity = new Vector2();
+        GameObject
+            arrowLeft = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconLeft"),
+            arrowUp = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconUp"),
+            arrowRight = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconRight"),
+            arrowDown = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconDown"),
+            arrowsSelectedLeft = new GameObject(null, "GameObjects/Player/DirectionIconSelected/DirectionIconSelectedLeft"),
+            arrowsSelectedUp = new GameObject(null, "GameObjects/Player/DirectionIconSelected/DirectionIconSelectedUp"),
+            arrowsSelectedRight = new GameObject(null, "GameObjects/Player/DirectionIconSelected/DirectionIconSelectedRight"),
+            arrowsSelectedDown = new GameObject(null, "GameObjects/Player/DirectionIconSelected/DirectionIconSelectedDown");
 
         public Player(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
             velocity = Vector2.Zero;
             newFollowerPosition = gridPosition;
-            chosenText = new TextGameObject("!", gridPosition.ToVector2() + new Vector2(0, textOffset), Vector2.One / 2, Color.White, "Fonts/Title");
         }
 
         public override void Update(GameTime gameTime)
@@ -72,6 +80,17 @@ namespace Poloknightse
 
             //Move player
             gridPosition += velocity.ToPoint();
+
+            //Update arrow position
+            arrowLeft.gridPosition = new Point(gridPosition.X - 1, gridPosition.Y);
+            arrowUp.gridPosition = new Point(gridPosition.X, gridPosition.Y - 1);
+            arrowRight.gridPosition = new Point(gridPosition.X + 1, gridPosition.Y);
+            arrowDown.gridPosition = new Point(gridPosition.X, gridPosition.Y + 1);
+
+            arrowsSelectedLeft.gridPosition = new Point(gridPosition.X - 1, gridPosition.Y);
+            arrowsSelectedUp.gridPosition = new Point(gridPosition.X, gridPosition.Y - 1);
+            arrowsSelectedRight.gridPosition = new Point(gridPosition.X + 1, gridPosition.Y);
+            arrowsSelectedDown.gridPosition = new Point(gridPosition.X, gridPosition.Y + 1);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -81,10 +100,45 @@ namespace Poloknightse
             {
                 follower.Draw(spriteBatch);
             }
+            
+            //Draw arrow
             if (chosen)
             {
-                chosenText.position = LevelLoader.GridPointToWorld(gridPosition) + new Vector2(0, textOffset);
-                chosenText.Draw(spriteBatch);
+                if (nextVelocity == new Vector2(-1, 0))
+                {
+                    arrowsSelectedLeft.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(0, -1))
+                {
+                    arrowsSelectedUp.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(1, 0))
+                {
+                    arrowsSelectedRight.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(0, 1))
+                {
+                    arrowsSelectedDown.Draw(spriteBatch);
+                }
+            }
+            else
+            {
+                if (nextVelocity == new Vector2(-1, 0))
+                {
+                    arrowLeft.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(0, -1))
+                {
+                    arrowUp.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(1, 0))
+                {
+                    arrowRight.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(0, 1))
+                {
+                    arrowDown.Draw(spriteBatch);
+                }
             }
         }
 
