@@ -80,8 +80,6 @@ namespace Poloknightse
             int sec = timeSpanTotalSec % 60;
             int min = (int)Math.Round(timeSpanTotalSec / 60d ,0) * 100;
             totalEndTime = min + sec;
-
-            Debug.Write(timeSpanTotalSec + " || " + min + " + " + sec + " = " + totalEndTime);
 		}
 
         public override void Draw(SpriteBatch spriteBatch)
