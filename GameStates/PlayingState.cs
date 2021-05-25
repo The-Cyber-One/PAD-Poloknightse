@@ -128,6 +128,8 @@ namespace Poloknightse
                 Game1.currentLevel++;
                 if (Game1.currentLevel >= Game1.levels.Length) Game1.currentLevel = 0;
                 GameEnvironment.SwitchTo("WinState");
+
+                HighscoreManager.SaveScore(totalEndTime, Game1.currentLevel + 1);
             }
 
             //Collision detection
