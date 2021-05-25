@@ -19,6 +19,7 @@ namespace Poloknightse
         private int followerAmountEnd;
         private string elapsedTime;
         private int totalEndTime;
+        private Texture2D pixel;
 
         public PlayingState()
         {
@@ -52,6 +53,14 @@ namespace Poloknightse
             gameObjectList.Add(new TextGameObject("Coins Left:", new Vector2(GameEnvironment.Screen.X - 1420, GameEnvironment.Screen.Y / 2 - 130), Vector2.One / 2, Color.White, "Fonts/Title"));
             coinsLeftText = new TextGameObject("0", new Vector2(GameEnvironment.Screen.X - 1425, GameEnvironment.Screen.Y / 2 - 60), Vector2.One / 2, Color.White, "Fonts/Title", 0.6f);
             gameObjectList.Add(coinsLeftText);
+
+            gameObjectList.Add(new TextGameObject("Put cam here", new Vector2(1425, 200), Vector2.One / 2, Color.White, "Fonts/Title", 0.5f));
+        }
+
+        private void CreatePixel(SpriteBatch spriteBatch)
+        {
+            pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            pixel.SetData(new[] { Color.White });
         }
 
         //This function will calculate the end score after the run is finished
@@ -84,6 +93,10 @@ namespace Poloknightse
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (pixel == null) CreatePixel(spriteBatch);
+            spriteBatch.Draw(pixel, new Rectangle(1275, 50, 300, 300), Color.White);
+            spriteBatch.Draw(pixel, new Rectangle(1285, 60, 280, 280), Color.Black);
+
             LevelLoader.Draw(spriteBatch);
             base.Draw(spriteBatch);
         }
