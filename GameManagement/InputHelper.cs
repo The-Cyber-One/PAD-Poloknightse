@@ -22,6 +22,12 @@ public class InputHelper
         currentKeyboardState = Keyboard.GetState();
     }
 
+    public KeyboardState CurrentKeyboardState
+    {
+        get { return currentKeyboardState; }
+    }
+
+
     public Vector2 Scale
     {
         get { return scale; }

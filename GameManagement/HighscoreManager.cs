@@ -23,6 +23,21 @@ namespace Poloknightse
         }
 
         /// <summary>
+        /// Save the new Player
+        /// </summary>
+        public static void SavePlayer(string name)
+        {
+            AppDb db = new AppDb();
+            db.AddPlayer(name);
+        }
+
+        public static bool PlayerNameExists(string name)
+        {
+            AppDb db = new AppDb();
+            return db.PlayerNameExists(name).Result;
+        }
+
+        /// <summary>
         /// Gets the whole highscore table orderd by score
         /// </summary>
         public static async Task<Table> LoadScore()

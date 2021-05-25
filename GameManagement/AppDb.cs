@@ -149,7 +149,7 @@ public class AppDb : IDisposable
     /// </summary>
     /// <param name="playerName">Player name to check</param>
     /// <returns></returns>
-    private async Task<bool> PlayerNameExists(string playerName)
+    public async Task<bool> PlayerNameExists(string playerName)
     {
         //Wait for the connection to open...
         await Connection.OpenAsync();

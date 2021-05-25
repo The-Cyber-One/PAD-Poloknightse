@@ -26,6 +26,7 @@ namespace Poloknightse
         public static string PlayerName
         {
             get { return playerName; }
+            set { playerName = value; }
         }
 
         public static GameState CurrentGameState
