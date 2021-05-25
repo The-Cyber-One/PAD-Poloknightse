@@ -10,11 +10,24 @@ namespace Poloknightse
     class StartState : GameState
     {
         Vector2 titleTextPosition = new Vector2(32, 10.5f);
-        Point buttonPosition = new Point(28, 14);
+        Point buttonStartPosition = new Point(18, 14);
         Point buttonSize = new Point(8, 8);
-        string startButtonAssetName = "Menu/Start";
-        string startButtonText = "Click button to start";
-        Button mainMenuButton;
+        Point offset = new Point(2, 4);
+        string[] buttonAssetName =
+            {
+            "Highscore",
+            "Start",
+            "Credits"
+            };
+        string[] gameStateNames =
+        {
+            "Highscore",
+            "LevelSelect",
+            "Credits"
+        };
+
+        GameObjectList buttons = new GameObjectList();
+        int numberOfButtons = 3;
 
         GameObjectList backgroundObjects = new GameObjectList();
         List<Point> secretPlaces = new List<Point>();
@@ -35,12 +48,18 @@ namespace Poloknightse
 
             //Menu
             Vector2 convertedtitleTextPosition = LevelLoader.GridPointToWorld(titleTextPosition);
-            Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
+            Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonStartPosition).ToPoint();
             Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
+            Point convertedOffset = LevelLoader.GridPointToWorld(offset).ToPoint();
+            Point positionOffset = convertedButtonSize + convertedOffset;
+            //Add the title
             gameObjectList.Add(new TextGameObject("Poloknightse", convertedtitleTextPosition, Vector2.One / 2, Color.Black, "Fonts/Title"));
-            Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
-            mainMenuButton = new Button(button, startButtonAssetName, startButtonText);
-            gameObjectList.Add(mainMenuButton);
+            for (int i = 0; i < numberOfButtons; i++)
+            {
+                Rectangle button = new Rectangle(convertedButtonPosition.X + positionOffset.X * i, convertedButtonPosition.Y, convertedButtonSize.X, convertedButtonSize.Y);
+                buttons.Add(new mainMenuButton(button, buttonAssetName[i], buttonAssetName[i], gameStateNames[i]));
+            }
+            gameObjectList.Add(buttons);
 
             Debug.WriteLine((await HighscoreManager.LoadScore()).ToString());
         }
@@ -67,9 +86,14 @@ namespace Poloknightse
         public override void HandleInput(InputHelper inputHelper)
         {
             Game1.exit = GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back);
-            if (mainMenuButton.clicked)
+            foreach (mainMenuButton button in buttons.Children)
             {
-                GameEnvironment.SwitchTo("LevelSelectState");
+                if (button.clicked)
+                {
+                    
+                    GameEnvironment.SwitchTo(button.gameStateName +"State");
+                    break;
+                }
             }
             base.HandleInput(inputHelper);
         }

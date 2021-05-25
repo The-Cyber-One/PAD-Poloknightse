@@ -38,7 +38,7 @@ namespace Poloknightse
             gameStateDict.Add("GameOverState", new GameOverState());
             gameStateDict.Add("LevelSelectState", new LevelSelectState());
             gameStateDict.Add("HighscoreState", new HighscoreState());
-            gameStateDict.Add("CreditsMenu", new CreditsMenu());
+            gameStateDict.Add("CreditsState", new CreditsState());
 
             SwitchTo("StartState");
         }

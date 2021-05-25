@@ -24,7 +24,7 @@ namespace Poloknightse
         TextGameObject buttonText;
         Point textOffset = new Point(1, 1);
 
-        public Button(Rectangle buttonBox, string assetName, string buttonText) : base(new Point(buttonBox.X, buttonBox.Y), assetName)
+        public Button(Rectangle buttonBox, string assetName, string buttonText) : base(new Point(buttonBox.X, buttonBox.Y),"Menu/" + assetName)
         {
             this.buttonBox = buttonBox;
             textOffset = LevelLoader.GridPointToWorld(textOffset).ToPoint();
