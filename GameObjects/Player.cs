@@ -156,6 +156,7 @@ namespace Poloknightse
                 //Check if GameOver
                 if (players.Children.Count == 0)
                 {
+                    GameEnvironment.GetState<PlayingState>("PlayingState").CalculateEndTime();
                     GameEnvironment.SwitchTo("GameOverState");
                 }
                 return;
