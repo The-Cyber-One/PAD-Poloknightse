@@ -158,6 +158,11 @@ namespace Poloknightse
 
         public override void HandleInput(InputHelper inputHelper)
         {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back))
+            {
+                GameEnvironment.SwitchTo("LevelSelectState");
+            }
+
             foreach (GameObject gameObject in gameObjectList)
             {
                 if (gameObject != players) gameObject.HandleInput(inputHelper);

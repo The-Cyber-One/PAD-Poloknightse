@@ -66,7 +66,7 @@ namespace Poloknightse
 
         public override void HandleInput(InputHelper inputHelper)
         {
-            Game1.exit = GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape);
+            Game1.exit = GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back);
             if (mainMenuButton.clicked)
             {
                 GameEnvironment.SwitchTo("LevelSelectState");
