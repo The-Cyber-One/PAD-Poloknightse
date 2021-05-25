@@ -20,6 +20,12 @@ namespace Poloknightse
         int rankStartPosition = 14, nameStartPosition = 17, scoreStartPosition = 29, levelStartPosition = 35, dateStartPosition = 39, timeStartPosition = 45;
         Color normalTextColor = new Color(100, 100, 100), playerColor = Color.Black, mostRecentColor = new Color(87, 142, 24);
 
+        Point buttonPosition = new Point(3, 22);
+        Point buttonSize = new Point(6, 6);
+        string backButtonAssetName = "Back";
+        string backButtonText = "Main menu";
+        Button backButton;
+
         public HighscoreState() : base()
         {
 
@@ -36,6 +42,12 @@ namespace Poloknightse
             gameObjectList.Add(new TextGameObject("Time", LevelLoader.GridPointToWorld(new Point(timeStartPosition, startYPosition - 2))));
             GetHighscore();
             EmptyHighscoreText = new TextGameObject("Well this game seems popular. \nThere seems to be no highscore, maybe try again?", LevelLoader.GridPointToWorld(new Point(rankStartPosition, startYPosition)));
+
+            Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
+            Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
+            Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
+            backButton = new Button(button, backButtonAssetName, backButtonText);
+            gameObjectList.Add(backButton);
         }
 
         protected async void GetHighscore()
@@ -118,6 +130,13 @@ namespace Poloknightse
                 if (currentHighscorePosition < 0) currentHighscorePosition = 0;
                 if (currentHighscorePosition >= dbHighscore.RowCount) currentHighscorePosition = dbHighscore.RowCount - 1;
             }
+           
+            if (backButton.clicked)
+            {
+                GameEnvironment.SwitchTo("StartState");
+            }
+
+            base.HandleInput(inputHelper);
 
             base.HandleInput(inputHelper);
         }
