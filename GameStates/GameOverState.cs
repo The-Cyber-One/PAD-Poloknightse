@@ -33,7 +33,7 @@ namespace Poloknightse
 		{
 			if (inputHelper.AnyKeyPressed)
 			{
-				GameEnvironment.SwitchTo("StartState");
+				GameEnvironment.SwitchTo("CreditsMenu");
 			}
 			base.HandleInput(inputHelper);
 		}
