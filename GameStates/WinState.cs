@@ -31,7 +31,7 @@ namespace Poloknightse
 			Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
 			Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
 			gameObjectList.Add(new TextGameObject("Congratulations!", convertedtitleTextCongratulationsPosition, Vector2.One / 2, Color.Black, "Fonts/Title"));
-			gameObjectList.Add(new TextGameObject("you completed the level!", convertedtitleTextPosition, Vector2.One / 2, Color.Black, "Fonts/Title", 0.5f));
+			gameObjectList.Add(new TextGameObject("you completed the level in: " + PlayingState.timeSpanTotalSec + " seconds!", convertedtitleTextPosition, Vector2.One / 2, Color.Black, "Fonts/Title", 0.5f));
 			Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
 			winStateButton = new Button(button, backButtonAssetName, backButtonText);
 			gameObjectList.Add(winStateButton);

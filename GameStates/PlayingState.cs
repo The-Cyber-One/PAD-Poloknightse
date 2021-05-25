@@ -11,6 +11,8 @@ namespace Poloknightse
     class PlayingState : GameState
     {
         public GameObjectList players = new GameObjectList();
+        public static int timeSpanTotalSec;
+        private int totalEndTime;
         private static Stopwatch stopWatch;
         private TimeSpan timeSpan;
         private int CoinAmount;
@@ -18,7 +20,7 @@ namespace Poloknightse
         private int playerAmountEnd;
         private int followerAmountEnd;
         private string elapsedTime;
-        private int totalEndTime;
+        
         private Texture2D pixel;
 
         public PlayingState()
@@ -82,9 +84,9 @@ namespace Poloknightse
             }
 
             //Subtract the time earned by how many players and followers are left in the level
-            int timeSpanTotalSec = (int)timeSpan.TotalSeconds;
-            timeSpanTotalSec -= 2 * followerAmountEnd;
-            timeSpanTotalSec -= 5 * playerAmountEnd;
+            timeSpanTotalSec = (int)timeSpan.TotalSeconds;
+           // timeSpanTotalSec -= 2 * followerAmountEnd;
+           // timeSpanTotalSec -= 5 * playerAmountEnd;
 
             //Calculate it from total seconds to a value we can use in the database
             int sec = timeSpanTotalSec % 60;
