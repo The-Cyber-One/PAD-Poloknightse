@@ -24,11 +24,14 @@ namespace Poloknightse
         TextGameObject buttonText;
         Point textOffset = new Point(1, 1);
 
-        public Button(Rectangle buttonBox, string assetName, string buttonText) : base(new Point(buttonBox.X, buttonBox.Y),"Menu/" + assetName)
+        float textSize = 0.6f;
+
+        public Button(Rectangle buttonBox, string assetName, string buttonText, float textSize = 0.6f) : base(new Point(buttonBox.X, buttonBox.Y),"Menu/" + assetName)
         {
             this.buttonBox = buttonBox;
             textOffset = LevelLoader.GridPointToWorld(textOffset).ToPoint();
-            this.buttonText = new TextGameObject(buttonText, new Vector2((buttonBox.X + buttonBox.Width / 2), (buttonBox.Y + buttonBox.Height) + textOffset.Y), Vector2.One / 2, Color.Black, "Fonts/Title", 0.6f);
+            this.textSize = textSize;
+            this.buttonText = new TextGameObject(buttonText, new Vector2((buttonBox.X + buttonBox.Width / 2), (buttonBox.Y + buttonBox.Height) + textOffset.Y), Vector2.One / 2, Color.Black, "Fonts/Title", this.textSize);
         }
         public override void HandleInput(InputHelper inputHelper)
         {
