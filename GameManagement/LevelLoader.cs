@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,7 +19,7 @@ namespace Poloknightse
                 Color.Black,                                //Color in png
                 new Tuple<Type, string, Tile.TileType>(     //
                     typeof(Tile),                           //Extra GameObject to instantiate (if it is Tile then no extra GameObject will be instantiated)
-                    "LevelTiles/SmoothWall",                      //Tile texture path
+                    "LevelTiles/SmoothWall",                //Tile texture path
                     Tile.TileType.WALL)                     //Associated TileType
             },
             {
@@ -101,11 +100,12 @@ namespace Poloknightse
             yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
             GameEnvironment.startGridPoint = new Point(xOffset, yOffset);
 
-            //Here we check the colors of the image and load the correct tiles.
+            //Setup some variables
             grid = new Tile[level.Width, level.Height];
             Player player = new Player(new Point());
             Dictionary<Point, PlayerFollower> positionFollowerPairs = new Dictionary<Point, PlayerFollower>();
 
+            //Check the colors of the image and load the correct tiles.
             for (int i = 0; i < colors.Length; i++)
             {
                 //Safety check
@@ -152,6 +152,7 @@ namespace Poloknightse
                 }
             }
 
+            //Instantiate player
             if (player != null)
             {
                 player.LoadFollowers(positionFollowerPairs);
@@ -161,25 +162,33 @@ namespace Poloknightse
                 }
             }
 
+            //Instantiate other gameobjects
             foreach (GameObject gameObject in GameEnvironment.CurrentGameState.gameObjectList)
             {
                 gameObject.Initialize();
             }
         }
 
-        public static Vector2 GridPointToWorld(Point point)
-        {
-            return point.ToVector2() * gridTileSize + new Vector2(xOffset, yOffset);
-        }
-
-        public static Vector2 GridPointToWorld(int x, int y)
-        {
-            return new Vector2(x, y) * gridTileSize + new Vector2(xOffset, yOffset);
-        }
+        /// <summary>
+        /// Converts a grid position to a world position
+        /// </summary>
+        /// <param name="point">The grid position to convert</param>
+        /// <returns>A world point</returns>
         public static Vector2 GridPointToWorld(Vector2 vector)
         {
             return vector * gridTileSize + new Vector2(xOffset, yOffset);
         }
+
+        /// <summary>
+        /// Converts a grid position to a world position
+        /// </summary>
+        /// <param name="point">The grid position to convert</param>
+        /// <returns>A world point</returns>
+        public static Vector2 GridPointToWorld(Point point)
+        {
+            return GridPointToWorld(point.ToVector2());
+        }
+
         /// <summary>
         /// Draw entire level
         /// </summary>
