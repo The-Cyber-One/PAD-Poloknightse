@@ -162,7 +162,7 @@ namespace Poloknightse
                 }
             }
 
-            //Instantiate other gameobjects
+            //Instantiate other game objects
             foreach (GameObject gameObject in GameEnvironment.CurrentGameState.gameObjectList)
             {
                 gameObject.Initialize();

@@ -86,7 +86,7 @@ namespace Poloknightse
         }
 
         /// <summary>
-        /// Find the sortest path using the A* algorithm
+        /// Find the shortest path using the A* algorithm
         /// </summary>
         /// <param name="start">Point to start the path at</param>
         /// <param name="goal">Point to end the path at</param>
@@ -97,7 +97,7 @@ namespace Poloknightse
             //Set defaultH function if it's null
             if (h is null) h = defaultH;
 
-            //The set of discoverd nodes
+            //The set of discovered nodes
             SimplePriorityQueue<Point> openSet = new SimplePriorityQueue<Point>();
             openSet.Enqueue(start, 0);
 
@@ -119,11 +119,11 @@ namespace Poloknightse
             gScore[CoordsToIndex(start)] = 0;
             fScore[CoordsToIndex(start)] = h(start, goal);
 
-            //Find the shortest path as long new cells were discoverd to look through
+            //Find the shortest path as long new cells were discovered  to look through
             while (openSet.Count > 0)
             {
                 //This operation has a O(1) because it is a priority queue
-                Point current = openSet.First; 
+                Point current = openSet.First;
 
                 //If current is at the end a valid path is found
                 if (current == goal)
@@ -131,7 +131,7 @@ namespace Poloknightse
                     return ReconstructPath(cameFrom, current).ToArray();
                 }
 
-                //Remove current because it is being checked and shoul not be checked again
+                //Remove current because it is being checked and should not be checked again
                 openSet.Remove(current);
 
                 //Calculate a score for all neighbours to find the best path and add it to open set
