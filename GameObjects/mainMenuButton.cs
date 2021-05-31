@@ -5,10 +5,11 @@ using Microsoft.Xna.Framework;
 
 namespace Poloknightse
 {
-    class mainMenuButton : Button
+    class MainMenuButton : Button
     {
         public string gameStateName;
-        public mainMenuButton(Rectangle buttonBox, string assetName, string buttonText, string gameStateName) 
+
+        public MainMenuButton(Rectangle buttonBox, string assetName, string buttonText, string gameStateName) 
             : base(buttonBox, assetName, buttonText)
         {
             this.gameStateName = gameStateName;

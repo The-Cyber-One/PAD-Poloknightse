@@ -57,7 +57,7 @@ namespace Poloknightse
             for (int i = 0; i < numberOfButtons; i++)
             {
                 Rectangle button = new Rectangle(convertedButtonPosition.X + positionOffset.X * i, convertedButtonPosition.Y, convertedButtonSize.X, convertedButtonSize.Y);
-                buttons.Add(new mainMenuButton(button, buttonAssetName[i], buttonAssetName[i], gameStateNames[i]));
+                buttons.Add(new MainMenuButton(button, buttonAssetName[i], buttonAssetName[i], gameStateNames[i]));
             }
             gameObjectList.Add(buttons);
 
@@ -86,7 +86,7 @@ namespace Poloknightse
         public override void HandleInput(InputHelper inputHelper)
         {
             Game1.exit = GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back);
-            foreach (mainMenuButton button in buttons.Children)
+            foreach (MainMenuButton button in buttons.Children)
             {
                 if (button.clicked)
                 {
