@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 
 namespace Poloknightse
@@ -37,28 +35,40 @@ namespace Poloknightse
         public virtual Point GetRandomDirection()
         {
             Point direction;
-            bool foundDirection = false;
+            bool isGroundTile = false;
+            List<Point> possibleDirections = new List<Point> { 
+                new Point(1, 0),
+                new Point(-1, 0),
+                new Point(0, 1),
+                new Point(0, -1)
+            }; 
+
+            //Loop until a valid ground tile is found or no possible directions remain
             do
             {
-                if (GameEnvironment.Random.Next(2) == 0)
+                //Check if there are possible directions
+                if (possibleDirections.Count == 0)
                 {
-                    direction = new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
-                }
-                else
-                {
-                    direction = new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
+                    direction = Point.Zero;
+                    break;
                 }
 
-                bool inbounds = LevelLoader.grid.GetLength(0) > gameObject.gridPosition.X + direction.X &&
+                //Check a possible direction
+                direction = possibleDirections[GameEnvironment.Random.Next(possibleDirections.Count)];
+                possibleDirections.Remove(direction);
+
+                bool inBounds = LevelLoader.grid.GetLength(0) > gameObject.gridPosition.X + direction.X &&
                     LevelLoader.grid.GetLength(1) > gameObject.gridPosition.Y + direction.Y &&
                     gameObject.gridPosition.X + direction.X >= 0 &&
                     gameObject.gridPosition.Y + direction.Y >= 0;
-                if (inbounds)
+
+                if (inBounds)
                 {
-                    foundDirection = LevelLoader.grid[gameObject.gridPosition.X + direction.X, gameObject.gridPosition.Y + direction.Y].tileType == Tile.TileType.GROUND;
+                    isGroundTile = LevelLoader.grid[gameObject.gridPosition.X + direction.X, gameObject.gridPosition.Y + direction.Y].tileType == Tile.TileType.GROUND;
                 }
             }
-            while (!foundDirection);
+            while (!isGroundTile);
+
             return direction;
         }
     }
@@ -66,16 +76,20 @@ namespace Poloknightse
     class ChaseState : State
     {
         public int stamina;
-        private const int MAX_STAMINA = 15;
-        protected GameObject gameObject;
         public Player player;
-        Point[] path;
-        StateMachine stateMachine;
+
+        protected GameObject gameObject;
+
+        private const int MAX_STAMINA = 15;
+        private readonly StateMachine stateMachine;
+        private Point[] path;
 
         public ChaseState(GameObject gameObject, StateMachine stateMachine, string stateName = "Chase") : base(stateName)
         {
             this.stateMachine = stateMachine;
             this.gameObject = gameObject;
+
+            //Find closest player as a target
             float closestPlayer = float.PositiveInfinity;
             List<GameObject> players = GameEnvironment.GetState<PlayingState>("PlayingState").players.Children;
             foreach (Player player in players)
@@ -87,6 +101,8 @@ namespace Poloknightse
                     this.player = player;
                 }
             }
+
+            //Choose a random player
             if (float.IsInfinity(closestPlayer))
             {
                 player = players[GameEnvironment.Random.Next(players.Count)] as Player;
@@ -106,7 +122,8 @@ namespace Poloknightse
 
             if (path != null)
             {
-                int currentStep = path.Length - 2;
+                //Move the enemy
+                int currentStep = path.Length - 2; //-2 because conversion to index and the end is current position
                 if (currentStep >= 0)
                 {
                     gameObject.gridPosition = path[currentStep];
@@ -116,34 +133,25 @@ namespace Poloknightse
                 {
                     stamina = 0;
                     player.TakeDamage(gameObject.gridPosition, gameTime);
-                }
-                for (int i = player.followers.Count - 1; i >= 0; i--)
-                {
-                    PlayerFollower follower = player.followers[i];
-
-                    if (gameObject.gridPosition == follower.gridPosition)
-                    {
-                        stamina = 0;
-                        player.TakeDamage(player.GetCenter(), gameTime);
-                        stateMachine.SetState("Attacked");
-                        break;
-                    }
+                    stateMachine.SetState("Attacked");
                 }
             }
         }
 
-        public virtual Point[] GetNewPath()
-        {
-            return AStar.FindPath(gameObject.gridPosition, player.GetCenter());
-        }
+        /// <summary>
+        /// Get a path to the player
+        /// </summary>
+        /// <returns>A list of points to form a path</returns>
+        protected virtual Point[] GetNewPath() => AStar.FindPath(gameObject.gridPosition, player.GetCenter());
     }
 
     class ReturnState : State
     {
         public int stamina;
-        Point startPosition;
-        GameObject gameObject;
-        Point[] path;
+
+        private readonly GameObject gameObject;
+        private readonly Point startPosition;
+        private Point[] path;
 
         public ReturnState(GameObject gameObject, string stateName = "Return") : base(stateName)
         {
@@ -155,6 +163,7 @@ namespace Poloknightse
         {
             Point gridPosition = gameObject.gridPosition;
             path = AStar.FindPath(gridPosition, startPosition);
+
             if (path != null)
             {
                 stamina = path.Length - 1;
@@ -170,10 +179,7 @@ namespace Poloknightse
 
     class AttackedState : ReturnState
     {
-        public AttackedState(GameObject gameObject) : base(gameObject, "Attacked")
-        {
-
-        }
+        public AttackedState(GameObject gameObject) : base(gameObject, "Attacked") { }
     }
 
     class CryingState : State

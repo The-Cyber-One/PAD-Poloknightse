@@ -9,8 +9,8 @@ namespace Poloknightse
     class Player : GameObject
     {
         public bool chosen = false;
+        public List<PlayerFollower> followers = new List<PlayerFollower>();
 
-        private List<PlayerFollower> followers = new List<PlayerFollower>();
         private Point newFollowerPosition;
         private Vector2 nextVelocity = new Vector2();
 
