@@ -71,9 +71,6 @@ namespace Poloknightse
                 buttons.Add(new MainMenuButton(button, buttonAssetName[i], buttonAssetName[i], gameStateNames[i]));
             }
             gameObjectList.Add(buttons);
-
-
-            Debug.WriteLine((await HighscoreManager.LoadScore()).ToString());
         }
 
         private void AddSecret(GameObject gameObject)
