@@ -9,7 +9,12 @@ namespace Poloknightse
         Point offset = new Point(6, 4);
         Point startPosition = new Point(8, 5);
         Point buttonSize = new Point(12, 12);
+
+        // Variables for the title text
         Vector2 titleTextPosition = new Vector2(32, 2.5f);
+        TextGameObject titleTextObject;
+        string titleText = "Select a level";
+
         GameObjectList buttons = new GameObjectList();
 
         //Back button
@@ -19,24 +24,35 @@ namespace Poloknightse
         string backButtonText = "Main menu";
         Button backButton;
         float backButtonTextSize = 0.4f;
+
         public LevelSelectState()
         {
-
         }
 
         public override void Init()
         {
-            LevelLoader.LoadLevel("Menu/LevelSelectMenu");
-            gameObjectList.Add(new TextGameObject("Select a level", LevelLoader.GridPointToWorld(titleTextPosition), Vector2.One / 2, Color.Black, "Fonts/Title"));
+            LevelLoader.LoadLevel("Menu/LevelSelectMenu"); // Load the image of the menu
+
+            // Create the title text
+            Vector2 convertedTitleTextPosition = LevelLoader.GridPointToWorld(titleTextPosition);
+            titleTextObject = new TextGameObject(titleText, convertedTitleTextPosition, Vector2.One / 2, Color.Black, "Fonts/Title");
+            gameObjectList.Add(titleTextObject);
+
+
+            // Create the level buttons
+            //First convert all the grid position variables to real screen coordinates
             Point convertedOffset = LevelLoader.GridPointToWorld(offset).ToPoint();
             Point convertedPosition = LevelLoader.GridPointToWorld(startPosition).ToPoint();
             Point convertedSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
             Point positionOffset = convertedSize + convertedOffset;
+            // Than, create 6 buttons
             for (int i = 0; i < Game1.levels.Length / 2; i++)
             {
+                //Upper row of buttons
                 Rectangle buttonLocation = new Rectangle(convertedPosition.X + positionOffset.X * i, convertedPosition.Y, convertedSize.X, convertedSize.Y);
                 buttons.Add(new LevelSelectButton(buttonLocation, i));
 
+                // Lower row of buttons
                 Rectangle buttonLocation2 = new Rectangle(convertedPosition.X + positionOffset.X * i, convertedPosition.Y + positionOffset.Y, convertedSize.X, convertedSize.Y);
                 buttons.Add(new LevelSelectButton(buttonLocation2, i + Game1.levels.Length / 2));
             }
@@ -63,6 +79,7 @@ namespace Poloknightse
                 GameEnvironment.SwitchTo("StartState");
             }
 
+            // Switch to the corresponding level when a button is pressed 
             foreach (LevelSelectButton button in buttons.Children)
             {
                 if (button.clicked)
@@ -73,6 +90,7 @@ namespace Poloknightse
                 }
             }
             
+            // Switch back to the main menu when the back button is clicked
             if (backButton.clicked)
             {
                 GameEnvironment.SwitchTo("StartState");

@@ -27,7 +27,6 @@ namespace Poloknightse
 			base.Init();
 			LevelLoader.LoadLevel("Menu/GameOver");
 			gameObjectList.Add(new TextGameObject("Game Over", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2 - TITLE_Y_OFFSET), Vector2.One / 2, Color.Red, "Fonts/Title"));
-			gameObjectList.Add(new TextGameObject("Press any button to go to the main menu", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2), Vector2.One / 2));
 
 			Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
 			Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
