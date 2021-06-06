@@ -28,9 +28,9 @@ namespace Poloknightse
 			LevelLoader.LoadLevel("Menu/GameOver");
 			gameObjectList.Add(new TextGameObject("Game Over", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2 - TITLE_Y_OFFSET), Vector2.One / 2, Color.Red, "Fonts/Title"));
 
+			//Back button
 			Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
 			Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
-
 			Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
 			backButton = new Button(button, backButtonAssetName, backButtonText);
 			gameObjectList.Add(backButton);
@@ -44,6 +44,7 @@ namespace Poloknightse
 
 		public override void HandleInput(InputHelper inputHelper)
 		{
+			// Switch back to the level select menu when the back button is clicked
 			if (backButton.clicked)
 			{
 				GameEnvironment.SwitchTo("LevelSelectState");
