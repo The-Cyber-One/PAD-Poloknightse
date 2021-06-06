@@ -9,8 +9,11 @@ namespace Poloknightse
 {
 	class WinState : GameState
 	{
-		Vector2 titleTextPositionCongratulations = new Vector2(32, 9f);
+		// Variables for the title text
 		Vector2 titleTextPosition = new Vector2(32, 12f);
+		Vector2 titleTextPositionCongratulations = new Vector2(32, 9f);
+
+		//Back button
 		Point buttonPosition = new Point(28, 14);
 		Point buttonSize = new Point(8, 8);
 		string backButtonAssetName = "Back";
@@ -26,12 +29,15 @@ namespace Poloknightse
         {
 			LevelLoader.LoadLevel("Menu/StandardMenu");
 
+			//Create the title text
 			Vector2 convertedtitleTextPosition = LevelLoader.GridPointToWorld(titleTextPosition);
 			Vector2 convertedtitleTextCongratulationsPosition = LevelLoader.GridPointToWorld(titleTextPositionCongratulations);
-			Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
-			Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
 			gameObjectList.Add(new TextGameObject("Congratulations!", convertedtitleTextCongratulationsPosition, Vector2.One / 2, Color.Black, "Fonts/Title"));
 			gameObjectList.Add(new TextGameObject("you completed the level in: " + PlayingState.timeSpanTotalSec + " seconds!", convertedtitleTextPosition, Vector2.One / 2, Color.Black, "Fonts/Title", 0.5f));
+
+			//Back button
+			Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
+			Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
 			Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
 			winStateButton = new Button(button, backButtonAssetName, backButtonText);
 			gameObjectList.Add(winStateButton);
@@ -45,6 +51,7 @@ namespace Poloknightse
 
 		public override void HandleInput(InputHelper inputHelper)
 		{
+			//Switch to the level select state if the button is pressed
 			if (winStateButton.clicked)
 			{
 				GameEnvironment.SwitchTo("LevelSelectState");

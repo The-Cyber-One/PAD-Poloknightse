@@ -8,7 +8,12 @@ namespace Poloknightse
 {
     class PauseState : GameState
     {
-        Vector2 titleTextPosition = new Vector2(32, 12f);
+        //Variables for the title text
+        Vector2 titleTextPosition = new Vector2(32, 10.5f);
+        TextGameObject titleTextObject;
+        string titleText = "The game is paused";
+
+        //Variables for the buttons
         Point restartButtonPosition = new Point(36, 14), levelSelectButtonPosition = new Point(20, 14);
         Point buttonSize = new Point(8, 8);
         string restartButtonAssetName = "Restart", levelSelectButtonAssetName = "Back";
@@ -22,14 +27,15 @@ namespace Poloknightse
         {
             LevelLoader.LoadLevel("Menu/StandardMenu");
 
-            //Converting the gridvalues to in screen values
+            //Create the title text
             Vector2 convertedtitleTextPosition = LevelLoader.GridPointToWorld(titleTextPosition);
+            titleTextObject = new TextGameObject(titleText, convertedtitleTextPosition, Vector2.One / 2, Color.Black, "Fonts/Title");
+            gameObjectList.Add(titleTextObject);
+
+            //Converting the gridvalues to in screen values
             Point convertedResumeButtonPosition = LevelLoader.GridPointToWorld(restartButtonPosition).ToPoint();
             Point convertedLevelSelectButtonPosition = LevelLoader.GridPointToWorld(levelSelectButtonPosition).ToPoint();
             Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
-            
-            //title text
-            gameObjectList.Add(new TextGameObject("The game is paused", convertedtitleTextPosition, Vector2.One / 2, Color.Black, "Fonts/Title", 0.5f));
             
             //resume button
             Rectangle resumeButtonBox = new Rectangle(convertedResumeButtonPosition, convertedButtonSize);
@@ -48,6 +54,7 @@ namespace Poloknightse
         }
         public override void HandleInput(InputHelper inputHelper)
         {
+            //Switch to the corresponding gameState when a button is pressed
             if (levelSelectButton.clicked)
             {
                 GameEnvironment.SwitchTo("LevelSelectState");

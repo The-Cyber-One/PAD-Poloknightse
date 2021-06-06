@@ -12,11 +12,15 @@ namespace Poloknightse
     class NameState : GameState
     {
         TextGameObject name;
+        
+        //Start button
         Point buttonPosition = new Point(30, 23);
         Point buttonSize = new Point(4, 4);
-        string backButtonAssetName = "Start";
-        string backButtonText = "Start Game";
-        Button winStateButton;
+        string startButtonAssetName = "Start";
+        string startButtonText = "Start Game";
+        Button startButton;
+
+
         Vector2 infoPostion = new Vector2(32.5f, 10f), namePosition = new Vector2(18f, 18f), warningPosition = new Vector2(32.5f, 17f);
         TextGameObject warningText;
 
@@ -32,11 +36,12 @@ namespace Poloknightse
             gameObjectList.Add(new TextGameObject("What is your name?", LevelLoader.GridPointToWorld(infoPostion), Vector2.One / 2, Color.Black, "Fonts/Title"));
             gameObjectList.Add(name);
 
+            //Start button
             Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
             Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
             Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
-            winStateButton = new Button(button, backButtonAssetName, backButtonText);
-            gameObjectList.Add(winStateButton);
+            startButton = new Button(button, startButtonAssetName, startButtonText);
+            gameObjectList.Add(startButton);
 
             warningText = new TextGameObject("This name already exists", LevelLoader.GridPointToWorld(warningPosition), Vector2.One/2, Color.Red);
         }
@@ -45,7 +50,8 @@ namespace Poloknightse
         {
             base.HandleInput(inputHelper);
 
-            if (winStateButton.clicked && !HighscoreManager.PlayerNameExists(name.text) && name.text != "")
+            //Switch to the main menu if the start button is pressed and the player name doesnt exist yet
+            if (startButton.clicked && !HighscoreManager.PlayerNameExists(name.text) && name.text != "")
             {
                 GameEnvironment.PlayerName = name.text;
                 HighscoreManager.SavePlayer(GameEnvironment.PlayerName);

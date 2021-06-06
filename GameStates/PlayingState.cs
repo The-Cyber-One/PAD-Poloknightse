@@ -181,7 +181,8 @@ namespace Poloknightse
 
         public override void HandleInput(InputHelper inputHelper)
 		{
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.P) || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back))
+			//Switch to the pause menu when the P key is pressed
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.P) || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back))
 			{
 				GameEnvironment.SwitchTo("PauseState");
 			}

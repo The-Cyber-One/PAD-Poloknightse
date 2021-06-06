@@ -20,6 +20,7 @@ namespace Poloknightse
         int rankStartPosition = 14, nameStartPosition = 17, scoreStartPosition = 29, levelStartPosition = 35, dateStartPosition = 39, timeStartPosition = 45;
         Color normalTextColor = new Color(100, 100, 100), playerColor = Color.Black, mostRecentColor = new Color(87, 142, 24);
 
+        //Back button
         Point buttonPosition = new Point(3, 22);
         Point buttonSize = new Point(6, 6);
         string backButtonAssetName = "Back";
@@ -43,6 +44,7 @@ namespace Poloknightse
             GetHighscore();
             EmptyHighscoreText = new TextGameObject("Well this game seems popular. \nThere seems to be no highscore, maybe try again?", LevelLoader.GridPointToWorld(new Point(rankStartPosition, startYPosition)));
 
+            //Back button
             Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
             Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
             Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
@@ -131,6 +133,7 @@ namespace Poloknightse
                 if (currentHighscorePosition >= dbHighscore.RowCount) currentHighscorePosition = dbHighscore.RowCount - 1;
             }
            
+            //Switch to the main menu if the back button is pressed
             if (backButton.clicked)
             {
                 GameEnvironment.SwitchTo("StartState");

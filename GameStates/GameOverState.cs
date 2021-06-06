@@ -9,7 +9,10 @@ namespace Poloknightse
 {
 	class GameOverState : GameState
 	{
-		private const int TITLE_Y_OFFSET = 200;
+		// Variables for the title text
+		Vector2 titleTextPosition = new Vector2(32, 10.5f);
+		TextGameObject titleTextObject;
+		string titleText = "Game Over";
 
 		//Back button
 		Point buttonPosition = new Point(28, 14);
@@ -26,7 +29,11 @@ namespace Poloknightse
 		{
 			base.Init();
 			LevelLoader.LoadLevel("Menu/GameOver");
-			gameObjectList.Add(new TextGameObject("Game Over", new Vector2(GameEnvironment.Screen.X / 2, GameEnvironment.Screen.Y / 2 - TITLE_Y_OFFSET), Vector2.One / 2, Color.Red, "Fonts/Title"));
+			
+			//Create the title text
+			Vector2 convertedTitleTextPosition = LevelLoader.GridPointToWorld(titleTextPosition);
+			titleTextObject = new TextGameObject(titleText, convertedTitleTextPosition, Vector2.One / 2, Color.Red, "Fonts/Title");
+			gameObjectList.Add(titleTextObject);
 
 			//Back button
 			Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();

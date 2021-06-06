@@ -6,18 +6,18 @@ namespace Poloknightse
 {
     class LevelSelectState : GameState
     {
-        Point offset = new Point(6, 4);
-        Point startPosition = new Point(8, 5);
-        Point buttonSize = new Point(12, 12);
-
         // Variables for the title text
         Vector2 titleTextPosition = new Vector2(32, 2.5f);
         TextGameObject titleTextObject;
         string titleText = "Select a level";
 
+        // Variables for the level select buttons
         GameObjectList buttons = new GameObjectList();
+        Point offsetBetweenButtons = new Point(6, 4);
+        Point startPosition = new Point(8, 5); //Coodinates of the first button, left top
+        Point buttonSize = new Point(12, 12);
 
-        //Back button
+        // Back button
         Point backButtonPosition = new Point(2, 1);
         Point backButtonSize = new Point(4, 4);
         string backButtonAssetName = "Back";
@@ -41,10 +41,10 @@ namespace Poloknightse
 
             // Create the level buttons
             //First convert all the grid position variables to real screen coordinates
-            Point convertedOffset = LevelLoader.GridPointToWorld(offset).ToPoint();
+            Point convertedOffsetBetweenButtons = LevelLoader.GridPointToWorld(offsetBetweenButtons).ToPoint();
             Point convertedPosition = LevelLoader.GridPointToWorld(startPosition).ToPoint();
             Point convertedSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
-            Point positionOffset = convertedSize + convertedOffset;
+            Point positionOffset = convertedSize + convertedOffsetBetweenButtons;
             // Than, create 6 buttons
             for (int i = 0; i < Game1.levels.Length / 2; i++)
             {

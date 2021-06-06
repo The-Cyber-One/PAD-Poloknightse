@@ -42,7 +42,7 @@ namespace Poloknightse
             gameStateDict.Add("PauseState", new PauseState());
             gameStateDict.Add("NameState", new NameState());
 
-            SwitchTo("NameState");
+            SwitchTo("WinState");
         }
 
         protected override void LoadContent()
