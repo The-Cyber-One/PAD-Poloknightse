@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,13 +8,14 @@ namespace Poloknightse
 {
     class Player : GameObject
     {
-        public List<PlayerFollower> followers = new List<PlayerFollower>();
-        private bool addFollower;
-        private Point newFollowerPosition;
-        int minFollowers = 3;
         public bool chosen = false;
-        Vector2 nextVelocity = new Vector2();
-        GameObject
+        public List<PlayerFollower> followers = new List<PlayerFollower>();
+
+        private Point newFollowerPosition;
+        private Vector2 nextVelocity = new Vector2();
+
+        private const int MIN_FOLLOWERS = 3;
+        private readonly GameObject
             arrowLeft = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconLeft"),
             arrowUp = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconUp"),
             arrowRight = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconRight"),
@@ -91,9 +89,35 @@ namespace Poloknightse
             arrowsSelectedDown.gridPosition = new Point(gridPosition.X, gridPosition.Y + 1);
         }
 
+        public override void HandleInput(InputHelper inputHelper)
+        {
+            //Change the movement direction
+            if (inputHelper.KeyPressed(Keys.D) || inputHelper.KeyPressed(Keys.Right))
+            {
+                nextVelocity = Vector2.Zero;
+                nextVelocity.X = 1;
+            }
+            else if (inputHelper.KeyPressed(Keys.A) || inputHelper.KeyPressed(Keys.Left))
+            {
+                nextVelocity = Vector2.Zero;
+                nextVelocity.X = -1;
+            }
+            else if (inputHelper.KeyPressed(Keys.W) || inputHelper.KeyPressed(Keys.Up))
+            {
+                nextVelocity = Vector2.Zero;
+                nextVelocity.Y = -1;
+            }
+            else if (inputHelper.KeyPressed(Keys.S) || inputHelper.KeyPressed(Keys.Down))
+            {
+                nextVelocity = Vector2.Zero;
+                nextVelocity.Y = 1;
+            }
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+
             foreach (PlayerFollower follower in followers)
             {
                 follower.Draw(spriteBatch);
@@ -140,32 +164,6 @@ namespace Poloknightse
             }
         }
 
-        public override void HandleInput(InputHelper inputHelper)
-        {
-            //Change the movement direction
-            if (inputHelper.KeyPressed(Keys.D) || inputHelper.KeyPressed(Keys.Right))
-            {
-                nextVelocity = Vector2.Zero;
-                nextVelocity.X = 1;
-            }
-            else if (inputHelper.KeyPressed(Keys.A) || inputHelper.KeyPressed(Keys.Left))
-            {
-                nextVelocity = Vector2.Zero;
-                nextVelocity.X = -1;
-            }
-            else if (inputHelper.KeyPressed(Keys.W) || inputHelper.KeyPressed(Keys.Up))
-            {
-                nextVelocity = Vector2.Zero;
-                nextVelocity.Y = -1;
-            }
-            else if (inputHelper.KeyPressed(Keys.S) || inputHelper.KeyPressed(Keys.Down))
-            {
-                nextVelocity = Vector2.Zero;
-                nextVelocity.Y = 1;
-            }
-        }
-
-
         /// <summary>
         /// Checks if <paramref name="gridPosition"></paramref> will hit a follower
         /// </summary>
@@ -183,17 +181,6 @@ namespace Poloknightse
         }
 
         /// <summary>
-        /// Checks if <paramref name="gameObject"></paramref> collides with any part of the player
-        /// </summary>
-        public override bool CheckCollision(GameObject gameObject)
-        {
-            bool playerHitsObject = base.CheckCollision(gameObject);
-
-            return playerHitsObject || CheckFollowerCollsion(gameObject.gridPosition);
-        }
-
-
-        /// <summary>
         /// Split player at <paramref name="gridPosition"/>
         /// </summary>
         /// <param name="gridPosition">Position to take damage at</param>
@@ -202,7 +189,7 @@ namespace Poloknightse
             GameObjectList players = GameEnvironment.GetState<PlayingState>("PlayingState").players;
 
             //Check if player is dead
-            if (followers.Count <= minFollowers || !chosen || gridPosition == this.gridPosition)
+            if (followers.Count <= MIN_FOLLOWERS || !chosen || gridPosition == this.gridPosition)
             {
                 players.Remove(this);
 
@@ -281,6 +268,16 @@ namespace Poloknightse
         {
             List<Point> checkedNeighbours = new List<Point>();
             followers = SortByNeighbour(gridPosition, positionFollowerPairs, checkedNeighbours);
+        }
+
+        /// <summary>
+        /// Checks if <paramref name="gameObject"></paramref> collides with any part of the player
+        /// </summary>
+        public override bool CheckCollision(GameObject gameObject)
+        {
+            bool playerHitsObject = base.CheckCollision(gameObject);
+
+            return playerHitsObject || CheckFollowerCollsion(gameObject.gridPosition);
         }
 
         /// <summary>
