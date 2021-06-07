@@ -5,7 +5,7 @@ namespace Poloknightse
 {
 	class EnemyShooter : GameObject
     {
-        private float countDuration = 5f; //Every 5s.
+        private float countDuration = 5f;
         private float currentTime = 0f;
         private int endCalculationX, endCalculationY;
         private Point enemyPos;
@@ -18,7 +18,7 @@ namespace Poloknightse
         /// <summary>
         /// Shoot bullet in given <paramref name="direction"/>
         /// </summary>
-        /// <param name="direction">Direction to shoot de bullet to</param>
+        /// <param name="direction">Direction to shoot the bullet to</param>
         private void Shoot(Vector2 direction)
         {
             GameEnvironment.CurrentGameState.gameObjectList.Add(new Bullet(gridPosition, direction));
@@ -27,7 +27,7 @@ namespace Poloknightse
         private void MovementPathCheck()
 		{
               
-            
+            //Change the calculation for the movement depending on the position.
             if(velocity.X == 0)
 			{
                 endCalculationX = (int)gridPosition.X + enemyPos.X;
@@ -99,7 +99,7 @@ namespace Poloknightse
 		{
 
             base.Update(gameTime);
-            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (currentTime >= countDuration)
             {
