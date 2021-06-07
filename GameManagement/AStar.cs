@@ -32,7 +32,7 @@ namespace Poloknightse
         /// </summary>
         /// <param name="pointA">Point of a cell that needs a heuristic value</param>
         /// <param name="pointB">End point of the wanted path</param>
-        private static float defaultH(Point pointA, Point pointB) => Vector2.Distance(pointA.ToVector2(), pointB.ToVector2());
+        private static float DefaultH(Point pointA, Point pointB) => Vector2.Distance(pointA.ToVector2(), pointB.ToVector2());
 
         /// <summary>
         /// Convert a grid position to a index
@@ -95,7 +95,7 @@ namespace Poloknightse
         public static Point[] FindPath(Point start, Point goal, Tile.TileType[,] walls = null, Func<Point, Point, float> h = null)
         {
             //Set defaultH function if it's null
-            if (h is null) h = defaultH;
+            if (h is null) h = DefaultH;
 
             //The set of discovered nodes
             SimplePriorityQueue<Point> openSet = new SimplePriorityQueue<Point>();
