@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 
 namespace Poloknightse
 {
     class LocalDataManager
     {
-        private static string saveFilePath = "Data";
+        private static readonly string saveFilePath = "Data";
 
         /// <summary>
         /// Save player name to local file

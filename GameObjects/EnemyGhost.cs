@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
 
 namespace Poloknightse
 {
     class GhostPatrolState : PatrolState
     {
-        int ghostCooldownSteps = 5;
-        int stepsCounter;
+        private const int GHOST_COOLDOWN_STEPS = 5;
+        private int stepsCounter;
 
-        public GhostPatrolState(GameObject gameObject) : base(gameObject, "GhostPatrol")
-        {
-
-        }
+        public GhostPatrolState(GameObject gameObject) : base(gameObject, "GhostPatrol") { }
 
         public override void Start()
         {
             base.Start();
-            stepsCounter = ghostCooldownSteps;
+            stepsCounter = GHOST_COOLDOWN_STEPS;
         }
 
         public override Point GetRandomDirection()
@@ -32,18 +22,23 @@ namespace Poloknightse
                 return base.GetRandomDirection();
 
             //Return ghost direction
-            Point direction = new Point();
+            Point direction;
             do
             {
                 if (GameEnvironment.Random.Next(2) == 0)
+                {
                     direction = new Point(GameEnvironment.Random.Next(2) * 2 - 1, 0);
-
-                direction = new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
+                }
+                else
+                {
+                    direction = new Point(0, GameEnvironment.Random.Next(2) * 2 - 1);
+                }
             }
             while (LevelLoader.grid.GetLength(0) < gameObject.gridPosition.X + direction.X &&
-                LevelLoader.grid.GetLength(1) < gameObject.gridPosition.Y + direction.Y &&
-                gameObject.gridPosition.X + direction.X < 0 &&
-                gameObject.gridPosition.Y + direction.Y < 0);
+            LevelLoader.grid.GetLength(1) < gameObject.gridPosition.Y + direction.Y &&
+            gameObject.gridPosition.X + direction.X < 0 &&
+            gameObject.gridPosition.Y + direction.Y < 0);
+
             return direction;
         }
 
@@ -52,12 +47,15 @@ namespace Poloknightse
             stepsCounter--;
             base.FixedUpdate(gameTime);
             if (LevelLoader.grid.GetLength(0) > gameObject.gridPosition.X &&
-                    LevelLoader.grid.GetLength(1) > gameObject.gridPosition.Y &&
-                    gameObject.gridPosition.X >= 0 &&
-                    gameObject.gridPosition.Y >= 0) return;
+                LevelLoader.grid.GetLength(1) > gameObject.gridPosition.Y &&
+                gameObject.gridPosition.X >= 0 &&
+                gameObject.gridPosition.Y >= 0)
+            {
+                return;
+            }
             if (LevelLoader.grid[gameObject.gridPosition.X, gameObject.gridPosition.Y].tileType == Tile.TileType.WALL)
             {
-                stepsCounter = ghostCooldownSteps;
+                stepsCounter = GHOST_COOLDOWN_STEPS;
             }
         }
     }
@@ -78,7 +76,7 @@ namespace Poloknightse
             stepsCounter = ghostCooldownSteps;
         }
 
-        public override Point[] GetNewPath()
+        protected override Point[] GetNewPath()
         {
             if (stepsCounter > 0)
                 return base.GetNewPath();
