@@ -20,6 +20,8 @@ namespace Poloknightse
         private int playerAmountEnd;
         private int followerAmountEnd;
         private string elapsedTime;
+        private int timeSubtractAmountFollower = 2;
+        private int timeSubtractAmountPlayer = 5;
         
         private Texture2D pixel;
 
@@ -85,8 +87,8 @@ namespace Poloknightse
 
             //Subtract the time earned by how many players and followers are left in the level
             timeSpanTotalSec = (int)timeSpan.TotalSeconds;
-            timeSpanTotalSec -= 2 * followerAmountEnd;
-            timeSpanTotalSec -= 5 * playerAmountEnd;
+            timeSpanTotalSec -= timeSubtractAmountFollower * followerAmountEnd;
+            timeSpanTotalSec -= timeSubtractAmountPlayer * playerAmountEnd;
 
             //Calculate it from total seconds to a value we can use in the database
             int sec = timeSpanTotalSec % 60;
