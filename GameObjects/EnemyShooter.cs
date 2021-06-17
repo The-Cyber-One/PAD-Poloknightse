@@ -1,6 +1,8 @@
-﻿ using Microsoft.Xna.Framework;
-using System;
-
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using System.Diagnostics;
+using Microsoft.Xna.Framework.Graphics;
 namespace Poloknightse
 {
 	class EnemyShooter : GameObject

@@ -11,7 +11,7 @@ namespace Poloknightse
 
         public static string[] levels =
             {
-            "Tutorial",
+            "HerTutorial",
             "Level-1",
             "Level-2",
             "Level-3",

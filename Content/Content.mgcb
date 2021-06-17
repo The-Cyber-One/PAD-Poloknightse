@@ -274,6 +274,18 @@
 /processorParam:TextureFormat=Color
 /build:GameObjects/Player/Onderbroek_Ridder.png
 
+#begin Levels/HerTutorial.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Levels/HerTutorial.jpg
+
 #begin Levels/Level-1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -441,6 +453,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Menu/GameOver.png
+
+#begin Menu/HerTutorialDrawn.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Menu/HerTutorialDrawn.jpg
 
 #begin Menu/Highscore.png
 /importer:TextureImporter
