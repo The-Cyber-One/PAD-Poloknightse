@@ -58,6 +58,18 @@
 /processorParam:TextureFormat=Color
 /build:GameObjects/bronze_coin.png
 
+#begin GameObjects/clover.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:GameObjects/clover.png
+
 #begin GameObjects/Enemies/EnemyGhost.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -69,18 +81,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:GameObjects/Enemies/EnemyGhost.png
-
-#begin GameObjects/Enemies/EnemyShooter.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:GameObjects/Enemies/EnemyShooter.png
 
 #begin GameObjects/Enemies/EnemyShooter.png
 /importer:TextureImporter

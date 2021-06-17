@@ -47,6 +47,13 @@ namespace Poloknightse
                     "LevelTiles/Ground",
                     Tile.TileType.GROUND)
             },
+            {
+                Color.Green,
+                new Tuple<Type, string, Tile.TileType>(
+                    typeof(PartyTime),
+                    "LevelTiles/Ground",
+                    Tile.TileType.GROUND)
+            },
             //Player
             {
                 Color.Blue,
