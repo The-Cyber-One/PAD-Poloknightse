@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using System.Text;
 
 namespace Poloknightse
 {
@@ -10,6 +7,7 @@ namespace Poloknightse
     {
         public Rectangle rectangle;
         public TileType tileType;
+
         public Texture2D TileTexture
         {
             get { return texture; }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,19 +8,27 @@ namespace Poloknightse
 {
     class Player : GameObject
     {
-        public List<PlayerFollower> followers = new List<PlayerFollower>();
-        private bool addFollower;
-        private Point newFollowerPosition;
-        int minFollowers = 3;
         public bool chosen = false;
-        TextGameObject chosenText;
-        float textOffset = -10;
+        public List<PlayerFollower> followers = new List<PlayerFollower>();
+
+        private Point newFollowerPosition;
+        private Vector2 nextVelocity = new Vector2();
+
+        private const int MIN_FOLLOWERS = 3;
+        private readonly GameObject
+            arrowLeft = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconLeft"),
+            arrowUp = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconUp"),
+            arrowRight = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconRight"),
+            arrowDown = new GameObject(null, "GameObjects/Player/DirectionIcon/DirectionIconDown"),
+            arrowsSelectedLeft = new GameObject(null, "GameObjects/Player/DirectionIconSelected/DirectionIconSelectedLeft"),
+            arrowsSelectedUp = new GameObject(null, "GameObjects/Player/DirectionIconSelected/DirectionIconSelectedUp"),
+            arrowsSelectedRight = new GameObject(null, "GameObjects/Player/DirectionIconSelected/DirectionIconSelectedRight"),
+            arrowsSelectedDown = new GameObject(null, "GameObjects/Player/DirectionIconSelected/DirectionIconSelectedDown");
 
         public Player(Point gridPosition) : base(gridPosition, "GameObjects/Player/Onderbroek_ridder")
         {
             velocity = Vector2.Zero;
             newFollowerPosition = gridPosition;
-            chosenText = new TextGameObject("!", gridPosition.ToVector2() + new Vector2(0, textOffset), Vector2.One / 2, Color.White, "Fonts/Title");
         }
 
         public override void Update(GameTime gameTime)
@@ -38,21 +43,22 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
-            CollisionDetection.CheckWallCollision(this);
+            //Check if player can activate stored velocity
+            if (!CollisionDetection.CheckWallCollision(gridPosition, nextVelocity) && !CheckFollowerCollsion((gridPosition.ToVector2() + nextVelocity).ToPoint()))
+            {
+                velocity = nextVelocity;
+            }
+
+            if (CheckFollowerCollsion(gridPosition) || CollisionDetection.CheckWallCollision(gridPosition, velocity))
+            {
+                velocity = Vector2.Zero;
+            }
 
             if (velocity != Vector2.Zero)
             {
-                //Add follower
-                if (addFollower)
-                {
-                    AddFollower(gameTime);
-                    addFollower = false;
-                }
-
                 //Update position of posible new follower
                 if (followers.Count > 0)
                 {
-
                     newFollowerPosition = followers[followers.Count - 1].gridPosition;
                 }
                 else
@@ -69,28 +75,18 @@ namespace Poloknightse
             }
 
             //Move player
-            gridPosition += velocity.ToPoint(); ;
-        }
+            gridPosition += velocity.ToPoint();
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            
-                positionSize = new Rectangle(
-                gridPosition.X * LevelLoader.gridTileSize + GameEnvironment.startGridPoint.X + (int)(LevelLoader.gridTileSize/2),
-                gridPosition.Y * LevelLoader.gridTileSize + GameEnvironment.startGridPoint.Y + (int)(LevelLoader.gridTileSize),
-                (int)(texture.Width * LevelLoader.scalingFactor),
-                (int)(texture.Height * LevelLoader.scalingFactor));
-                spriteBatch.Draw(texture, positionSize, null,Color.White,0, new Vector2 (texture.Width/2, texture.Height), SpriteEffects.None, 1);
-            
-            foreach (PlayerFollower follower in followers)
-            {
-                follower.Draw(spriteBatch);
-            }
-            if (chosen)
-            {
-                chosenText.position = LevelLoader.GridPointToWorld(gridPosition) + new Vector2(0, textOffset);
-                chosenText.Draw(spriteBatch);
-            }
+            //Update arrow position
+            arrowLeft.gridPosition = new Point(gridPosition.X - 1, gridPosition.Y);
+            arrowUp.gridPosition = new Point(gridPosition.X, gridPosition.Y - 1);
+            arrowRight.gridPosition = new Point(gridPosition.X + 1, gridPosition.Y);
+            arrowDown.gridPosition = new Point(gridPosition.X, gridPosition.Y + 1);
+
+            arrowsSelectedLeft.gridPosition = new Point(gridPosition.X - 1, gridPosition.Y);
+            arrowsSelectedUp.gridPosition = new Point(gridPosition.X, gridPosition.Y - 1);
+            arrowsSelectedRight.gridPosition = new Point(gridPosition.X + 1, gridPosition.Y);
+            arrowsSelectedDown.gridPosition = new Point(gridPosition.X, gridPosition.Y + 1);
         }
 
         public override void HandleInput(InputHelper inputHelper)
@@ -98,63 +94,91 @@ namespace Poloknightse
             //Change the movement direction
             if (inputHelper.KeyPressed(Keys.D) || inputHelper.KeyPressed(Keys.Right))
             {
-                velocity = Vector2.Zero;
-                velocity.X = 1;
+                nextVelocity = Vector2.Zero;
+                nextVelocity.X = 1;
             }
             else if (inputHelper.KeyPressed(Keys.A) || inputHelper.KeyPressed(Keys.Left))
             {
-                velocity = Vector2.Zero;
-                velocity.X = -1;
+                nextVelocity = Vector2.Zero;
+                nextVelocity.X = -1;
             }
             else if (inputHelper.KeyPressed(Keys.W) || inputHelper.KeyPressed(Keys.Up))
             {
-                velocity = Vector2.Zero;
-                velocity.Y = -1;
+                nextVelocity = Vector2.Zero;
+                nextVelocity.Y = -1;
             }
             else if (inputHelper.KeyPressed(Keys.S) || inputHelper.KeyPressed(Keys.Down))
             {
-                velocity = Vector2.Zero;
-                velocity.Y = 1;
-            }
-
-            CheckPlayerCollsion();
-
-            if (inputHelper.MouseLeftButtonPressed())
-            {
-                addFollower = true;
+                nextVelocity = Vector2.Zero;
+                nextVelocity.Y = 1;
             }
         }
 
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+
+            foreach (PlayerFollower follower in followers)
+            {
+                follower.Draw(spriteBatch);
+            }
+            
+            //Draw arrow
+            if (chosen)
+            {
+                if (nextVelocity == new Vector2(-1, 0))
+                {
+                    arrowsSelectedLeft.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(0, -1))
+                {
+                    arrowsSelectedUp.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(1, 0))
+                {
+                    arrowsSelectedRight.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(0, 1))
+                {
+                    arrowsSelectedDown.Draw(spriteBatch);
+                }
+            }
+            else
+            {
+                if (nextVelocity == new Vector2(-1, 0))
+                {
+                    arrowLeft.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(0, -1))
+                {
+                    arrowUp.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(1, 0))
+                {
+                    arrowRight.Draw(spriteBatch);
+                }
+                else if (nextVelocity == new Vector2(0, 1))
+                {
+                    arrowDown.Draw(spriteBatch);
+                }
+            }
+        }
 
         /// <summary>
-        /// Checks if player will hit it self and if so stop moving
+        /// Checks if <paramref name="gridPosition"></paramref> will hit a follower
         /// </summary>
-        public void CheckPlayerCollsion()
+        private bool CheckFollowerCollsion(Point gridPosition)
         {
-            bool playerHitsPlayer = false;
+            bool playerHitsFollower = false;
             foreach (PlayerFollower playerFollower in followers)
             {
-                if (playerFollower.gridPosition == (gridPosition.ToVector2() + velocity).ToPoint())
+                if (playerFollower.gridPosition == gridPosition)
                 {
-                    playerHitsPlayer = true;
+                    return true;
                 }
             }
-            if (playerHitsPlayer) velocity = Vector2.Zero;
+            return playerHitsFollower;
         }
-
-        public override bool CheckCollision(GameObject gameObject)
-        {
-            bool playerHitsObject = base.CheckCollision(gameObject);
-            foreach (PlayerFollower playerFollower in followers)
-            {
-                if (playerFollower.gridPosition == gameObject.gridPosition)
-                {
-                    playerHitsObject = true;
-                }
-            }
-            return playerHitsObject;
-        }
-
 
         /// <summary>
         /// Split player at <paramref name="gridPosition"/>
@@ -165,18 +189,26 @@ namespace Poloknightse
             GameObjectList players = GameEnvironment.GetState<PlayingState>("PlayingState").players;
 
             //Check if player is dead
-            if (followers.Count <= minFollowers || !chosen)
+            if (followers.Count <= MIN_FOLLOWERS || !chosen || gridPosition == this.gridPosition)
             {
                 players.Remove(this);
+
+				if (chosen)
+				{
+                    GameEnvironment.GetState<PlayingState>("PlayingState").FindingNewChosen();
+                }
+
                 //Check if GameOver
                 if (players.Children.Count == 0)
                 {
+                    GameEnvironment.GetState<PlayingState>("PlayingState").CalculateEndTime();
                     GameEnvironment.SwitchTo("GameOverState");
                 }
                 return;
             }
 
             //Code to split player in half
+            //TODO ALS HOOFD WORD GERAAKT FIX DE SPLIT
             Player player = new Player(followers[followers.Count - 1].gridPosition);
             players.Add(player);
             for (int i = followers.Count - 1; i >= 0; i--)
@@ -236,6 +268,16 @@ namespace Poloknightse
         {
             List<Point> checkedNeighbours = new List<Point>();
             followers = SortByNeighbour(gridPosition, positionFollowerPairs, checkedNeighbours);
+        }
+
+        /// <summary>
+        /// Checks if <paramref name="gameObject"></paramref> collides with any part of the player
+        /// </summary>
+        public override bool CheckCollision(GameObject gameObject)
+        {
+            bool playerHitsObject = base.CheckCollision(gameObject);
+
+            return playerHitsObject || CheckFollowerCollsion(gameObject.gridPosition);
         }
 
         /// <summary>

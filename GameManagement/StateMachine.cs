@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Poloknightse
 {
@@ -40,15 +39,6 @@ namespace Poloknightse
         {
             if (states.ContainsKey(newState.name)) states.Remove(newState.name);
             states.Add(newState.name, newState);
-        }
-
-        public void RemoveState(string stateName)
-        {
-            foreach (string stateKey in states.Keys)
-            {
-                states[stateKey].connections.Remove(stateName);
-            }
-            states.Remove(stateName);
         }
 
         /// <summary>

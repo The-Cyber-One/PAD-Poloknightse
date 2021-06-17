@@ -9,29 +9,52 @@ namespace Poloknightse
 {
 	class WinState : GameState
 	{
-		TextGameObject textObject = new TextGameObject("", GameEnvironment.Screen.ToVector2() / 2, Vector2.One / 2, Color.White);
+		// Variables for the title text
+		Vector2 titleTextPosition = new Vector2(32, 12f);
+		Vector2 titleTextPositionCongratulations = new Vector2(32, 9f);
+
+		//Back button
+		Point buttonPosition = new Point(28, 14);
+		Point buttonSize = new Point(8, 8);
+		string backButtonAssetName = "Back";
+		string backButtonText = "Level select menu";
+		Button winStateButton;
 
 		public WinState()
 		{
-			gameObjectList.Add(textObject);
+			
 		}
 
         public override void Init()
         {
-            base.Init();
-			textObject.text = "press any button to load level " + (Game1.currentLevel + 1);
+			LevelLoader.LoadLevel("Menu/StandardMenu");
+
+			//Create the title text
+			Vector2 convertedtitleTextPosition = LevelLoader.GridPointToWorld(titleTextPosition);
+			Vector2 convertedtitleTextCongratulationsPosition = LevelLoader.GridPointToWorld(titleTextPositionCongratulations);
+			gameObjectList.Add(new TextGameObject("Congratulations!", convertedtitleTextCongratulationsPosition, Vector2.One / 2, Color.Black, "Fonts/Title"));
+			gameObjectList.Add(new TextGameObject("you completed the level in: " + PlayingState.timeSpanTotalSec + " seconds!", convertedtitleTextPosition, Vector2.One / 2, Color.Black, "Fonts/Title", 0.5f));
+
+			//Back button
+			Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
+			Point convertedButtonSize = LevelLoader.GridPointToWorld(buttonSize).ToPoint();
+			Rectangle button = new Rectangle(convertedButtonPosition, convertedButtonSize);
+			winStateButton = new Button(button, backButtonAssetName, backButtonText);
+			gameObjectList.Add(winStateButton);
 		}
 
         public override void Draw(SpriteBatch spriteBatch)
 		{
+			LevelLoader.Draw(spriteBatch);
 			base.Draw(spriteBatch);
 		}
 
 		public override void HandleInput(InputHelper inputHelper)
 		{
-			if (inputHelper.AnyKeyPressed)
+			//Switch to the level select state if the button is pressed
+			if (winStateButton.clicked)
 			{
-				GameEnvironment.SwitchTo("PlayingState");
+				GameEnvironment.SwitchTo("LevelSelectState");
 			}
 			base.HandleInput(inputHelper);
 		}

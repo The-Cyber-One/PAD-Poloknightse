@@ -7,31 +7,32 @@ namespace Poloknightse
 {
     class CollisionDetection
     {
-        public static void CheckWallCollision(GameObject gameObject)
+        public static bool CheckWallCollision(Point gridPosition, Vector2 velocity)
         {
             //Check above player
-            if (gameObject.velocity.Y == -1 && LevelLoader.grid[gameObject.gridPosition.X, gameObject.gridPosition.Y - 1].tileType == Tile.TileType.WALL)
+            if (velocity.Y == -1 && LevelLoader.grid[gridPosition.X, gridPosition.Y - 1].tileType == Tile.TileType.WALL)
             {
-                gameObject.velocity = Vector2.Zero;
+                return true;
             }
 
             //check below player
-            if (gameObject.velocity.Y == 1 && LevelLoader.grid[gameObject.gridPosition.X, gameObject.gridPosition.Y + 1].tileType == Tile.TileType.WALL)
+            if (velocity.Y == 1 && LevelLoader.grid[gridPosition.X, gridPosition.Y + 1].tileType == Tile.TileType.WALL)
             {
-                gameObject.velocity = Vector2.Zero;
+                return true;
             }
 
             //Check right of player
-            if (gameObject.velocity.X == 1 && LevelLoader.grid[gameObject.gridPosition.X + 1, gameObject.gridPosition.Y].tileType == Tile.TileType.WALL)
+            if (velocity.X == 1 && LevelLoader.grid[gridPosition.X + 1, gridPosition.Y].tileType == Tile.TileType.WALL)
             {
-                gameObject.velocity = Vector2.Zero;
+                return true;
             }
 
             //Check left of player
-            if (gameObject.velocity.X == -1 && LevelLoader.grid[gameObject.gridPosition.X - 1, gameObject.gridPosition.Y].tileType == Tile.TileType.WALL)
+            if (velocity.X == -1 && LevelLoader.grid[gridPosition.X - 1, gridPosition.Y].tileType == Tile.TileType.WALL)
             {
-                gameObject.velocity = Vector2.Zero;
+                return true;
             }
+            return false;
         }
 
         public static bool ObjectWillHitOther(GameObject gameObjectA, GameObject gameObjectB)

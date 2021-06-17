@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 
 public class InputHelper
 {
+    private const int SCROLL_WHEEL_VALUE_PER_SCROLL_TICK = 120;
     protected MouseState currentMouseState, previousMouseState;
     protected KeyboardState currentKeyboardState, previousKeyboardState;
     protected Vector2 scale, offset;
@@ -21,6 +22,12 @@ public class InputHelper
         currentKeyboardState = Keyboard.GetState();
     }
 
+    public KeyboardState CurrentKeyboardState
+    {
+        get { return currentKeyboardState; }
+    }
+
+
     public Vector2 Scale
     {
         get { return scale; }
@@ -36,6 +43,16 @@ public class InputHelper
     public Vector2 MousePosition
     {
         get { return (new Vector2(currentMouseState.X, currentMouseState.Y) - offset) / scale; }
+    }
+
+    public float TotalScrollWheelValue
+    {
+        get { return currentMouseState.ScrollWheelValue / SCROLL_WHEEL_VALUE_PER_SCROLL_TICK; }
+    }
+
+    public float FrameScrollWheelValue
+    {
+        get { return (currentMouseState.ScrollWheelValue - previousMouseState.ScrollWheelValue) / SCROLL_WHEEL_VALUE_PER_SCROLL_TICK; }
     }
 
     public bool MouseLeftButtonPressed()

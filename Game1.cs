@@ -7,10 +7,11 @@ namespace Poloknightse
     class Game1 : GameEnvironment
     {
         public static int currentLevel;
+        public static bool exit = false;
 
         public static string[] levels =
             {
-            "StarterLevel",
+            "Tutorial",
             "Level-1",
             "Level-2",
             "Level-3",
@@ -35,8 +36,13 @@ namespace Poloknightse
             gameStateDict.Add("PlayingState", new PlayingState());
             gameStateDict.Add("WinState", new WinState());
             gameStateDict.Add("GameOverState", new GameOverState());
+            gameStateDict.Add("LevelSelectState", new LevelSelectState());
+            gameStateDict.Add("HighscoreState", new HighscoreState());
+            gameStateDict.Add("CreditsState", new CreditsState());
+            gameStateDict.Add("PauseState", new PauseState());
+            gameStateDict.Add("NameState", new NameState());
 
-            SwitchTo("StartState");
+            SwitchTo("NameState");
         }
 
         protected override void LoadContent()
@@ -46,11 +52,9 @@ namespace Poloknightse
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-        
+            if (exit) Exit();
             // TODO: Add your update logic here
-
+            
             base.Update(gameTime);
         }
     }

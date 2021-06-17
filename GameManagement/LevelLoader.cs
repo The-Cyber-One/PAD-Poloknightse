@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,7 +21,7 @@ namespace Poloknightse
                 Color.Black,                                //Color in png
                 new Tuple<Type, string, Tile.TileType>(     //
                     typeof(Tile),                           //Extra GameObject to instantiate (if it is Tile then no extra GameObject will be instantiated)
-                    "LevelTiles/SmoothWall",                      //Tile texture path
+                    "LevelTiles/SmoothWall",                //Tile texture path
                     Tile.TileType.WALL)                     //Associated TileType
             },
             {
@@ -96,11 +95,11 @@ namespace Poloknightse
         /// <summary>
         /// Load the level from a png file.
         /// </summary>
-        /// <param name="levelName">Filename from the levels folder.</param>
-        public static void LoadLevel(string levelName)
+        /// <param name="levelPath">Filename from the levels folder.</param>
+        public static void LoadLevel(string levelPath)
         {
             //Load the colors to a array
-            Texture2D level = GameEnvironment.ContentManager.Load<Texture2D>("Levels/" + levelName);
+            Texture2D level = GameEnvironment.ContentManager.Load<Texture2D>(levelPath);
             Color[] colors = new Color[level.Width * level.Height];
             level.GetData(colors);
 
@@ -111,11 +110,12 @@ namespace Poloknightse
             yOffset = GameEnvironment.Screen.Y / 2 - (level.Height / 2) * gridTileSize;
             GameEnvironment.startGridPoint = new Point(xOffset, yOffset);
 
-            //Here we check the colors of the image and load the correct tiles.
+            //Setup some variables
             grid = new Tile[level.Width, level.Height];
             Player player = new Player(new Point());
             Dictionary<Point, PlayerFollower> positionFollowerPairs = new Dictionary<Point, PlayerFollower>();
 
+            //Check the colors of the image and load the correct tiles.
             for (int i = 0; i < colors.Length; i++)
             {
                 //Safety check
@@ -162,6 +162,7 @@ namespace Poloknightse
                 }
             }
 
+            //Instantiate player
             if (player != null)
             {
                 player.LoadFollowers(positionFollowerPairs);
@@ -171,15 +172,31 @@ namespace Poloknightse
                 }
             }
 
+            //Instantiate other game objects
             foreach (GameObject gameObject in GameEnvironment.CurrentGameState.gameObjectList)
             {
                 gameObject.Initialize();
             }
         }
 
+        /// <summary>
+        /// Converts a grid position to a world position
+        /// </summary>
+        /// <param name="point">The grid position to convert</param>
+        /// <returns>A world point</returns>
+        public static Vector2 GridPointToWorld(Vector2 vector)
+        {
+            return vector * gridTileSize + new Vector2(xOffset, yOffset);
+        }
+
+        /// <summary>
+        /// Converts a grid position to a world position
+        /// </summary>
+        /// <param name="point">The grid position to convert</param>
+        /// <returns>A world point</returns>
         public static Vector2 GridPointToWorld(Point point)
         {
-            return point.ToVector2() * gridTileSize + new Vector2(xOffset, yOffset);
+            return GridPointToWorld(point.ToVector2());
         }
 
         /// <summary>

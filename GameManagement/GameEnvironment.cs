@@ -19,13 +19,14 @@ namespace Poloknightse
         public static Point startGridPoint = new Point();
         static protected GameState currentGameState;
         static private GameState nextGameState;
-        protected static string playerName = "spelernaam hiero";
+        protected static string playerName = "cool guy";
 
         static protected Dictionary<string, GameState> gameStateDict;
 
         public static string PlayerName
         {
             get { return playerName; }
+            set { playerName = value; }
         }
 
         public static GameState CurrentGameState
