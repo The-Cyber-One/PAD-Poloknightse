@@ -167,6 +167,16 @@ namespace Poloknightse
                         }
                     }
 
+                    //PartyTime -> Player collision
+                    if (gameObjectList[i] is PartyTime)
+                    {
+                        if (player.CheckCollision(gameObjectList[i]))
+                        {
+                            gameObjectList.Remove(gameObjectList[i]);
+                            continue;
+                        }
+                    }
+
                     //Bullet -> Player collsion
                     if (gameObjectList[i] is Bullet)
                     {
