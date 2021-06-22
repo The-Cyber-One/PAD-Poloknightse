@@ -198,6 +198,28 @@ namespace Poloknightse
         }
     }
 
+    class ScaredState : State
+    {
+        protected GameObject gameObject;
+        private Vector2 direction;
+        private float oldDistance;
+        Player player;
+
+        public ScaredState(GameObject gameObject) : base("Scared") 
+        {
+            this.gameObject = gameObject;
+        }
+
+        public override void FixedUpdate(GameTime gameTime)
+        {
+            if(Vector2.Distance(gameObject.gridPosition.ToVector2() + direction, player.gridPosition.ToVector2()) > oldDistance)
+            {
+                oldDistance = Vector2.Distance(gameObject.gridPosition.ToVector2() + direction, player.gridPosition.ToVector2());
+            }
+        }
+
+    }
+
     class EnemyWalking : GameObject
     {
         private const int TrackingDistance = 10;
@@ -223,6 +245,7 @@ namespace Poloknightse
             stateMachine.AddState(new ReturnState(this));
             stateMachine.AddState(new AttackedState(this));
             stateMachine.AddState(new CryingState(this));
+            stateMachine.AddState(new ScaredState(this));
 
             //Add connections between states
             stateMachine.AddConnection("Patrol", "Return", (object state) => (state as PatrolState).stamina <= 0, stateMachine.GetState("Patrol"));
@@ -261,6 +284,12 @@ namespace Poloknightse
             if (float.IsFinite(closestPlayer) && stateMachine.CurrentState != stateMachine.GetState("Attacked") && stateMachine.CurrentState != stateMachine.GetState("Chase"))
             {
                 stateMachine.SetState("Chase");
+            }
+
+            //Update State to Scared
+            if (PartyTime.partyOn)
+            {
+                stateMachine.SetState("Scared");
             }
         }
 

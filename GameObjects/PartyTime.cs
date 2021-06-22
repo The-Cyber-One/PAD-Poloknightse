@@ -9,6 +9,7 @@ namespace Poloknightse
 {
     class PartyTime : GameObject
     {
+        static public bool partyOn = false;
 
         public PartyTime(Point gridPosition = new Point ()) : base(gridPosition, "GameObjects/clover")
         {
