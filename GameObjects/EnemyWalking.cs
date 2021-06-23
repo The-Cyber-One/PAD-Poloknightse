@@ -217,8 +217,9 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
-            for (int partyOnTime = 8; partyOnTime > 0; partyOnTime--)
+            for (int partyOnTime = 8; partyOnTime > -1; partyOnTime--)
             {
+                Debug.WriteLine(PartyTime.partyOn);
                 List<GameObject> players = GameEnvironment.GetState<PlayingState>("PlayingState").players.Children;
                 foreach (Player player in players)
                 {
@@ -243,7 +244,7 @@ namespace Poloknightse
                         }
                     }
                 }
-                if (partyOnTime == 0)
+                if (partyOnTime <= 0)
                 {
                     PartyTime.partyOn = false;
                 }
