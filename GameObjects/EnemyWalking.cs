@@ -201,8 +201,13 @@ namespace Poloknightse
     class ScaredState : State
     {
         protected GameObject gameObject;
-        private Vector2 direction;
+        private Vector2[] direction = new Vector2[4] {
+        new Vector2(0,1),
+        new Vector2(0, -1),
+        new Vector2(1, 0),
+        new Vector2(-1, 0) };
         private float oldDistance;
+        private Vector2 tileChecker;
         Player player;
 
         public ScaredState(GameObject gameObject) : base("Scared") 
@@ -212,9 +217,36 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
-            if(Vector2.Distance(gameObject.gridPosition.ToVector2() + direction, player.gridPosition.ToVector2()) > oldDistance)
+            for (int partyOnTime = 8; partyOnTime > 0; partyOnTime--)
             {
-                oldDistance = Vector2.Distance(gameObject.gridPosition.ToVector2() + direction, player.gridPosition.ToVector2());
+                List<GameObject> players = GameEnvironment.GetState<PlayingState>("PlayingState").players.Children;
+                foreach (Player player in players)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        tileChecker = gameObject.gridPosition.ToVector2() + direction[i];
+                        if (LevelLoader.grid[(int)tileChecker.X, (int)tileChecker.Y].tileType != Tile.TileType.GROUND)
+                        {
+                            continue;
+                        }
+
+                        if (Vector2.Distance(gameObject.gridPosition.ToVector2() + direction[i], player.gridPosition.ToVector2()) > oldDistance)
+                        {
+                            gameObject.gridPosition += direction[i].ToPoint();
+                            oldDistance = Vector2.Distance(gameObject.gridPosition.ToVector2() + direction[i], player.gridPosition.ToVector2());
+                            this.player = player;
+                        }
+
+                        if (i == 4)
+                        {
+                            i = 0;
+                        }
+                    }
+                }
+                if (partyOnTime == 0)
+                {
+                    PartyTime.partyOn = false;
+                }
             }
         }
 
