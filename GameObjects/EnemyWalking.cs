@@ -208,6 +208,7 @@ namespace Poloknightse
         new Vector2(-1, 0) };
         private float oldDistance;
         private Vector2 tileChecker;
+        int MAXPARTYTIME = 8;
         Player player;
 
         public ScaredState(GameObject gameObject) : base("Scared") 
@@ -217,7 +218,7 @@ namespace Poloknightse
 
         public override void FixedUpdate(GameTime gameTime)
         {
-            for (int partyOnTime = 8; partyOnTime > -1; partyOnTime--)
+            for (int partyOnTime = MAXPARTYTIME; partyOnTime > -1; partyOnTime--)
             {
                 Debug.WriteLine(PartyTime.partyOn);
                 List<GameObject> players = GameEnvironment.GetState<PlayingState>("PlayingState").players.Children;
@@ -314,7 +315,7 @@ namespace Poloknightse
             }
 
             //If a player was found in range then attack it
-            if (float.IsFinite(closestPlayer) && stateMachine.CurrentState != stateMachine.GetState("Attacked") && stateMachine.CurrentState != stateMachine.GetState("Chase"))
+            if (float.IsFinite(closestPlayer) && stateMachine.CurrentState != stateMachine.GetState("Attacked") && stateMachine.CurrentState != stateMachine.GetState("Chase") && stateMachine.CurrentState != stateMachine.GetState("Scared"))
             {
                 stateMachine.SetState("Chase");
             }
