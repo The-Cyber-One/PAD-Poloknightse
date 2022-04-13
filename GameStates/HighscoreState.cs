@@ -2,9 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace Poloknightse
 {
@@ -14,7 +11,7 @@ namespace Poloknightse
         string latest;
         int currentHighscorePosition = 0, previousHighscorePosition;
         GameObjectList highscoreTable = new GameObjectList();
-        TextGameObject EmptyHighscoreText;
+        TextGameObject emptyHighscoreText;
         int visableScoreAmount = 28;
         int startYPosition = 5;
         int rankStartPosition = 14, nameStartPosition = 17, scoreStartPosition = 29, levelStartPosition = 35, dateStartPosition = 39, timeStartPosition = 45;
@@ -41,8 +38,9 @@ namespace Poloknightse
             gameObjectList.Add(new TextGameObject("Level", LevelLoader.GridPointToWorld(new Point(levelStartPosition, startYPosition - 2))));
             gameObjectList.Add(new TextGameObject("Date", LevelLoader.GridPointToWorld(new Point(dateStartPosition, startYPosition - 2))));
             gameObjectList.Add(new TextGameObject("Time", LevelLoader.GridPointToWorld(new Point(timeStartPosition, startYPosition - 2))));
+            emptyHighscoreText = new TextGameObject("Well this game seems popular. \nThere seems to be no highscore, maybe try again?", LevelLoader.GridPointToWorld(new Point(rankStartPosition, startYPosition)));
+
             GetHighscore();
-            EmptyHighscoreText = new TextGameObject("Well this game seems popular. \nThere seems to be no highscore, maybe try again?", LevelLoader.GridPointToWorld(new Point(rankStartPosition, startYPosition)));
 
             //Back button
             Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();
@@ -121,25 +119,25 @@ namespace Poloknightse
 
         public override void HandleInput(InputHelper inputHelper)
         {
+            //Back button
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || inputHelper.KeyPressed(Keys.Escape) || inputHelper.KeyPressed(Keys.Back))
             {
                 GameEnvironment.SwitchTo("StartState");
             }
 
+            //Scroll through highscores
             if (dbHighscore != null)
             {
                 currentHighscorePosition += (int)inputHelper.FrameScrollWheelValue;
                 if (currentHighscorePosition < 0) currentHighscorePosition = 0;
                 if (currentHighscorePosition >= dbHighscore.RowCount) currentHighscorePosition = dbHighscore.RowCount - 1;
             }
-           
+
             //Switch to the main menu if the back button is pressed
             if (backButton.clicked)
             {
                 GameEnvironment.SwitchTo("StartState");
             }
-
-            base.HandleInput(inputHelper);
 
             base.HandleInput(inputHelper);
         }
@@ -165,7 +163,7 @@ namespace Poloknightse
             }
             else if (dbHighscore.RowCount == 0)
             {
-                EmptyHighscoreText.Draw(spriteBatch);
+                emptyHighscoreText.Draw(spriteBatch);
             }
             else
             {

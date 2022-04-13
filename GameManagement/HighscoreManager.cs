@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
-using Microsoft.Xna;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace Poloknightse
@@ -18,7 +13,7 @@ namespace Poloknightse
         public static void SaveScore(int score, int level)
         {
             AppDb db = new AppDb();
-            Highscore highscore = new Highscore {PlayerName = GameEnvironment.PlayerName, Score = score, Level = level, DateTime = DateTime.UtcNow };
+            Highscore highscore = new Highscore { PlayerName = GameEnvironment.PlayerName, Score = score, Level = level, DateTime = DateTime.UtcNow };
             db.AddHighscore(highscore);
         }
 
