@@ -5,9 +5,9 @@ namespace Poloknightse
 {
 	class EnemyShooter : GameObject
     {
-        private float countDuration = 5f; //Every 5s.
+        private float countDuration = 5f;
         private float currentTime = 0f;
-        private int endCalculationX, endCalculationY;
+        private int endCalculationEdgeCheckX, endCalculationEdgeCheckY;
         private Point enemyPos;
         private Vector2 shootDir;
 
@@ -15,45 +15,12 @@ namespace Poloknightse
         {
         }
 
-        /// <summary>
-        /// Shoot bullet in given <paramref name="direction"/>
-        /// </summary>
-        /// <param name="direction">Direction to shoot de bullet to</param>
-        private void Shoot(Vector2 direction)
-        {
-            GameEnvironment.CurrentGameState.gameObjectList.Add(new Bullet(gridPosition, direction));
-        }
-
-        private void MovementPathCheck()
-		{
-              
-            
-            if(velocity.X == 0)
-			{
-                endCalculationX = (int)gridPosition.X + enemyPos.X;
-                endCalculationY = (int)gridPosition.Y - enemyPos.Y;
-            }
-            else
-			{
-                endCalculationX = (int)gridPosition.X - enemyPos.X;
-                endCalculationY = (int)gridPosition.Y + enemyPos.Y;
-            }
-            
-            
-
-            //check depending on enemyPos what tiles to check for it to detect to move the opposite way.
-            if (LevelLoader.grid[(int)gridPosition.X + enemyPos.X, (int)gridPosition.Y + enemyPos.Y].tileType != Tile.TileType.WALL ||
-                LevelLoader.grid[endCalculationX, endCalculationY].tileType != Tile.TileType.WALL)
-            {
-                velocity *= -1;
-            }
-			
-        }
-
 		public override void Initialize()
 		{
 			base.Initialize();
 
+            //Check where the enemy is placed and set the velocity, shoot direction and point position according to that.
+            //Left
             if (LevelLoader.grid[(int)gridPosition.X + 1, (int)gridPosition.Y].tileType == Tile.TileType.WALL)
             {
                 enemyPos = new Point(1,-2);
@@ -61,6 +28,7 @@ namespace Poloknightse
                 velocity.Y = 1;
                 shootDir = new Vector2(1, 0);
             }
+            //Right
             else if (LevelLoader.grid[(int)gridPosition.X - 1, (int)gridPosition.Y].tileType == Tile.TileType.WALL)
             {
                 enemyPos = new Point(-1, -2);
@@ -69,6 +37,7 @@ namespace Poloknightse
                 shootDir = new Vector2(-1, 0);
             }
 
+            //Bottom
             if (LevelLoader.grid[(int)gridPosition.X, (int)gridPosition.Y + 1].tileType == Tile.TileType.WALL)
             {
                 enemyPos = new Point(-2,1);
@@ -76,6 +45,7 @@ namespace Poloknightse
                 velocity.Y = 0;
                 shootDir = new Vector2(0, 1);
             }
+            //Top
             else if(LevelLoader.grid[(int)gridPosition.X, (int)gridPosition.Y - 1].tileType == Tile.TileType.WALL)
             {
                 enemyPos = new Point(-2,-1);
@@ -85,7 +55,40 @@ namespace Poloknightse
             }
         }
 
-		public override void FixedUpdate(GameTime gameTime)
+        private void MovementPathCheck()
+        {
+
+            //Change the calculation for the movement depending on the position.
+            if (velocity.X == 0)
+            {
+                endCalculationEdgeCheckX = (int)gridPosition.X + enemyPos.X;
+                endCalculationEdgeCheckY = (int)gridPosition.Y - enemyPos.Y;
+            }
+            else
+            {
+                endCalculationEdgeCheckX = (int)gridPosition.X - enemyPos.X;
+                endCalculationEdgeCheckY = (int)gridPosition.Y + enemyPos.Y;
+            }
+
+            //check depending on enemyPos what tiles to check for it to detect to move the opposite way.
+            if (LevelLoader.grid[(int)gridPosition.X + enemyPos.X, (int)gridPosition.Y + enemyPos.Y].tileType != Tile.TileType.WALL ||
+                LevelLoader.grid[endCalculationEdgeCheckX, endCalculationEdgeCheckY].tileType != Tile.TileType.WALL)
+            {
+                velocity *= -1;
+            }
+
+        }
+
+        /// <summary>
+        /// Shoot bullet in given <paramref name="direction"/>
+        /// </summary>
+        /// <param name="direction">Direction to shoot the bullet to</param>
+        private void Shoot(Vector2 direction)
+        {
+            GameEnvironment.CurrentGameState.gameObjectList.Add(new Bullet(gridPosition, direction));
+        }
+
+        public override void FixedUpdate(GameTime gameTime)
 		{
 			base.Update(gameTime);
 
@@ -99,7 +102,7 @@ namespace Poloknightse
 		{
 
             base.Update(gameTime);
-            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+            currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (currentTime >= countDuration)
             {

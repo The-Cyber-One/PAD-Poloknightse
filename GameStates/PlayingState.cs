@@ -15,11 +15,13 @@ namespace Poloknightse
         private int totalEndTime;
         private static Stopwatch stopWatch;
         private TimeSpan timeSpan;
-        private int CoinAmount;
+        private int coinAmount;
         private TextGameObject timerText, coinsLeftText;
         private int playerAmountEnd;
         private int followerAmountEnd;
         private string elapsedTime;
+        private int timeSubtractAmountFollower = 2;
+        private int timeSubtractAmountPlayer = 5;
         
         private Texture2D pixel;
 
@@ -34,13 +36,13 @@ namespace Poloknightse
             LevelLoader.LoadLevel("Levels/" + Game1.levels[Game1.currentLevel]);
             gameObjectList.Add(players);
 
-            CoinAmount = 0;
+            coinAmount = 0;
             //Count how many coins there are in the level
             for (int i = gameObjectList.Count - 1; i >= 0; i--)
             {
                 if (gameObjectList[i] is Coin)
                 {
-                    CoinAmount += 1;
+                    coinAmount += 1;
                 }
             }
 
@@ -85,8 +87,8 @@ namespace Poloknightse
 
             //Subtract the time earned by how many players and followers are left in the level
             timeSpanTotalSec = (int)timeSpan.TotalSeconds;
-            timeSpanTotalSec -= 2 * followerAmountEnd;
-            timeSpanTotalSec -= 5 * playerAmountEnd;
+            timeSpanTotalSec -= timeSubtractAmountFollower * followerAmountEnd;
+            timeSpanTotalSec -= timeSubtractAmountPlayer * playerAmountEnd;
 
             //Calculate it from total seconds to a value we can use in the database
             int sec = timeSpanTotalSec % 60;
@@ -112,7 +114,7 @@ namespace Poloknightse
             timerText.text = elapsedTime;
 
             //Update the text for the amount of coins
-            coinsLeftText.text = CoinAmount.ToString();
+            coinsLeftText.text = coinAmount.ToString();
 
             if (players.Children.Count == 1)
             {
@@ -121,7 +123,7 @@ namespace Poloknightse
             base.Update(gameTime);
 
             //Check if all coins got picked up, go to next level when all are picked-up
-            if (CoinAmount <= 0)
+            if (coinAmount <= 0)
             {
                 CalculateEndTime();
 
@@ -149,7 +151,7 @@ namespace Poloknightse
                         if (player.CheckCollision(gameObjectList[i]))
                         {
                             gameObjectList.Remove(gameObjectList[i]);
-                            CoinAmount -= 1;
+                            coinAmount -= 1;
                             continue;
                         }
                     }
