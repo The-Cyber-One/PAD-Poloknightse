@@ -40,7 +40,7 @@ namespace Poloknightse
             gameObjectList.Add(new TextGameObject("Time", LevelLoader.GridPointToWorld(new Point(timeStartPosition, startYPosition - 2))));
             emptyHighscoreText = new TextGameObject("Well this game seems popular. \nThere seems to be no highscore, maybe try again?", LevelLoader.GridPointToWorld(new Point(rankStartPosition, startYPosition)));
 
-            GetHighscore();
+            //GetHighscore();
 
             //Back button
             Point convertedButtonPosition = LevelLoader.GridPointToWorld(buttonPosition).ToPoint();

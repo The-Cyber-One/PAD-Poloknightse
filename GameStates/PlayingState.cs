@@ -59,6 +59,9 @@ namespace Poloknightse
             coinsLeftText = new TextGameObject("0", new Vector2(GameEnvironment.Screen.X - 1425, GameEnvironment.Screen.Y / 2 - 60), Vector2.One / 2, Color.White, "Fonts/Title", 0.6f);
             gameObjectList.Add(coinsLeftText);
 
+            gameObjectList.Add(new TextGameObject("Move with Arrows or WASD", new Vector2(GameEnvironment.Screen.X - 1420, GameEnvironment.Screen.Y / 2 + 90), Vector2.One / 2, Color.White, "Fonts/paragraph"));
+            gameObjectList.Add(new TextGameObject("Once split, switch with E or Space", new Vector2(GameEnvironment.Screen.X - 1420, GameEnvironment.Screen.Y / 2 + 140), Vector2.One / 2, Color.White, "Fonts/paragraph"));
+
             gameObjectList.Add(new TextGameObject("Put cam here", new Vector2(1425, 200), Vector2.One / 2, Color.White, "Fonts/Title", 0.5f));
         }
 
@@ -131,7 +134,7 @@ namespace Poloknightse
                 if (Game1.currentLevel >= Game1.levels.Length) Game1.currentLevel = 0;
                 GameEnvironment.SwitchTo("WinState");
 
-                HighscoreManager.SaveScore(totalEndTime, Game1.currentLevel);
+                //HighscoreManager.SaveScore(totalEndTime, Game1.currentLevel);
             }
 
             //Collision detection

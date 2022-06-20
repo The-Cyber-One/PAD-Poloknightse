@@ -12,7 +12,7 @@ namespace Poloknightse
     class NameState : GameState
     {
         TextGameObject name;
-        
+
         //Start button
         Point buttonPosition = new Point(30, 23);
         Point buttonSize = new Point(4, 4);
@@ -43,7 +43,7 @@ namespace Poloknightse
             startButton = new Button(button, startButtonAssetName, startButtonText);
             gameObjectList.Add(startButton);
 
-            warningText = new TextGameObject("This name already exists", LevelLoader.GridPointToWorld(warningPosition), Vector2.One/2, Color.Red);
+            warningText = new TextGameObject("This name already exists", LevelLoader.GridPointToWorld(warningPosition), Vector2.One / 2, Color.Red);
         }
 
         public override void HandleInput(InputHelper inputHelper)
@@ -51,10 +51,10 @@ namespace Poloknightse
             base.HandleInput(inputHelper);
 
             //Switch to the main menu if the start button is pressed and the player name doesnt exist yet
-            if (startButton.clicked && !HighscoreManager.PlayerNameExists(name.text) && name.text != "")
+            if (startButton.clicked && /*!HighscoreManager.PlayerNameExists(name.text) &&*/ name.text != "")
             {
                 GameEnvironment.PlayerName = name.text;
-                HighscoreManager.SavePlayer(GameEnvironment.PlayerName);
+                //HighscoreManager.SavePlayer(GameEnvironment.PlayerName);
                 GameEnvironment.SwitchTo("StartState");
             }
 
@@ -92,11 +92,12 @@ namespace Poloknightse
                 }
 
                 //Update warning text
-                if (HighscoreManager.PlayerNameExists(name.text))
+                /*if (HighscoreManager.PlayerNameExists(name.text))
                 {
                     warningText.text = "This name already exists";
                 }
-                else if (name.text == "")
+                else */
+                if (name.text == "")
                 {
                     warningText.text = " Name can not be empty";
                 }
@@ -108,7 +109,7 @@ namespace Poloknightse
             LevelLoader.Draw(spriteBatch);
             base.Draw(spriteBatch);
 
-            if (HighscoreManager.PlayerNameExists(name.text) || name.text == "")
+            if (/*HighscoreManager.PlayerNameExists(name.text) || */name.text == "")
             {
                 warningText.Draw(spriteBatch);
             }
